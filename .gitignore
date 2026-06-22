@@ -27,6 +27,13 @@ cache/
 # Temporary installer files
 [a-f0-9]*.txt
 
+# Domain verification files (owner-specific)
+google*.html
+yandex*.html
+
+# Root images (unintended uploads)
+/6a06f98f4558c.webp
+
 # Uploads (user content)
 uploads/
 
