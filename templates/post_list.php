@@ -11,9 +11,11 @@
 <?php
 $customBlock = null;
 $db = getDb();
-$stmt = $db->prepare("SELECT content FROM custom_blocks WHERE position = 'after_first_post' AND is_active = 1 LIMIT 1");
-$stmt->execute();
-$customBlock = $stmt->fetchColumn();
+try {
+    $stmt = $db->prepare("SELECT content FROM custom_blocks WHERE position = 'after_first_post' AND is_active = 1 LIMIT 1");
+    $stmt->execute();
+    $customBlock = $stmt->fetchColumn();
+} catch (\PDOException $e) {}
 $postCounter = 0;
 ?>
 

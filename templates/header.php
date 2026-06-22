@@ -373,10 +373,12 @@ echo h(mb_strlen($name, 'UTF-8') > 9 ? mb_substr($name, 0, 9, 'UTF-8') . '…' :
                     <?php endforeach; ?>
                 </ul>
                 <?php
-                $blockStmt = getDb()->prepare("SELECT content FROM custom_blocks WHERE position = ? AND is_active = 1 ORDER BY id ASC LIMIT 1");
-                $blockStmt->execute(['leftmenu']);
-                $blockContent = $blockStmt->fetchColumn();
-                if ($blockContent) echo $blockContent;
+                try {
+                    $blockStmt = getDb()->prepare("SELECT content FROM custom_blocks WHERE position = ? AND is_active = 1 ORDER BY id ASC LIMIT 1");
+                    $blockStmt->execute(['leftmenu']);
+                    $blockContent = $blockStmt->fetchColumn();
+                    if ($blockContent) echo $blockContent;
+                } catch (\PDOException $e) {}
                 ?>
             </div>
         </div>

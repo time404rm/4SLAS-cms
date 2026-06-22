@@ -13,10 +13,12 @@
     <div class="footer-up">
         <?php echo renderSocialIcons(); ?>
     <?php
-    $blockStmt = $db->prepare("SELECT content FROM custom_blocks WHERE position = ? AND is_active = 1 ORDER BY id ASC LIMIT 1");
-    $blockStmt->execute(['footer']);
-    $blockContent = $blockStmt->fetchColumn();
-    if ($blockContent) echo $blockContent;
+    try {
+        $blockStmt = $db->prepare("SELECT content FROM custom_blocks WHERE position = ? AND is_active = 1 ORDER BY id ASC LIMIT 1");
+        $blockStmt->execute(['footer']);
+        $blockContent = $blockStmt->fetchColumn();
+        if ($blockContent) echo $blockContent;
+    } catch (\PDOException $e) {}
     ?>
 </div>
 <div class="footer-down">
