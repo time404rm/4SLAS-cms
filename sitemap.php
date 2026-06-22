@@ -66,6 +66,6 @@ foreach ($stmt->fetchAll() as $custom) {
 
 echo '</urlset>';
 $xml = ob_get_clean();
-file_put_contents($cacheFile, $xml);
+@file_put_contents($cacheFile, $xml);
 echo $xml;
 ?>
