@@ -195,7 +195,7 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
         </div>
         <div class="logo">
             <span>
-             <?php $isHomePage = ($_SERVER['REQUEST_URI'] === '/' || $_SERVER['REQUEST_URI'] === '' || str_starts_with($_SERVER['REQUEST_URI'], '/?') || str_starts_with($_SERVER['REQUEST_URI'], '/index.php')); ?>
+             <?php $uri = $_SERVER['REQUEST_URI']; $isHomePage = ($uri === '/' || $uri === '' || strpos($uri, '/?') === 0 || strpos($uri, '/index.php') === 0); ?>
              <<?php echo $isHomePage ? 'h1' : 'div'; ?> class="header-logo"><a href="<?php echo SITE_URL; ?>"><?php echo $siteName; ?></a></<?php echo $isHomePage ? 'h1' : 'div'; ?>>
              <div class="site-desc"><?php echo h(getSetting('site_description')); ?></div>
              <?php include __DIR__ . '/../templates/icons_row.php'; ?>
