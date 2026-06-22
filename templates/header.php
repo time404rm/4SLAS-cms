@@ -50,7 +50,6 @@ $googleVerification = getSetting('google_verification');
 
 // Цвет темы для мобильных браузеров
 $themeColor = getSetting('theme_color') ?: '#1a1a2e';
-$ymCounterId = getSetting('yandex_metrica_id');
 
 // Данные для выдвижной панели
 $menuItems = getMenuItems(0);
@@ -135,7 +134,7 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": <?php echo json_encode(getSetting('site_name')); ?>,
+  "name": <?php echo json_encode(h(getSetting('site_name'))); ?>,
   "url": <?php echo json_encode(SITE_URL); ?>,
   "potentialAction": {
     "@type": "SearchAction",
@@ -149,7 +148,7 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": <?php echo json_encode(getSetting('site_name')); ?>,
+  "name": <?php echo json_encode(h(getSetting('site_name'))); ?>,
   "url": <?php echo json_encode(SITE_URL); ?>,
   "logo": <?php echo json_encode(SITE_URL . '/default-og.php'); ?><?php $contactEmail = getSetting('contact_email'); if ($contactEmail): ?>,
   "contactPoint": {
@@ -161,21 +160,19 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
 </script>
 </head>
 <body>
-    <?php if ($ymCounterId): ?>
     <!-- Yandex.Metrika counter -->
                 <script type="text/javascript" >
                     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                     m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
                     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-                    ym(<?php echo (int)$ymCounterId; ?>, "init", {
+                    ym(89399222, "init", {
                     clickmap:true,
                     trackLinks:true,
                     accurateTrackBounce:true
                     });
                 </script>
-                <noscript><div><img src="https://mc.yandex.ru/watch/<?php echo (int)$ymCounterId; ?>" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+                <noscript><div><img src="https://mc.yandex.ru/watch/89399222" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
             <!-- /Yandex.Metrika counter -->
-    <?php endif; ?>
     <div class="top-nav">
             <header class="site-header">
         
@@ -277,18 +274,6 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
                         <div class="float-auth-links" style="flex-direction:column;">
                             <a href="<?php echo SITE_URL; ?>/login.php" class="float-btn"><?php echo __('login'); ?></a>
                             <a href="<?php echo SITE_URL; ?>/register.php" class="float-btn float-btn-outline"><?php echo __('register'); ?></a>
-                            <?php if (function_exists('yandexOAuthEnabled') && yandexOAuthEnabled()): ?>
-                                <a href="<?php echo SITE_URL; ?>/oauth/yandex.php" class="float-btn-yandex" style="margin-top:4px;">
-                                    <svg viewBox="0 0 24 24" width="18" height="18" style="vertical-align:middle;margin-right:4px;"><rect width="24" height="24" rx="4" fill="#fff" opacity=".2"/><text x="12" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="14" fill="#fff">Я</text></svg>
-                                    <?php echo __('login_via_yandex'); ?>
-                                </a>
-                            <?php endif; ?>
-                            <?php if (function_exists('vkOAuthEnabled') && vkOAuthEnabled()): ?>
-                                <a href="<?php echo SITE_URL; ?>/oauth/vk.php" class="float-btn-vk">
-                                    <svg viewBox="0 0 24 24" width="18" height="18" style="vertical-align:middle;margin-right:4px;"><rect width="24" height="24" rx="4" fill="#fff" opacity=".2"/><text x="12" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="12" fill="#fff">VK</text></svg>
-                                    <?php echo __('login_via_vk'); ?>
-                                </a>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -371,12 +356,10 @@ echo h(mb_strlen($name, 'UTF-8') > 9 ? mb_substr($name, 0, 9, 'UTF-8') . '…' :
                     <?php endforeach; ?>
                 </ul>
                 <?php
-                try {
-                    $blockStmt = getDb()->prepare("SELECT content FROM custom_blocks WHERE position = ? AND is_active = 1 ORDER BY id ASC LIMIT 1");
-                    $blockStmt->execute(['leftmenu']);
-                    $blockContent = $blockStmt->fetchColumn();
-                    if ($blockContent) echo $blockContent;
-                } catch (\PDOException $e) {}
+                $blockStmt = getDb()->prepare("SELECT content FROM custom_blocks WHERE position = ? AND is_active = 1 ORDER BY id ASC LIMIT 1");
+                $blockStmt->execute(['leftmenu']);
+                $blockContent = $blockStmt->fetchColumn();
+                if ($blockContent) echo $blockContent;
                 ?>
             </div>
         </div>
@@ -436,5 +419,9 @@ echo h(mb_strlen($name, 'UTF-8') > 9 ? mb_substr($name, 0, 9, 'UTF-8') . '…' :
         }
         echo '</div>';
     }
-    <?php /* Основной контент подключается из шаблонов (post_list.php и т.д.).
-       Закрывающие теги </main> и </div> находятся в footer.php */ ?>
+    ?>
+    <!-- Дальше основной контент будет подключаться из шаблонов (post_list.php и т.д.) -->
+<?php
+// ВНИМАНИЕ: закрывающий тег </main> и </div> находятся в footer.php
+// Здесь только открывающий main и хлебные крошки.
+// Нет вывода постов!
