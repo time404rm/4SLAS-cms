@@ -1,0 +1,44 @@
+Options -Indexes
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} \.(js|css|jpg|jpeg|png|gif|webp|svg|ico)$ [NC]
+RewriteRule ^ - [L]
+
+# Запрет доступа к папке includes
+RewriteRule ^includes/ - [F,L]
+
+# Исключаем папку api (AJAX)
+RewriteRule ^api/ - [L,NC]
+
+# Sitemap
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# ЧПУ для постов
+RewriteRule ^post/([a-zA-Z0-9_-]+)$ post.php?slug=$1 [L,QSA]
+RewriteRule ^menu/([a-zA-Z0-9_-]+)$ menu_page.php?slug=$1 [L,QSA]
+
+# ЧПУ для страниц
+RewriteRule ^page/([^/]+)$ page.php?slug=$1 [L,QSA]
+
+# ЧПУ для тегов
+RewriteRule ^tag/([a-zA-Z0-9_\-]+)$ tag.php?name=$1 [L,QSA]
+
+# ЧПУ для категорий
+RewriteRule ^category/([a-zA-Z0-9_-]+)$ category.php?slug=$1 [L,QSA]
+
+# Редирект старых ссылок /administration/ на /post/
+RewriteRule ^administration/([a-zA-Z0-9_-]+)$ /post/$1 [R=301,L]
+
+# Защита конфигурационных файлов (простая, через RedirectMatch)
+RedirectMatch 403 /(.*)\.(sql|log|ini|bak|sh|env|config\.php)$
+
+RewriteRule ^contact$ contact.php [L,QSA]
+
+# Если файл или папка существуют – не трогать, иначе на index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+
+# Ошибка 404
+ErrorDocument 404 /404.php

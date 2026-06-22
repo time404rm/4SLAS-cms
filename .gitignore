@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Temp / Cache
+temp/
+cache/
+
+# Temporary installer files
+[a-f0-9]*.txt
+
+# Uploads (user content)
+uploads/
+
+# Config
+includes/config.php
+.env
+!.env.example
+
+# GrapesJS addon (separate package)
+dgr_update/
+
+# Backup
+backup/

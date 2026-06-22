@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /login.php
+Disallow: /register.php
+Disallow: /verify_email.php
+Disallow: /verify.php
+Disallow: /logout.php
+Sitemap: https://time404.ru/sitemap.xml
