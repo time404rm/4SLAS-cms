@@ -1,5 +1,9 @@
 # 4SLAS CMS
 
+<p align="center">
+  <img src="docs/social-preview.png" alt="4SLAS CMS" width="640">
+</p>
+
 **Бесплатная (MIT), самодостаточная и безопасная CMS для блога на PHP 8**
 
 Никаких фреймворков, подписок и CDN. Всё своё — от WYSIWYG-редактора до двойного OAuth.
