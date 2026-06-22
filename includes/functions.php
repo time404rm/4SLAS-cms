@@ -106,6 +106,13 @@ function generateCsrfToken() {
 
 function verifyCsrfToken($token) { return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token); }
 
+function yandexOAuthConfigured() {
+    return (getSetting('yandex_oauth_enabled') == '1' && getSetting('yandex_client_id') && getSetting('yandex_client_secret'));
+}
+function vkOAuthConfigured() {
+    return (getSetting('vk_oauth_enabled') == '1' && getSetting('vk_client_id') && getSetting('vk_client_secret'));
+}
+
 // ========== ПОСТЫ ==========
 function getPosts($limit, $offset) {
     $db = getDb();

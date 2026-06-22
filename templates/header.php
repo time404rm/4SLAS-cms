@@ -277,6 +277,18 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
                         <div class="float-auth-links" style="flex-direction:column;">
                             <a href="<?php echo SITE_URL; ?>/login.php" class="float-btn"><?php echo __('login'); ?></a>
                             <a href="<?php echo SITE_URL; ?>/register.php" class="float-btn float-btn-outline"><?php echo __('register'); ?></a>
+                            <?php if (yandexOAuthConfigured()): ?>
+                                <a href="<?php echo SITE_URL; ?>/oauth/yandex.php" class="float-btn-yandex" style="margin-top:4px;">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" style="vertical-align:middle;margin-right:4px;"><rect width="24" height="24" rx="4" fill="#fff" opacity=".2"/><text x="12" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="14" fill="#fff">Я</text></svg>
+                                    <?php echo __('login_via_yandex'); ?>
+                                </a>
+                            <?php endif; ?>
+                            <?php if (vkOAuthConfigured()): ?>
+                                <a href="<?php echo SITE_URL; ?>/oauth/vk.php" class="float-btn-vk">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" style="vertical-align:middle;margin-right:4px;"><rect width="24" height="24" rx="4" fill="#fff" opacity=".2"/><text x="12" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="12" fill="#fff">VK</text></svg>
+                                    <?php echo __('login_via_vk'); ?>
+                                </a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
