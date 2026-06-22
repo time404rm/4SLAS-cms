@@ -50,6 +50,7 @@ $googleVerification = getSetting('google_verification');
 
 // Цвет темы для мобильных браузеров
 $themeColor = getSetting('theme_color') ?: '#1a1a2e';
+$ymCounterId = getSetting('yandex_metrica_id');
 
 // Данные для выдвижной панели
 $menuItems = getMenuItems(0);
@@ -160,19 +161,21 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
 </script>
 </head>
 <body>
+    <?php if ($ymCounterId): ?>
     <!-- Yandex.Metrika counter -->
                 <script type="text/javascript" >
                     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                     m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
                     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-                    ym(89399222, "init", {
+                    ym(<?php echo (int)$ymCounterId; ?>, "init", {
                     clickmap:true,
                     trackLinks:true,
                     accurateTrackBounce:true
                     });
                 </script>
-                <noscript><div><img src="https://mc.yandex.ru/watch/89399222" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+                <noscript><div><img src="https://mc.yandex.ru/watch/<?php echo (int)$ymCounterId; ?>" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
             <!-- /Yandex.Metrika counter -->
+    <?php endif; ?>
     <div class="top-nav">
             <header class="site-header">
         
