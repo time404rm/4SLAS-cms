@@ -16,8 +16,6 @@ if (maintenanceModeActive()) {
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/menu.php';
 require_once __DIR__ . '/../includes/seo.php';
-require_once __DIR__ . '/../includes/yandex_auth.php';
-require_once __DIR__ . '/../includes/vk_auth.php';
 
 $siteName = h(getSetting('site_name'));
 $currentLang = $_SESSION['lang'] ?? 'ru';
