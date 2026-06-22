@@ -27,4 +27,4 @@
 
 ## Вопросы
 
-По всем вопросам — [Telegram](https://t.me/time4_04)
+По всем вопросам — пишите на почту abuzyarow@gmail.com или ruslan@time404.ru
