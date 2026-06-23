@@ -20,7 +20,7 @@
 
 ## Возможности
 
-- **Собственный WYSIWYG-редактор (4SLASeditor)** — `contenteditable`, 1383 строки чистого JS, 30 кнопок, 0 зависимостей
+- **[4SLASeditor](https://github.com/time404rm/4SLASeditor)** — собственный WYSIWYG-редактор на `contenteditable`, 1383 строки чистого JS, 30 кнопок, 0 зависимостей
 - **Float-bar** — стеклянная боковая панель с иконками и выезжающими панелями
 - **Двойной OAuth 2.0** — вход через Яндекс ID и VK ID (без пароля)
 - **Security-first** — Argon2ID, CSRF на каждую форму, rate limiting, honeypot, гибридная капча
