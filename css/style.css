@@ -1846,13 +1846,16 @@ a.editor-anchor:hover {
     }
 }
 
-/* Десктоп — скрываем гамбургер и drawer */
+/* Десктоп — скрываем гамбургер, drawer и auth-links */
 @media (min-width: 769px) {
     .menu-button {
         display: none;
     }
     .drawer {
         display: none !important;
+    }
+    .auth-links {
+        display: none;
     }
 }
 
