@@ -4,6 +4,15 @@
   <img src="docs/social-preview.png" alt="4SLAS CMS" width="640">
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0--alpha-orange" alt="Version 1.0-alpha">
+  <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License">
+  <img src="https://img.shields.io/badge/PHP-8.0+-777BB4?logo=php" alt="PHP 8.0+">
+</p>
+
+> ⚠️ Это альфа-версия. Возможны ошибки, неточности и неполадки.
+> Используйте с осторожностью в production-среде.
+
 **Бесплатная (MIT), самодостаточная и безопасная CMS для блога на PHP 8**
 
 Никаких фреймворков, подписок и CDN. Всё своё — от WYSIWYG-редактора до двойного OAuth.
