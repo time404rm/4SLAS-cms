@@ -33,6 +33,7 @@ include __DIR__ . '/templates/header.php';
         // Если на страницах нужны активные хештеги – раскомментируйте следующую строку
         $content = activateHashtags($content);
         $content = maskEmails($content);
+        $content = str_replace('[yoomoney]', renderYoomoneyButton(), $content);
         echo $content;
         ?>
     </div>
