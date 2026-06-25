@@ -138,7 +138,7 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": <?php echo json_encode(h(getSetting('site_name'))); ?>,
+  "name": <?php echo json_encode(getSetting('site_name')); ?>,
   "url": <?php echo json_encode(SITE_URL); ?>,
   "potentialAction": {
     "@type": "SearchAction",
@@ -169,12 +169,12 @@ $sameAsJson = json_encode(array_values($sameAs));
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": <?php echo json_encode(h(getSetting('site_name'))); ?>,
+  "name": <?php echo json_encode(getSetting('site_name')); ?>,
   "url": <?php echo json_encode(SITE_URL); ?>,
   "logo": <?php echo json_encode(SITE_URL . '/default-og.php'); ?><?php $contactEmail = getSetting('contact_email'); if ($contactEmail): ?>,
   "contactPoint": {
     "@type": "ContactPoint",
-    "email": <?php echo json_encode(h($contactEmail)); ?>,
+    "email": <?php echo json_encode($contactEmail); ?>,
     "contactType": "customer support"
   }<?php endif; ?><?php if (!empty($sameAs)): ?>,
   "sameAs": <?php echo $sameAsJson; ?><?php endif; ?>

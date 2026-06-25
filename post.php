@@ -305,7 +305,7 @@ $articleSection = !empty($articleCategories) ? implode(', ', $articleCategories)
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": <?php echo json_encode(h($post['title'])); ?>,
+  "headline": <?php echo json_encode($post['title']); ?>,
   "description": <?php echo json_encode(mb_substr(strip_tags($post['content']), 0, 160)); ?>,
   "image": <?php echo json_encode($articleImage); ?>,
   "datePublished": <?php echo json_encode($articleDate); ?>,
@@ -317,7 +317,7 @@ $articleSection = !empty($articleCategories) ? implode(', ', $articleCategories)
   },
   "publisher": {
     "@type": "Organization",
-    "name": <?php echo json_encode(h(getSetting('site_name'))); ?>,
+    "name": <?php echo json_encode(getSetting('site_name')); ?>,
     "logo": {
       "@type": "ImageObject",
       "url": <?php echo json_encode(SITE_URL . '/default-og.png'); ?>
