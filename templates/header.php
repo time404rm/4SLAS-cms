@@ -70,10 +70,10 @@ $topPosts = getTopPostsByLikes(5);
     <?php endif; ?>
     <link rel="canonical" href="<?php echo h($canonical); ?>">
     <!-- hreflang для мультиязычности -->
-    <link rel="alternate" hreflang="ru" href="<?php echo h($canonical); ?><?php echo strpos($canonical, '?') !== false ? '&' : '?'; ?>lang=ru">
-    <link rel="alternate" hreflang="en" href="<?php echo h($canonical); ?><?php echo strpos($canonical, '?') !== false ? '&' : '?'; ?>lang=en">
+    <link rel="alternate" hreflang="ru" href="<?php echo h($canonical); ?>">
+    <link rel="alternate" hreflang="en" href="<?php echo h($canonical); ?>">
     <link rel="alternate" hreflang="x-default" href="<?php echo h($canonical); ?>">
-    <?php if (isset($page) && is_numeric($page) && $page > 1): ?>
+    <?php if ((isset($page) && is_numeric($page) && $page > 1) || !empty($noindex)): ?>
     <meta name="robots" content="noindex, follow">
     <link rel="prev" href="<?php echo SITE_URL . ($page > 2 ? '/?page=' . ($page - 1) : '/'); ?>">
     <?php endif; ?>

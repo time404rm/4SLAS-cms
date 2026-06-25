@@ -85,6 +85,7 @@ if ($isHashtagSearch) {
     $pageDescription = __('search_page_description');
 }
 $canonicalUrl = SITE_URL . '/search.php?q=' . urlencode($query) . '&page=' . $page;
+$noindex = true;
 
 include __DIR__ . '/templates/header.php';
 ?>
