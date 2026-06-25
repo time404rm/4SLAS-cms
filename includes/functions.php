@@ -2,6 +2,13 @@
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/mailer.php';
 
+// Security headers (перед любым выводом)
+if (!headers_sent()) {
+    header('X-Frame-Options: SAMEORIGIN');
+    header('X-Content-Type-Options: nosniff');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+}
+
 // ========== ЯЗЫК ==========
 function __($key, $params = []) {
     static $langData = null;
