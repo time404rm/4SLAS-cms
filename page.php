@@ -44,6 +44,17 @@ include __DIR__ . '/templates/header.php';
         ?>
     </div>
 </article>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": <?php echo json_encode($pageTitle); ?>,
+  "description": <?php echo json_encode($pageDescription); ?>,
+  "url": <?php echo json_encode($canonicalUrl); ?>
+}
+</script>
+
 <?php
 include __DIR__ . '/templates/footer.php';
 ?>
