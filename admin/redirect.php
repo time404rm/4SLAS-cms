@@ -27,9 +27,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_redirect'])) {
             $stmt->execute([$old_url, $new_url, $type, $id]);
             $message = 'Редирект обновлён';
         } else {
-            $stmt = $db->prepare("INSERT INTO redirects (old_url, new_url, type) VALUES (?, ?, ?)");
-            $stmt->execute([$old_url, $new_url, $type]);
-            $message = 'Редирект добавлен';
+            // Проверяем, есть ли уже редирект для этого URL
+            $check = $db->prepare("SELECT id, new_url, type FROM redirects WHERE old_url = ?");
+            $check->execute([$old_url]);
+            $existing = $check->fetch();
+
+            if ($existing) {
+                // Если есть — обновляем существующий
+                $stmt = $db->prepare("UPDATE redirects SET new_url=?, type=? WHERE id=?");
+                $stmt->execute([$new_url, $type, $existing['id']]);
+                $message = 'Редирект обновлён (существующий)';
+            } else {
+                $stmt = $db->prepare("INSERT INTO redirects (old_url, new_url, type) VALUES (?, ?, ?)");
+                $stmt->execute([$old_url, $new_url, $type]);
+                $message = 'Редирект добавлен';
+            }
         }
         clearCache();
         header('Location: redirect.php?msg=' . urlencode($message));
