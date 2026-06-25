@@ -5,6 +5,26 @@ $pageTitle = '404 — Страница не найдена';
 $pageDescription = 'Запрашиваемая страница не найдена';
 $is_404 = true;
 
+// Логирование 404
+$db = getDb();
+$db->exec("CREATE TABLE IF NOT EXISTS log_404 (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    url VARCHAR(500) NOT NULL,
+    referer VARCHAR(500) DEFAULT NULL,
+    ip VARCHAR(45) DEFAULT NULL,
+    user_agent VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_created (created_at),
+    INDEX idx_url (url(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+$stmt = $db->prepare("INSERT INTO log_404 (url, referer, ip, user_agent) VALUES (?, ?, ?, ?)");
+$stmt->execute([
+    $_SERVER['REQUEST_URI'] ?? '',
+    $_SERVER['HTTP_REFERER'] ?? '',
+    $_SERVER['REMOTE_ADDR'] ?? '',
+    mb_substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255)
+]);
+
 $recentPosts = getPosts(10, 0);
 $allTags = getAllTags();
 

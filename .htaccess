@@ -14,6 +14,12 @@ RewriteRule ^api/ - [L,NC]
 # Sitemap
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
+# Image Sitemap
+RewriteRule ^sitemap-images\.xml$ sitemap-images.php [L]
+
+# Yandex Turbo
+RewriteRule ^turbo\.xml$ turbo.php [L]
+
 # ЧПУ для постов
 RewriteRule ^post/([a-zA-Z0-9_-]+)$ post.php?slug=$1 [L,QSA]
 RewriteRule ^menu/([a-zA-Z0-9_-]+)$ menu_page.php?slug=$1 [L,QSA]

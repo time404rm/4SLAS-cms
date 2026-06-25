@@ -2,6 +2,9 @@
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/pages.php';
 require_once __DIR__ . '/includes/seo.php';
+require_once __DIR__ . '/includes/faq-helper.php';
+require_once __DIR__ . '/includes/toc-helper.php';
+require_once __DIR__ . '/includes/howto-helper.php';
 
 if (isset($_GET['lang']) && in_array($_GET['lang'], ['ru', 'en'])) {
     $_SESSION['lang'] = $_GET['lang'];
@@ -34,6 +37,9 @@ include __DIR__ . '/templates/header.php';
         $content = activateHashtags($content);
         $content = maskEmails($content);
         $content = str_replace('[yoomoney]', renderYoomoneyButton(), $content);
+        $content = faqParse($content);
+        $content = howtoParse($content);
+        $content = tocGenerate($content);
         echo $content;
         ?>
     </div>

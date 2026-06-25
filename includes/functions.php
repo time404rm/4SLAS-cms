@@ -692,6 +692,20 @@ function getPostById($postId) {
     return $stmt->fetch();
 }
 
+function getPrevPost($postId, $createdAt) {
+    $db = getDb();
+    $stmt = $db->prepare("SELECT id, title, slug FROM posts WHERE status = 'published' AND (created_at < ? OR (created_at = ? AND id < ?)) ORDER BY created_at DESC, id DESC LIMIT 1");
+    $stmt->execute([$createdAt, $createdAt, $postId]);
+    return $stmt->fetch();
+}
+
+function getNextPost($postId, $createdAt) {
+    $db = getDb();
+    $stmt = $db->prepare("SELECT id, title, slug FROM posts WHERE status = 'published' AND (created_at > ? OR (created_at = ? AND id > ?)) ORDER BY created_at ASC, id ASC LIMIT 1");
+    $stmt->execute([$createdAt, $createdAt, $postId]);
+    return $stmt->fetch();
+}
+
 // ========== УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ ==========
 function getAllUsers($limit = null, $offset = 0) {
     $db = getDb();

@@ -113,6 +113,9 @@ $topPosts = getTopPostsByLikes(5);
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/highlight/styles/vs.min.css">
     <!-- Lightbox -->
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/lightbox/css/lightbox.min.css">
+    <!-- DNS prefetch for external services -->
+    <link rel="dns-prefetch" href="https://mc.yandex.ru">
+    <link rel="preconnect" href="https://mc.yandex.ru">
     <?php
 $favicon = getSetting('favicon');
 if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
@@ -144,6 +147,23 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
   }
 }
 </script>
+<?php
+// Собираем соцсети для sameAs
+$sameAs = [];
+$socialVk = getSetting('social_vk');
+if ($socialVk) $sameAs[] = $socialVk;
+$socialTg = getSetting('social_telegram');
+if ($socialTg) $sameAs[] = $socialTg;
+$socialEmail = getSetting('social_email');
+if ($socialEmail) $sameAs[] = 'mailto:' . $socialEmail;
+$socialDb = getDb();
+$socialLinks = $socialDb->query("SELECT url FROM contact_social_links ORDER BY sort_order")->fetchAll();
+foreach ($socialLinks as $sl) {
+    if (!empty($sl['url'])) $sameAs[] = $sl['url'];
+}
+$sameAs = array_unique($sameAs);
+$sameAsJson = json_encode(array_values($sameAs));
+?>
 <!-- JSON-LD Organization -->
 <script type="application/ld+json">
 {
@@ -156,7 +176,8 @@ if ($favicon && file_exists($_SERVER['DOCUMENT_ROOT'] . $favicon)): ?>
     "@type": "ContactPoint",
     "email": <?php echo json_encode(h($contactEmail)); ?>,
     "contactType": "customer support"
-  }<?php endif; ?>
+  }<?php endif; ?><?php if (!empty($sameAs)): ?>,
+  "sameAs": <?php echo $sameAsJson; ?><?php endif; ?>
 }
 </script>
 </head>

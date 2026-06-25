@@ -2,6 +2,9 @@
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/captcha.php';
 require_once __DIR__ . '/includes/seo.php';
+require_once __DIR__ . '/includes/faq-helper.php';
+require_once __DIR__ . '/includes/toc-helper.php';
+require_once __DIR__ . '/includes/howto-helper.php';
 
 if (isset($_GET['lang']) && in_array($_GET['lang'], ['ru', 'en'])) {
     $_SESSION['lang'] = $_GET['lang'];
@@ -59,6 +62,9 @@ include __DIR__ . '/templates/header.php';
         $content = wrapImagesWithLightbox($post['content'], $post['id']);
         $content = activateHashtags($content);
         $content = maskEmails($content);
+        $content = faqParse($content);
+        $content = howtoParse($content);
+        $content = tocGenerate($content);
         echo $content;
         ?>
     </div>
@@ -97,6 +103,20 @@ include __DIR__ . '/templates/header.php';
     endforeach; ?>
 </div>
 </article>
+
+<?php $prevPost = getPrevPost($post['id'], $post['created_at']); $nextPost = getNextPost($post['id'], $post['created_at']); if ($prevPost || $nextPost): ?>
+<div class="post-nav">
+    <div class="post-nav-prev"><?php if ($prevPost): ?><a href="<?php echo SITE_URL; ?>/post/<?php echo h($prevPost['slug']); ?>">← <?php echo h(mb_substr($prevPost['title'], 0, 50)); ?></a><?php endif; ?></div>
+    <div class="post-nav-next"><?php if ($nextPost): ?><a href="<?php echo SITE_URL; ?>/post/<?php echo h($nextPost['slug']); ?>"><?php echo h(mb_substr($nextPost['title'], 0, 50)); ?> →</a><?php endif; ?></div>
+</div>
+<style>
+.post-nav { display: flex; justify-content: space-between; gap: 16px; margin: 20px 0; padding: 16px 0; border-top: 1px solid #2a3650; border-bottom: 1px solid #2a3650; }
+.post-nav a { color: #4a8cff; text-decoration: none; font-size: 14px; }
+.post-nav a:hover { text-decoration: underline; }
+.post-nav-prev { text-align: left; flex: 1; }
+.post-nav-next { text-align: right; flex: 1; }
+</style>
+<?php endif; ?>
 
 <div class="socialcontent">
 <div class="likes-section">
@@ -274,6 +294,12 @@ $articleAuthor = !empty($post['author_name']) ? h($post['author_name']) : h(getS
 $articleImage = $post['intro_image'] ? SITE_URL . '/uploads/posts/' . h($post['intro_image']) : SITE_URL . '/default-og.php';
 $articleDate = date('c', strtotime($post['created_at']));
 $articleModified = $post['updated_at'] ? date('c', strtotime($post['updated_at'])) : $articleDate;
+
+// Категории для articleSection
+$catStmt = getDb()->prepare("SELECT c.name FROM post_categories pc JOIN categories c ON pc.category_id = c.id WHERE pc.post_id = ?");
+$catStmt->execute([$post['id']]);
+$articleCategories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
+$articleSection = !empty($articleCategories) ? implode(', ', $articleCategories) : '';
 ?>
 <script type="application/ld+json">
 {
@@ -286,7 +312,8 @@ $articleModified = $post['updated_at'] ? date('c', strtotime($post['updated_at']
   "dateModified": <?php echo json_encode($articleModified); ?>,
   "author": {
     "@type": "Person",
-    "name": <?php echo json_encode($articleAuthor); ?>
+    "name": <?php echo json_encode($articleAuthor); ?>,
+    "url": <?php echo json_encode(SITE_URL); ?>
   },
   "publisher": {
     "@type": "Organization",
@@ -299,7 +326,8 @@ $articleModified = $post['updated_at'] ? date('c', strtotime($post['updated_at']
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": <?php echo json_encode($canonicalUrl); ?>
-  }<?php if (!empty($post['hashtags'])): ?>,
+  }<?php if ($articleSection): ?>,
+  "articleSection": <?php echo json_encode($articleSection); ?><?php endif; ?><?php if (!empty($post['hashtags'])): ?>,
   "keywords": <?php echo json_encode(implode(', ', array_column($post['hashtags'], 'name'))); ?><?php endif; ?>
 }
 </script>

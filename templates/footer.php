@@ -29,32 +29,36 @@
 
 </div> <!-- .site-wrapper -->
 
-<!-- Подключаем все библиотеки и скрипты -->
- <script src="<?php echo SITE_URL; ?>/src/social-link.js"></script>
+<!-- Подключаем все библиотеки и скрипты (defer — не блокируют рендеринг) -->
+ <script defer src="<?php echo SITE_URL; ?>/src/social-link.js"></script>
 
 <!-- Lightbox (содержит jQuery) -->
-<script src="<?php echo SITE_URL; ?>/assets/lightbox/js/lightbox-plus-jquery.min.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/assets/lightbox/js/lightbox-plus-jquery.min.js"></script>
 
 <!-- Highlight.js -->
-<script src="<?php echo SITE_URL; ?>/assets/highlight/highlight.min.js"></script>
-<script src="<?php echo SITE_URL; ?>/assets/highlight/js/highlightjs-line-numbers.min.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/assets/highlight/highlight.min.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/assets/highlight/js/highlightjs-line-numbers.min.js"></script>
 
 <!-- Основные скрипты сайта -->
 <?php if (isset($includeInfiniteScroll) && $includeInfiniteScroll): ?>
-<script src="<?php echo SITE_URL; ?>/js_loader.php?file=infinite-scroll.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=infinite-scroll.js"></script>
 <?php endif; ?>
 <?php if (isset($includeComments) && $includeComments): ?>
-<script src="<?php echo SITE_URL; ?>/js_loader.php?file=comments.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=comments.js"></script>
 <?php endif; ?>
-<script src="<?php echo SITE_URL; ?>/js_loader.php?file=likes.js"></script>
-<script src="<?php echo SITE_URL; ?>/js_loader.php?file=drawer.js"></script>
-<script src="<?php echo SITE_URL; ?>/js_loader.php?file=emoji-picker.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=likes.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=drawer.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=emoji-picker.js"></script>
 
 <!-- Инициализация Lightbox -->
 <script>
-    lightbox.option({
-        'albumLabel': 'Фото %1 из %2',
-        'alwaysShowNavOnTouchDevices': true
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lightbox !== 'undefined') {
+            lightbox.option({
+                'albumLabel': 'Фото %1 из %2',
+                'alwaysShowNavOnTouchDevices': true
+            });
+        }
     });
 </script>
 
@@ -108,6 +112,7 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
         }
     })();
 </script>
-<script src="<?php echo SITE_URL; ?>/js_loader.php?file=search-suggest.js"></script>
+<script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=search-suggest.js"></script>
+<?php if (function_exists('faqRenderJsonLd')) echo faqRenderJsonLd(); ?><?php if (function_exists('howtoRenderJsonLd')) echo howtoRenderJsonLd(); ?>
 </body>
 </html>
