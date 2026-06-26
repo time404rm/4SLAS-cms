@@ -547,6 +547,8 @@ function uploadEditorImage($file, $type, $slug) {
         $subfolder = 'posts/' . $slug;
     } elseif ($type === 'page') {
         $subfolder = 'pages/' . $slug;
+    } elseif ($type === 'editor') {
+        $subfolder = 'editor/unsaved';
     } else {
         $subfolder = 'content/pages';
     }

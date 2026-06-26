@@ -20,7 +20,6 @@ if ($postId > 0) {
         exit;
     }
     $type = 'post';
-    $slug = slugify($slug);
 } elseif ($pageId > 0) {
     $stmt = $db->prepare("SELECT slug FROM pages WHERE id = ?");
     $stmt->execute([$pageId]);
@@ -30,10 +29,10 @@ if ($postId > 0) {
         exit;
     }
     $type = 'page';
-    $slug = slugify($slug);
 } else {
-    echo json_encode(['error' => 'No post_id or page_id provided']);
-    exit;
+    // Нет ID поста/страницы — сохраняем во временную директорию редактора
+    $type = 'editor';
+    $slug = 'unsaved';
 }
 
 if (empty($_FILES['image'])) {

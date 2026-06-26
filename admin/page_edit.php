@@ -110,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="<?php echo SITE_URL; ?>/src/4SLASeditor.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        window.currentPageId = <?php echo $id; ?>;
         new SimpleEditor('post-editor', 'post-content-hidden');
     });
     </script>

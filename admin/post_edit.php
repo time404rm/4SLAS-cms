@@ -387,6 +387,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
     <script src="<?php echo SITE_URL; ?>/src/4SLASeditor.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        window.currentPostId = <?php echo $id; ?>;
         new SimpleEditor('post-editor', 'post-content-hidden');
     });
     </script>
