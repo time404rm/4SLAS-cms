@@ -422,9 +422,20 @@ function wrapImagesWithLightbox($content, $postId = null) {
     $pattern = '/<img(.*?)src=["\'](.*?)["\'](.*?)>/i';
     $content = preg_replace_callback($pattern, function($matches) use ($introImage) {
         $src = $matches[2];
-        if ($introImage && strpos($src, $introImage) !== false) return $matches[0];
-        if (strpos($src, '/icons/') !== false || strpos($src, '/emojis/') !== false || strpos($src, '/uploads/icons/') !== false) return $matches[0];
-        return '<a href="' . htmlspecialchars($src) . '" data-lightbox="content-images" data-title="Изображение">' . $matches[0] . '</a>';
+        $imgTag = $matches[0];
+        if ($introImage && strpos($src, $introImage) !== false) return $imgTag;
+        if (strpos($src, '/icons/') !== false || strpos($src, '/emojis/') !== false || strpos($src, '/uploads/icons/') !== false) return $imgTag;
+
+        // Извлекаем alt текст для подписи
+        $title = 'Изображение';
+        if (preg_match('/alt=["\']([^"\']*)["\']/i', $imgTag, $altMatch)) {
+            $altText = trim($altMatch[1]);
+            if ($altText) $title = $altText;
+        } elseif (preg_match('/title=["\']([^"\']*)["\']/i', $imgTag, $titleMatch)) {
+            $title = trim($titleMatch[1]) ?: $title;
+        }
+
+        return '<a href="' . htmlspecialchars($src) . '" data-lightbox="content-images" data-title="' . htmlspecialchars($title) . '">' . $imgTag . '</a>';
     }, $content);
     return $content;
 }
