@@ -35,9 +35,11 @@
 <!-- Lightbox (содержит jQuery) -->
 <script defer src="<?php echo SITE_URL; ?>/assets/lightbox/js/lightbox-plus-jquery.min.js"></script>
 
-<!-- Highlight.js -->
+<!-- Highlight.js (только если на странице есть код) -->
+<?php if (!empty($showHighlight)): ?>
 <script defer src="<?php echo SITE_URL; ?>/assets/highlight/highlight.min.js"></script>
 <script defer src="<?php echo SITE_URL; ?>/assets/highlight/js/highlightjs-line-numbers.min.js"></script>
+<?php endif; ?>
 
 <!-- Основные скрипты сайта -->
 <?php if (isset($includeInfiniteScroll) && $includeInfiniteScroll): ?>
@@ -62,7 +64,8 @@
     });
 </script>
 
-<!-- Инициализация Highlight.js (после загрузки всех скриптов) -->
+<!-- Инициализация Highlight.js (только если загружен) -->
+<?php if (!empty($showHighlight)): ?>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof hljs !== 'undefined') {
@@ -77,8 +80,7 @@
         }
     });
 </script>
-
-<?php
+<?php endif; ?>
 // Счётчик просмотров страниц
 if (!defined('PAGE_VIEWS_RECORDED')) {
     define('PAGE_VIEWS_RECORDED', true);

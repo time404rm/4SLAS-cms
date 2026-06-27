@@ -25,6 +25,8 @@ $pageDescription = $page['meta_description'] ?: mb_substr(strip_tags($page['cont
 $pageKeywords = $page['meta_keywords'] ?? '';
 $canonicalUrl = SITE_URL . '/page/' . $page['slug'];
 
+$showHighlight = (mb_strpos($page['content'], '<pre') !== false || mb_strpos($page['content'], '<code') !== false);
+
 include __DIR__ . '/templates/header.php';
 ?>
 <article class="page">

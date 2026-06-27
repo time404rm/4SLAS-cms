@@ -28,6 +28,9 @@ $pageKeywords = !empty($post['meta_keywords']) ? $post['meta_keywords'] : implod
 $ogImage = (!empty($seo['og_image']) ? $seo['og_image'] : $post['intro_image']);
 $canonicalUrl = SITE_URL . '/post/' . $post['slug'];
 
+// Условная загрузка Highlight.js (только если в контенте есть код)
+$showHighlight = (mb_strpos($post['content'], '<pre') !== false || mb_strpos($post['content'], '<code') !== false);
+
 // Генерируем капчу один раз
 $captchaQuestion = generateCaptcha();
 
