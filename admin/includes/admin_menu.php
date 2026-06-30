@@ -58,6 +58,7 @@
                 <?php if (isAdmin()): ?><li><a href="widgets.php">Виджеты</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="redirect.php">Редиректы</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="seo-score.php">📊 SEO Score</a></li><?php endif; ?>
+                <?php if (isAdmin()): ?><li><a href="import-md.php">📥 Импорт MD</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="404-report.php">🔍 404 мониторинг</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="backup.php">Backup</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="update.php">🔄 Обновление</a></li><?php endif; ?>
