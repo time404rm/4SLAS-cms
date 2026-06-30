@@ -41,37 +41,6 @@
 <script defer src="<?php echo SITE_URL; ?>/assets/highlight/js/highlightjs-line-numbers.min.js"></script>
 <?php endif; ?>
 
-<!-- Mermaid.js (диаграммы) -->
-<?php if (!empty($showMermaid)): ?>
-<script defer src="<?php echo SITE_URL; ?>/assets/mermaid/mermaid.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof mermaid !== 'undefined') {
-            mermaid.initialize({ theme: 'dark', startOnLoad: false });
-
-            // Преобразуем <pre><code class="language-mermaid"> → <pre class="mermaid">
-            document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
-                var pre = el.parentNode;
-                var code = el.textContent
-                    .replace(/&amp;/g, '&')
-                    .replace(/&lt;/g, '<')
-                    .replace(/&gt;/g, '>')
-                    .replace(/&quot;/g, '"')
-                    .replace(/&#39;/g, "'")
-                    // AI иногда генерирует flowchartTD без пробела
-                    .replace(/^(flowchart|graph)([A-Z]{2})/m, '$1 $2');
-                pre.removeChild(el);
-                pre.classList.add('mermaid');
-                pre.textContent = code;
-            });
-
-            // Рендерим все .mermaid
-            document.querySelectorAll('.mermaid').forEach(function(el) {
-                try { mermaid.run({ nodes: [el] }); } catch(e) {}
-            });
-        }
-    });
-</script>
 <?php endif; ?><!--diagram-->
 
 <!-- Основные скрипты сайта -->
@@ -102,7 +71,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof hljs !== 'undefined') {
-            var blocks = document.querySelectorAll('pre code:not(.language-mermaid)');
+            var blocks = document.querySelectorAll('pre code');
             blocks.forEach(function(block) { hljs.highlightElement(block); });
             // Номера строк — вручную, без initLineNumbersOnLoad (ломает mermaid)
             if (typeof hljs.lineNumbersBlock === 'function') {
