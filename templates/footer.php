@@ -41,6 +41,18 @@
 <script defer src="<?php echo SITE_URL; ?>/assets/highlight/js/highlightjs-line-numbers.min.js"></script>
 <?php endif; ?>
 
+<!-- Mermaid.js (диаграммы) -->
+<?php if (!empty($showMermaid)): ?>
+<script defer src="<?php echo SITE_URL; ?>/assets/mermaid/mermaid.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof mermaid !== 'undefined') {
+            mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+        }
+    });
+</script>
+<?php endif; ?><!--diagram-->
+
 <!-- Основные скрипты сайта -->
 <?php if (isset($includeInfiniteScroll) && $includeInfiniteScroll): ?>
 <script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=infinite-scroll.js"></script>

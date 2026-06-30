@@ -26,6 +26,7 @@ $pageKeywords = $page['meta_keywords'] ?? '';
 $canonicalUrl = SITE_URL . '/page/' . $page['slug'];
 
 $showHighlight = (mb_strpos($page['content'], '<pre') !== false || mb_strpos($page['content'], '<code') !== false);
+$showMermaid = (mb_strpos($page['content'], 'language-mermaid') !== false);
 
 include __DIR__ . '/templates/header.php';
 ?>

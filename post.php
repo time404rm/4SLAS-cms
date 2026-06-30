@@ -30,6 +30,7 @@ $canonicalUrl = SITE_URL . '/post/' . $post['slug'];
 
 // Условная загрузка Highlight.js (только если в контенте есть код)
 $showHighlight = (mb_strpos($post['content'], '<pre') !== false || mb_strpos($post['content'], '<code') !== false);
+$showMermaid = (mb_strpos($post['content'], 'language-mermaid') !== false);
 
 // Генерируем капчу один раз
 $captchaQuestion = generateCaptcha();
