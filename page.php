@@ -21,7 +21,7 @@ if (!$page) {
 }
 
 $pageTitle = $page['meta_title'] ?: $page['title'];
-$pageDescription = $page['meta_description'] ?: mb_substr(strip_tags($page['content']), 0, 160);
+$pageDescription = $page['meta_description'] ?: truncateText($page['content'], 160);
 $pageKeywords = $page['meta_keywords'] ?? '';
 $canonicalUrl = SITE_URL . '/page/' . $page['slug'];
 

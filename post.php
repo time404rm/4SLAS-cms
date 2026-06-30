@@ -23,7 +23,7 @@ if (!$post) {
 // SEO
 $seo = getSeoData('post', $post['id']);
 $pageTitle = !empty($post['meta_title']) ? $post['meta_title'] : $post['title'];
-$pageDescription = !empty($post['meta_description']) ? $post['meta_description'] : mb_substr(strip_tags($post['content']), 0, 160);
+$pageDescription = !empty($post['meta_description']) ? $post['meta_description'] : truncateText($post['content'], 160);
 $pageKeywords = !empty($post['meta_keywords']) ? $post['meta_keywords'] : implode(',', array_column($post['hashtags'], 'name'));
 $ogImage = (!empty($seo['og_image']) ? $seo['og_image'] : $post['intro_image']);
 $canonicalUrl = !empty($post['canonical_url']) ? $post['canonical_url'] : (SITE_URL . '/post/' . $post['slug']);
@@ -309,7 +309,7 @@ $articleSection = !empty($articleCategories) ? implode(', ', $articleCategories)
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": <?php echo json_encode($post['title']); ?>,
-  "description": <?php echo json_encode(mb_substr(strip_tags($post['content']), 0, 160)); ?>,
+  "description": <?php echo json_encode(truncateText($post['content'], 160)); ?>,
   "image": <?php echo json_encode($articleImage); ?>,
   "datePublished": <?php echo json_encode($articleDate); ?>,
   "dateModified": <?php echo json_encode($articleModified); ?>,

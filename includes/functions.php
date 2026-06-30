@@ -36,6 +36,20 @@ function getSetting($key) {
     return $cache[$key];
 }
 
+// ========== ВСПОМОГАТЕЛЬНЫЕ ==========
+function truncateText($text, $maxLength = 160, $ellipsis = '…') {
+    $text = strip_tags($text);
+    $text = preg_replace('/\s+/', ' ', $text);
+    $text = trim($text);
+    if (mb_strlen($text) <= $maxLength) return $text;
+    $truncated = mb_substr($text, 0, $maxLength);
+    $lastSpace = mb_strrpos($truncated, ' ');
+    if ($lastSpace !== false) {
+        $truncated = mb_substr($truncated, 0, $lastSpace);
+    }
+    return rtrim($truncated, '.,;:!?-') . $ellipsis;
+}
+
 // ========== ТЕГИ ==========
 function getAllTags() {
     $db = getDb();
