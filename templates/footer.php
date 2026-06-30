@@ -47,7 +47,10 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof mermaid !== 'undefined') {
-            mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+            mermaid.initialize({ theme: 'dark', startOnLoad: false });
+            document.querySelectorAll('.mermaid').forEach(function(el) {
+                mermaid.run({ nodes: [el] });
+            });
         }
     });
 </script>
