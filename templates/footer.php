@@ -57,7 +57,9 @@
                     .replace(/&lt;/g, '<')
                     .replace(/&gt;/g, '>')
                     .replace(/&quot;/g, '"')
-                    .replace(/&#39;/g, "'");
+                    .replace(/&#39;/g, "'")
+                    // AI иногда генерирует flowchartTD без пробела
+                    .replace(/^(flowchart|graph)([A-Z]{2})/m, '$1 $2');
                 pre.removeChild(el);
                 pre.classList.add('mermaid');
                 pre.textContent = code;
@@ -100,15 +102,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof hljs !== 'undefined') {
-            document.querySelectorAll('pre code:not(.language-mermaid)').forEach(function(block) {
-                hljs.highlightElement(block);
-            });
-            if (typeof hljs.initLineNumbersOnLoad === 'function') {
-                hljs.initLineNumbersOnLoad();
-            } else if (typeof hljs.lineNumbersBlock === 'function') {
-                document.querySelectorAll('pre code:not(.language-mermaid)').forEach(function(block) {
-                    hljs.lineNumbersBlock(block);
-                });
+            var blocks = document.querySelectorAll('pre code:not(.language-mermaid)');
+            blocks.forEach(function(block) { hljs.highlightElement(block); });
+            // Номера строк — вручную, без initLineNumbersOnLoad (ломает mermaid)
+            if (typeof hljs.lineNumbersBlock === 'function') {
+                blocks.forEach(function(block) { hljs.lineNumbersBlock(block); });
             }
         }
     });
