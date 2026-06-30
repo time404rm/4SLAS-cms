@@ -112,6 +112,8 @@
     });
 </script>
 <?php endif; ?>
+
+<?php
 // Счётчик просмотров страниц
 if (!defined('PAGE_VIEWS_RECORDED')) {
     define('PAGE_VIEWS_RECORDED', true);
