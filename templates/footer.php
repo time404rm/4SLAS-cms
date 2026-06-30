@@ -48,17 +48,24 @@
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof mermaid !== 'undefined') {
             mermaid.initialize({ theme: 'dark', startOnLoad: false });
+
             // Преобразуем <pre><code class="language-mermaid"> → <pre class="mermaid">
             document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
                 var pre = el.parentNode;
-                var code = el.textContent;
+                var code = el.textContent
+                    .replace(/&amp;/g, '&')
+                    .replace(/&lt;/g, '<')
+                    .replace(/&gt;/g, '>')
+                    .replace(/&quot;/g, '"')
+                    .replace(/&#39;/g, "'");
                 pre.removeChild(el);
                 pre.classList.add('mermaid');
                 pre.textContent = code;
             });
+
             // Рендерим все .mermaid
             document.querySelectorAll('.mermaid').forEach(function(el) {
-                mermaid.run({ nodes: [el] });
+                try { mermaid.run({ nodes: [el] }); } catch(e) {}
             });
         }
     });
@@ -93,11 +100,13 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof hljs !== 'undefined') {
-            hljs.highlightAll();
+            document.querySelectorAll('pre code:not(.language-mermaid)').forEach(function(block) {
+                hljs.highlightElement(block);
+            });
             if (typeof hljs.initLineNumbersOnLoad === 'function') {
                 hljs.initLineNumbersOnLoad();
             } else if (typeof hljs.lineNumbersBlock === 'function') {
-                document.querySelectorAll('pre code').forEach(function(block) {
+                document.querySelectorAll('pre code:not(.language-mermaid)').forEach(function(block) {
                     hljs.lineNumbersBlock(block);
                 });
             }
