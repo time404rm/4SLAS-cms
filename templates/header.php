@@ -32,6 +32,12 @@ if ($titleFormat === 'site_page') {
 }
 $metaTitle = h($metaTitle); // экранируем финальный результат
 $metaDesc = isset($pageDescription) ? h($pageDescription) : h(getSetting('site_description'));
+
+// Уникализация title/description для пагинации (Яндекс ругается на дубли)
+if (isset($page) && is_numeric($page) && $page > 1) {
+    $metaTitle .= ' — Страница ' . (int)$page;
+    $metaDesc = 'Страница ' . (int)$page . '. ' . $metaDesc;
+}
 $metaKeywords = isset($pageKeywords) ? h($pageKeywords) : '';
 
 // OG image — если нет картинки, генерируем fallback

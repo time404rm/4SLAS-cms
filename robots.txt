@@ -8,4 +8,6 @@ Disallow: /verify_email.php
 Disallow: /verify.php
 Disallow: /logout.php
 Disallow: /*?lang=
+Disallow: /*?page=
+Disallow: /*page=
 Sitemap: https://time404.ru/sitemap.xml
