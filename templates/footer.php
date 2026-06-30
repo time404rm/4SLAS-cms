@@ -48,6 +48,14 @@
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof mermaid !== 'undefined') {
             mermaid.initialize({ theme: 'dark', startOnLoad: false });
+            // Преобразуем <pre><code class="language-mermaid"> → <pre class="mermaid">
+            document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
+                var pre = el.parentNode;
+                pre.classList.add('mermaid');
+                pre.textContent = el.textContent;
+                pre.removeChild(el);
+            });
+            // Рендерим все .mermaid
             document.querySelectorAll('.mermaid').forEach(function(el) {
                 mermaid.run({ nodes: [el] });
             });
