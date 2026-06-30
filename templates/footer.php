@@ -51,9 +51,10 @@
             // Преобразуем <pre><code class="language-mermaid"> → <pre class="mermaid">
             document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
                 var pre = el.parentNode;
-                pre.classList.add('mermaid');
-                pre.textContent = el.textContent;
+                var code = el.textContent;
                 pre.removeChild(el);
+                pre.classList.add('mermaid');
+                pre.textContent = code;
             });
             // Рендерим все .mermaid
             document.querySelectorAll('.mermaid').forEach(function(el) {
