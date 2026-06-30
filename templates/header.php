@@ -95,7 +95,8 @@ $topPosts = getTopPostsByLikes(5);
     <meta property="og:locale" content="<?php echo $currentLang === 'ru' ? 'ru_RU' : 'en_US'; ?>">
     <meta property="og:site_name" content="<?php echo $siteName; ?>">
     <?php if (isset($post) && !empty($post)): ?>
-    <meta property="article:author" content="<?php echo h($articleAuthor ?? getSetting('site_name')); ?>">
+    <?php $articleAuthor = $articleAuthor ?? ($post['display_author'] ?: $post['author_name'] ?: getSetting('site_name')); ?>
+    <meta property="article:author" content="<?php echo h($articleAuthor); ?>">
     <meta property="article:published_time" content="<?php echo date('c', strtotime($post['created_at'])); ?>">
     <?php if (!empty($post['updated_at'])): ?>
     <meta property="article:modified_time" content="<?php echo date('c', strtotime($post['updated_at'])); ?>">
