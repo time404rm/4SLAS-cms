@@ -90,9 +90,17 @@ $topPosts = getTopPostsByLikes(5);
     <meta property="og:title" content="<?php echo $metaTitle; ?>">
     <meta property="og:description" content="<?php echo $metaDesc; ?>">
     <meta property="og:image" content="<?php echo $ogImg; ?>">
-    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo h($canonical); ?>">
+    <meta property="og:type" content="<?php echo isset($post) && !empty($post) ? 'article' : 'website'; ?>">
     <meta property="og:locale" content="<?php echo $currentLang === 'ru' ? 'ru_RU' : 'en_US'; ?>">
     <meta property="og:site_name" content="<?php echo $siteName; ?>">
+    <?php if (isset($post) && !empty($post)): ?>
+    <meta property="article:author" content="<?php echo h($articleAuthor ?? getSetting('site_name')); ?>">
+    <meta property="article:published_time" content="<?php echo date('c', strtotime($post['created_at'])); ?>">
+    <?php if (!empty($post['updated_at'])): ?>
+    <meta property="article:modified_time" content="<?php echo date('c', strtotime($post['updated_at'])); ?>">
+    <?php endif; ?>
+    <?php endif; ?>
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo $metaTitle; ?>">

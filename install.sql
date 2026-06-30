@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS posts (
     title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL UNIQUE,
     content TEXT NOT NULL,
+    display_author VARCHAR(255) DEFAULT NULL,
+    canonical_url VARCHAR(500) DEFAULT NULL,
     intro_image VARCHAR(255) DEFAULT NULL,
     video_url VARCHAR(255) DEFAULT NULL,
     comments_enabled BOOLEAN DEFAULT TRUE,

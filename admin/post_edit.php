@@ -92,6 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
         $created_at = date('Y-m-d H:i:s');
     }
 
+    $display_author = trim($_POST['display_author'] ?? '');
+    $canonical_url = trim($_POST['canonical_url'] ?? '');
+
     $video_url = trim($_POST['video_url'] ?? '');
 
     $excerpt_type = $_POST['excerpt_type'] ?? '';
@@ -138,23 +141,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
         $stmt = $db->prepare("UPDATE posts SET 
             user_id=?, title=?, slug=?, content=?, intro_image=?, video_url=?, comments_enabled=?, 
             status=?, created_at=?, meta_title=?, meta_description=?, meta_keywords=?,
-            excerpt_type=?, excerpt_length=? 
+            excerpt_type=?, excerpt_length=?, display_author=?, canonical_url=?
             WHERE id=?");
         $stmt->execute([
             $user_id, $title, $slug, $content, $imageName, $video_url, $commentsEnabled,
             $status, $created_at, $meta_title, $meta_description, $meta_keywords,
-            $excerpt_type, $excerpt_length, $id
+            $excerpt_type, $excerpt_length, $display_author, $canonical_url, $id
         ]);
     } else {
         $stmt = $db->prepare("INSERT INTO posts (
             user_id, title, slug, content, intro_image, video_url, comments_enabled,
             status, created_at, meta_title, meta_description, meta_keywords,
-            excerpt_type, excerpt_length
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            excerpt_type, excerpt_length, display_author, canonical_url
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $stmt->execute([
             $user_id, $title, $slug, $content, $imageName, $video_url, $commentsEnabled,
             $status, $created_at, $meta_title, $meta_description, $meta_keywords,
-            $excerpt_type, $excerpt_length
+            $excerpt_type, $excerpt_length, $display_author, $canonical_url
         ]);
         $id = $db->lastInsertId();
     }
@@ -330,6 +333,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
             <label>Длина анонса:</label>
             <input type="number" name="excerpt_length" value="<?php echo $post['excerpt_length'] ?? ''; ?>" min="0" max="2000" step="1">
             <small>0 – использовать глобальную настройку.</small>
+        </div>
+
+        <div class="seo-section" style="border-top:none;margin-top:0;padding-top:0;">
+            <div class="form-row">
+                <label>Автор (отображаемое имя):</label>
+                <input type="text" name="display_author" value="<?php echo $post ? htmlspecialchars($post['display_author'] ?? '') : ''; ?>" size="80" placeholder="Оставьте пустым для использования логина">
+            </div>
+            <div class="form-row">
+                <label>Canonical URL:</label>
+                <input type="text" name="canonical_url" value="<?php echo $post ? htmlspecialchars($post['canonical_url'] ?? '') : ''; ?>" size="80" placeholder="Оставьте пустым для авто-генерации">
+            </div>
         </div>
 
         <div class="seo-section">

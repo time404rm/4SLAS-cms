@@ -26,7 +26,8 @@ $pageTitle = !empty($post['meta_title']) ? $post['meta_title'] : $post['title'];
 $pageDescription = !empty($post['meta_description']) ? $post['meta_description'] : mb_substr(strip_tags($post['content']), 0, 160);
 $pageKeywords = !empty($post['meta_keywords']) ? $post['meta_keywords'] : implode(',', array_column($post['hashtags'], 'name'));
 $ogImage = (!empty($seo['og_image']) ? $seo['og_image'] : $post['intro_image']);
-$canonicalUrl = SITE_URL . '/post/' . $post['slug'];
+$canonicalUrl = !empty($post['canonical_url']) ? $post['canonical_url'] : (SITE_URL . '/post/' . $post['slug']);
+$articleAuthor = $post['display_author'] ?: $post['author_name'] ?: getSetting('site_name');
 
 // Условная загрузка Highlight.js (только если в контенте есть код)
 $showHighlight = (mb_strpos($post['content'], '<pre') !== false || mb_strpos($post['content'], '<code') !== false);
@@ -293,7 +294,6 @@ $vkAppId = getSetting('vk_app_id');
 
 <?php
 // JSON-LD Article для поисковиков
-$articleAuthor = !empty($post['author_name']) ? h($post['author_name']) : h(getSetting('site_name'));
 $articleImage = $post['intro_image'] ? SITE_URL . '/uploads/posts/' . h($post['intro_image']) : SITE_URL . '/default-og.php';
 $articleDate = date('c', strtotime($post['created_at']));
 $articleModified = $post['updated_at'] ? date('c', strtotime($post['updated_at'])) : $articleDate;
