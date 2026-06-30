@@ -48,3 +48,10 @@ dgr_update/
 # Backup
 backup/
 4SLASEditor_AI/
+
+# Opencode local context
+.opencode/
+
+# Old versions (not on GitHub)
+0_9/
+0_95/

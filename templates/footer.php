@@ -35,13 +35,9 @@
 <!-- Lightbox (содержит jQuery) -->
 <script defer src="<?php echo SITE_URL; ?>/assets/lightbox/js/lightbox-plus-jquery.min.js"></script>
 
-<!-- Highlight.js (только если на странице есть код) -->
-<?php if (!empty($showHighlight)): ?>
+<!-- Highlight.js -->
 <script defer src="<?php echo SITE_URL; ?>/assets/highlight/highlight.min.js"></script>
 <script defer src="<?php echo SITE_URL; ?>/assets/highlight/js/highlightjs-line-numbers.min.js"></script>
-<?php endif; ?>
-
-<?php endif; ?><!--diagram-->
 
 <!-- Основные скрипты сайта -->
 <?php if (isset($includeInfiniteScroll) && $includeInfiniteScroll): ?>
@@ -66,21 +62,21 @@
     });
 </script>
 
-<!-- Инициализация Highlight.js (только если загружен) -->
-<?php if (!empty($showHighlight)): ?>
+<!-- Инициализация Highlight.js (после загрузки всех скриптов) -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof hljs !== 'undefined') {
-            var blocks = document.querySelectorAll('pre code');
-            blocks.forEach(function(block) { hljs.highlightElement(block); });
-            // Номера строк — вручную, без initLineNumbersOnLoad (ломает mermaid)
-            if (typeof hljs.lineNumbersBlock === 'function') {
-                blocks.forEach(function(block) { hljs.lineNumbersBlock(block); });
+            hljs.highlightAll();
+            if (typeof hljs.initLineNumbersOnLoad === 'function') {
+                hljs.initLineNumbersOnLoad();
+            } else if (typeof hljs.lineNumbersBlock === 'function') {
+                document.querySelectorAll('pre code').forEach(function(block) {
+                    hljs.lineNumbersBlock(block);
+                });
             }
         }
     });
 </script>
-<?php endif; ?>
 
 <?php
 // Счётчик просмотров страниц

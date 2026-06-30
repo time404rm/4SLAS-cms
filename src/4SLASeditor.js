@@ -147,6 +147,7 @@ class SimpleEditor {
             <button type="button" data-cmd="insertTable" title="Таблица">${icon('<rect x="3" y="3" width="14" height="14" rx="1"/><line x1="3" y1="8" x2="17" y2="8"/><line x1="3" y1="13" x2="17" y2="13"/><line x1="8" y1="3" x2="8" y2="17"/><line x1="13" y1="3" x2="13" y2="17"/>')}</button>
             <button type="button" data-cmd="insertEmoji" title="Смайлы">${icon('<circle cx="10" cy="10" r="7"/><circle cx="7" cy="8" r="1" fill="currentColor"/><circle cx="13" cy="8" r="1" fill="currentColor"/><path d="M7 12c1 1.5 5 1.5 6 0"/>')}</button>
             <button type="button" data-cmd="insertCode" title="Вставить код (Ctrl+⇧+C)">&lt;/&gt;</button>
+            <button type="button" data-cmd="insertMarkdown" title="Вставить Markdown (📥)">📥 MD</button>
             <span class="editor-tb-sep"></span>
             <button type="button" data-cmd="toggleSource" title="Режим HTML">${icon('<path d="M6 6L2 10l4 4"/><path d="M14 6l4 4-4 4"/><line x1="11" y1="4" x2="9" y2="16"/>')} HTML</button>
             <button type="button" data-cmd="undo" title="Отменить (Ctrl+Z)">${icon('<path d="M4 8h8a4 4 0 010 8H8"/><path d="M7 5L4 8l3 3"/>')}</button>
@@ -204,6 +205,7 @@ class SimpleEditor {
             case 'insertTable': this.insertTable(); break;
             case 'insertEmoji': this.insertEmoji(); break;
             case 'insertCode': this.insertCodeBlock(); break;
+            case 'insertMarkdown': this._showMarkdownModal(); break;
             case 'toggleSource': this.toggleSourceMode(); break;
             case 'undo': document.execCommand('undo', false, null); break;
             case 'redo': document.execCommand('redo', false, null); break;
@@ -1309,7 +1311,8 @@ class SimpleEditor {
             if (!code) return;
             this._restoreRange(savedRange);
             document.execCommand('delete', false, null);
-            const highlighted = this._highlightCode(code, lang);
+            // Не подсвечиваем - сохраняем чистый код для highlight.js на сайте
+            const escapedCode = this.escapeHtml(code);
             const eLang = this.escapeHtml(lang);
             document.execCommand('insertHTML', false,
                 `<div class="code-block" data-lang="${eLang}">` +
@@ -1319,12 +1322,216 @@ class SimpleEditor {
                 `<button class="code-block__copy" onclick="(function(b){var p=b.closest('.code-block').querySelector('code'),t=p.textContent;navigator.clipboard?navigator.clipboard.writeText(t).then(function(){b.textContent='\\u2705';setTimeout(function(){b.textContent='\\uD83D\\uDCCB'},1500)}):(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();b.textContent='\\u2705';setTimeout(function(){b.textContent='\\uD83D\\uDCCB'},1500)})()})(this)">\uD83D\uDCCB</button>` +
                 `<button class="code-block__expand" onclick="(function(b){var w=b.closest('.code-block');w.classList.toggle('code-block--full');document.body.style.overflow=w.classList.contains('code-block--full')?'hidden':''})(this)">\u2B76</button>` +
                 `</span></div>` +
-                `<pre><code class="language-${eLang}">${highlighted}</code></pre></div>`
+                `<pre><code class="language-${eLang}">${escapedCode}</code></pre></div>`
             );
             this.syncToHidden();
             this.editor.focus();
         });
         modal.querySelector(`#${modalId}-cancel`).addEventListener('click', () => { modal.remove(); this.editor.focus(); });
+    }
+
+    // ==================== MARKDOWN (📥) ====================
+
+    _showMarkdownModal() {
+        const savedRange = this._getSelectedRange();
+        const modalId = this._nextId('md');
+        const modal = document.createElement('div');
+        modal.className = 'editor-modal';
+        modal.style.minWidth = '500px';
+        modal.innerHTML = `
+            <h3>📥 Вставить Markdown</h3>
+            <p style="font-size:13px;color:#8a9bd5;margin-bottom:8px;">Вставьте Markdown-текст или загрузите .md файл.</p>
+            <div style="margin-bottom:8px;">
+                <label style="font-size:12px;color:#8a9bd5;">Или загрузите файл:</label>
+                <input type="file" id="${modalId}-file" accept=".md" style="font-size:12px;color:#e2e8f0;">
+            </div>
+            <textarea id="${modalId}-text" rows="12" placeholder="Вставьте Markdown здесь..." style="width:100%;padding:10px;border:1px solid #2a3650;background:#0f1422;color:#e2e8f0;border-radius:4px;font-size:14px;font-family:monospace;resize:vertical;box-sizing:border-box;"></textarea>
+            <div class="button-group" style="margin-top:10px;">
+                <button id="${modalId}-ok">📥 Вставить</button>
+                <button id="${modalId}-cancel" class="cancel">Отмена</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const textarea = modal.querySelector(`#${modalId}-text`);
+        const fileInput = modal.querySelector(`#${modalId}-file`);
+
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => { textarea.value = e.target.result; };
+            reader.readAsText(file);
+        });
+
+        modal.querySelector(`#${modalId}-ok`).addEventListener('click', () => {
+            const md = textarea.value.trim();
+            if (!md) return;
+            modal.remove();
+            this._restoreRange(savedRange);
+            document.execCommand('delete', false, null);
+            const html = this._mdToHtml(md);
+            document.execCommand('insertHTML', false, html);
+
+            // Извлекаем frontmatter для заполнения полей формы
+            const fmMatch = md.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+            if (fmMatch) {
+                const fm = {};
+                fmMatch[1].split('\n').forEach(line => {
+                    const m = line.match(/^(\w[\w_-]*)\s*:\s*(.*)$/);
+                    if (m) fm[m[1].toLowerCase()] = m[2].trim();
+                });
+
+                if (fm.title) {
+                    const titleInput = document.querySelector('input[name="title"]');
+                    if (titleInput) titleInput.value = fm.title.replace(/^"|"$/g, '');
+                }
+                if (fm.author) {
+                    const authorInput = document.querySelector('input[name="display_author"]');
+                    if (authorInput) authorInput.value = fm.author.replace(/^"|"$/g, '');
+                }
+                if (fm.date) {
+                    const dateInput = document.querySelector('input[name="created_at"]');
+                    if (dateInput) dateInput.value = fm.date.replace(/^"|"$/g, '');
+                }
+                if (fm.description) {
+                    const descInput = document.querySelector('textarea[name="meta_description"], input[name="meta_description"]');
+                    if (descInput) descInput.value = fm.description.replace(/^"|"$/g, '');
+                }
+                if (fm.tags) {
+                    let tags = fm.tags;
+                    if (Array.isArray(tags)) tags = tags.join(', ');
+                    if (typeof tags === 'string') tags = tags.replace(/^\[|\]$/g, '').replace(/"/g, '');
+                    const kwInput = document.querySelector('input[name="meta_keywords"]');
+                    if (kwInput) kwInput.value = tags;
+                }
+                if (fm.slug) {
+                    const slugInput = document.querySelector('input[name="slug"]');
+                    if (slugInput) slugInput.value = fm.slug.replace(/^"|"$/g, '');
+                }
+            }
+
+            this.syncToHidden();
+            this.editor.focus();
+        });
+
+        modal.querySelector(`#${modalId}-cancel`).addEventListener('click', () => { modal.remove(); this.editor.focus(); });
+        textarea.focus();
+    }
+
+    _mdToHtml(text) {
+        let html = text;
+
+        // Удаляем frontmatter
+        html = html.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '');
+
+        // Экранируем & и < для обычного текста (не для code blocks)
+        // Сначала обрабатываем code blocks чтобы их не трогать
+        const codeBlocks = [];
+        html = html.replace(/```(\w*)\s*\n([\s\S]*?)```/g, (m, lang, code) => {
+            const idx = codeBlocks.length;
+            const cls = lang ? ' class="language-' + lang.replace(/[^a-zA-Z0-9]/g, '') + '"' : '';
+            codeBlocks.push('<pre><code' + cls + '>' + this.escapeHtml(code.trim()) + '</code></pre>');
+            return '___CODE_BLOCK_' + idx + '___';
+        });
+
+        // Экранируем & и <
+        html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+        // Возвращаем code blocks
+        codeBlocks.forEach((block, idx) => {
+            html = html.replace('___CODE_BLOCK_' + idx + '___', block);
+        });
+
+        // Inline code `code`
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        // Headers H1-H6
+        html = html.replace(/^######\s+(.+)$/gm, '<h6>$1</h6>');
+        html = html.replace(/^#####\s+(.+)$/gm, '<h5>$1</h5>');
+        html = html.replace(/^####\s+(.+)$/gm, '<h4>$1</h4>');
+        html = html.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+        html = html.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
+
+        // Setext-style H1/H2
+        html = html.replace(/^(.+)\n=+\s*$/gm, '<h1>$1</h1>');
+        html = html.replace(/^(.+)\n-+\s*$/gm, '<h2>$1</h2>');
+
+        // Horizontal rules
+        html = html.replace(/^(?:[-*_]){3,}\s*$/gm, '<hr>');
+
+        // Tables: | Header1 | Header2 |
+        html = html.replace(/^\|(.+)\|\s*\n\|([-:\|\s]+)\|\s*\n((?:\|.+\|\s*(?:\n|$))*)/gm, function(match, header, sep, body) {
+            let out = '<table><thead><tr>';
+            header.split('|').forEach(c => { const t = c.trim(); if (t) out += '<th>' + t + '</th>'; });
+            out += '</tr></thead><tbody>';
+            body.split('\n').forEach(row => {
+                row = row.trim();
+                if (!row || !row.startsWith('|')) return;
+                out += '<tr>';
+                row.split('|').forEach(c => { const t = c.trim(); if (t) out += '<td>' + t + '</td>'; });
+                out += '</tr>';
+            });
+            return out + '</tbody></table>';
+        });
+
+        // Blockquotes
+        html = html.replace(/^>\s?(.*)$/gm, '<blockquote>$1</blockquote>');
+
+        // Unordered lists
+        html = html.replace(/(?:^[-*+]\s.+$(?:\n[-*+]\s.+)*)/gm, match => {
+            const items = match.split('\n').filter(l => l.trim()).map(l => '<li>' + l.replace(/^[-*+]\s/, '') + '</li>').join('\n');
+            return '\n<ul>\n' + items + '\n</ul>\n';
+        });
+
+        // Ordered lists
+        html = html.replace(/(?:^\d+\.\s.+$(?:\n\d+\.\s.+)*)/gm, match => {
+            const items = match.split('\n').filter(l => l.trim()).map(l => '<li>' + l.replace(/^\d+\.\s/, '') + '</li>').join('\n');
+            return '\n<ol>\n' + items + '\n</ol>\n';
+        });
+
+        // Images ![alt](url)
+        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%">');
+
+        // Links [text](url)
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+        // Bold **text** or __text__
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+        // Italic *text* or _text_
+        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+
+        // Strikethrough ~~text~~
+        html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
+
+        // Wrap paragraphs
+        const blocks = 'h[1-6]|ul|ol|li|blockquote|pre|hr|table';
+        const lines = html.split('\n');
+        let result = '';
+        let inP = false;
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            const trimmed = line.trim();
+            if (!trimmed) { if (inP) { result = result.replace(/<br>\s*$/, '') + '</p>\n'; inP = false; } continue; }
+            if (trimmed.match(new RegExp('^<(' + blocks + ')'))) {
+                if (inP) { result = result.replace(/<br>\s*$/, '') + '</p>\n'; inP = false; }
+                result += line + '\n';
+            } else {
+                if (!inP) { result += '<p>'; inP = true; }
+                result += line;
+                const nextLine = i < lines.length - 1 ? lines[i+1].trim() : '';
+                if (nextLine && !nextLine.match(new RegExp('^<(' + blocks + ')'))) result += '<br>\n';
+                else result += '\n';
+            }
+        }
+        if (inP) result = result.replace(/<br>\s*$/, '') + '</p>\n';
+        html = result;
+
+        return html;
     }
 
     // ==================== ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ====================

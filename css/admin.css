@@ -596,51 +596,57 @@ body.admin {
 .code-block {
     position: relative;
     margin: 1em 0;
-    border-radius: 0;
+    border-radius: 6px;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,.1);
-    background: rgba(255,255,255,.02);
+    border: 1px solid #3a3a3a;
+    background: #2d2d2d;
 }
 .code-block__bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 12px;
-    background: rgba(255,255,255,.04);
-    border-bottom: 1px solid rgba(255,255,255,.08);
+    padding: 8px 14px;
+    background: #3d3d3d;
+    border-bottom: 1px solid #4a4a4a;
     font-family: inherit;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 12px;
 }
 .code-block__lang {
-    color: #999;
-    font-weight: normal;
+    color: #888;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 .code-block__btns { display: flex; gap: 6px; }
 .code-block__btns button {
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.1);
-    color: #e0e0e0;
-    padding: 3px 10px;
-    border-radius: 0;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: #ccc;
+    padding: 4px 12px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 11px;
-    line-height: 1.5;
+    font-size: 12px;
+    line-height: 1.4;
     font-family: inherit;
+    transition: background 0.2s;
 }
-.code-block__btns button:hover { background: rgba(255,255,255,.12); }
+.code-block__btns button:hover { background: rgba(255,255,255,.15); }
 .code-block pre {
     margin: 0;
     padding: 16px;
     overflow-x: auto;
-    background: rgba(255,255,255,.02);
-    color: #e0e0e0;
-    font-family: 'Courier New', 'Consolas', monospace;
-    font-size: 13px;
-    line-height: 1.6;
+    background: #2d2d2d;
+    color: #f8f8f2;
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.5;
 }
-.code-block code { background: none; padding: 0; color: inherit; }
+.code-block code { 
+    background: none; 
+    padding: 0; 
+    color: inherit;
+    font-family: inherit;
+}
 .code-block--full {
     position: fixed !important;
     top: 0; left: 0; right: 0; bottom: 0;
