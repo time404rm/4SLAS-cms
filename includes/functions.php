@@ -921,8 +921,12 @@ function renderMaintenancePage() {
 function renderYoomoneyButton() {
     $bill = getSetting('yoomoney_bill_number');
     if (!$bill) return '';
+    $siteUrl = getSetting('site_url') ?: SITE_URL;
     return '<div class="donut-button">' . __('donut_text') . '<br>' .
-        '<a href="https://yoomoney.ru/quickpay/fundraise?billNumber=' . urlencode($bill) . '" target="_blank" rel="noopener" class="yoomoney-btn">💛 Поддержать</a></div>';
+        '<form method="POST" action="https://yoomoney.ru/quickpay/confirm" target="_blank">' .
+        '<input type="hidden" name="billNumber" value="' . htmlspecialchars($bill) . '">' .
+        '<input type="hidden" name="successURL" value="' . htmlspecialchars($siteUrl) . '">' .
+        '<button type="submit" class="yoomoney-btn">💛 Поддержать</button></form></div>';
 }
 
 // ========== СОЦИАЛЬНЫЕ СЕТИ ==========
