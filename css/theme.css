@@ -549,17 +549,6 @@
     background: rgba(255,255,255,0.1);
 }
 
-/* === YooMoney (donut) iframe === */
-[data-theme="dark"] .donut-button + iframe[src*="yoomoney"] {
-    background: #1a2332;
-    border-radius: 8px;
-    padding: 12px;
-    box-sizing: content-box;
-    width: 306px; /* 330 - 12px*2 */
-    display: block;
-    margin: 0 auto;
-}
-
 /* === Go-to-top button === */
 [data-theme="dark"] #go-to-top {
     background: #60a5fa;
