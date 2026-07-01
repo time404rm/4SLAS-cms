@@ -551,7 +551,7 @@
 
 /* === YooMoney section — белый iframe, но в карточке тёмной темы === */
 [data-theme="dark"] .yoomoney-section {
-    background: #1a2332;
+    background: #ffffff;
     border: 1px solid #2a3650;
     border-radius: 12px;
     padding: 16px;
