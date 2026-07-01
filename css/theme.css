@@ -28,6 +28,9 @@
 }
 [data-theme="dark"] .post {
     background: #1a2332;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 16px;
 }
 [data-theme="dark"] .post-meta {
     color: #94a3b8;
