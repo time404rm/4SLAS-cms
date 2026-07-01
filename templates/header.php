@@ -221,7 +221,8 @@ $sameAsJson = json_encode(array_values($sameAs));
                     ym(<?php echo (int)$ymCounterId; ?>, "init", {
                     clickmap:true,
                     trackLinks:true,
-                    accurateTrackBounce:true
+                    accurateTrackBounce:true,
+                    webvisor:false
                     });
                 </script>
                 <noscript><div><img src="https://mc.yandex.ru/watch/<?php echo (int)$ymCounterId; ?>" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
