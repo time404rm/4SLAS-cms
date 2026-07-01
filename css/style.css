@@ -103,7 +103,7 @@ header { position: relative; background: none; display: block; text-align: cente
     font-size: 1rem;
 }
 .donut-button {
-    margin: 20px 0 10px 0;
+    margin: 5px 10px 10px 0;
 }
 .comment { background: #f1f1f1; margin: 10px 0; padding: 10px; border-radius: 5px; }
 .textcomment {

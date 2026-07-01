@@ -555,8 +555,8 @@
     color: #000000;
     border: 1px solid #2a3650;
     border-radius: 12px;
-    padding: 16px;
-    display: inline-block;
+    padding: 20px 15px 0px;
+    display: flex;
 }
 
 /* === Go-to-top button === */
