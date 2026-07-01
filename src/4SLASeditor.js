@@ -1371,7 +1371,7 @@ class SimpleEditor {
             this._restoreRange(savedRange);
             document.execCommand('delete', false, null);
             const html = this._mdToHtml(md);
-            document.execCommand('insertHTML', false, html);
+            this._insertHtml(html);
 
             // Извлекаем frontmatter для заполнения полей формы
             const fmMatch = md.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
@@ -1532,6 +1532,30 @@ class SimpleEditor {
         html = result;
 
         return html;
+    }
+
+    // Вставка HTML через Range API + очистка лишних <br> от браузера
+    _insertHtml(html) {
+        const sel = window.getSelection();
+        if (sel.rangeCount > 0) {
+            const range = sel.getRangeAt(0);
+            const frag = range.createContextualFragment(html);
+            range.deleteContents();
+            range.insertNode(frag);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+        // Удаляем <br>, которые браузер вставил перед блочными элементами
+        // (setTimeout чтобы браузер успел их добавить)
+        setTimeout(() => {
+            this.editor.querySelectorAll('br').forEach(br => {
+                const next = br.nextElementSibling;
+                if (next && /^(TABLE|UL|OL|BLOCKQUOTE|PRE|H[1-6])$/.test(next.tagName)) {
+                    br.remove();
+                }
+            });
+        }, 0);
     }
 
     // ==================== ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ====================

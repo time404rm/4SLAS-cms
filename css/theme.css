@@ -549,31 +549,15 @@
     background: rgba(255,255,255,0.1);
 }
 
-
-
-/* === YooMoney (donut) iframe — тёмный overlay поверх белого iframe === */
-[data-theme="dark"] .yoomoney-section {
-    text-align: center;
-}
-[data-theme="dark"] .yoomoney-iframe-wrap {
-    position: relative;
-    display: inline-block;
+/* === YooMoney (donut) iframe === */
+[data-theme="dark"] .donut-button + iframe[src*="yoomoney"] {
+    background: #1a2332;
     border-radius: 8px;
-    overflow: hidden;
-}
-[data-theme="dark"] .yoomoney-iframe-wrap iframe {
+    padding: 12px;
+    box-sizing: content-box;
+    width: 306px; /* 330 - 12px*2 */
     display: block;
-    position: relative;
-    z-index: 1;
-}
-[data-theme="dark"] .yoomoney-iframe-wrap::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background: rgba(14, 19, 34, 0.88);
-    pointer-events: none;
-    border-radius: 8px;
+    margin: 0 auto;
 }
 
 /* === Go-to-top button === */
