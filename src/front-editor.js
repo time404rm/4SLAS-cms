@@ -140,13 +140,6 @@
             <div class="fe-ctx-item" data-cmd="cut">✂️ Вставить cut</div>
         `;
 
-        const style = document.createElement('style');
-        style.textContent = `
-            .fe-ctx-item { padding: 8px 16px; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; gap: 8px; }
-            .fe-ctx-item:hover { background: #2a3650; }
-            .fe-ctx-divider { height: 1px; background: #2a3650; margin: 4px 0; }
-        `;
-        document.head.appendChild(style);
         document.body.appendChild(menu);
 
         editor.addEventListener('contextmenu', (e) => {
@@ -245,7 +238,11 @@
         document.getElementById('fe-content')?.parentNode?.insertBefore(seoDiv, document.getElementById('fe-content')?.nextSibling);
     }
 
+    let saving = false;
+
     async function saveContent() {
+        if (saving) return;
+        saving = true;
         const btn = document.getElementById('fe-save');
         btn.disabled = true;
         setStatus('⏳ Сохранение...', '#ffc107');
@@ -263,7 +260,7 @@
             content = document.getElementById('fe-content')?.innerHTML || '';
         }
 
-        if (!title) { setStatus('⚠️ Заголовок не может быть пустым', '#ffc107'); btn.disabled = false; return; }
+        if (!title) { setStatus('⚠️ Заголовок не может быть пустым', '#ffc107'); saving = false; btn.disabled = false; return; }
 
         const metaTitle = document.getElementById('fe-meta-title')?.value || '';
         const metaDesc = document.getElementById('fe-meta-desc')?.value || '';
@@ -280,7 +277,9 @@
                     content: content,
                     meta_title: metaTitle,
                     meta_description: metaDesc,
-                    meta_keywords: metaKw
+                    meta_keywords: metaKw,
+                    display_author: window.frontEditorData?.displayAuthor || '',
+                    canonical_url: window.frontEditorData?.canonicalUrl || ''
                 })
             });
             const data = await resp.json();
@@ -288,13 +287,16 @@
             if (data.success) {
                 setStatus('✅ ' + (data.message || 'Сохранено'), '#4caf50');
                 localStorage.removeItem(STORAGE_KEY + '_' + pageId);
+                saving = false;
                 setTimeout(() => { window.location.href = data.url; }, 1500);
+                return;
             } else {
                 setStatus('❌ ' + (data.error || 'Ошибка'), '#e74c3c');
             }
         } catch(e) {
             setStatus('❌ Ошибка сети', '#e74c3c');
         }
+        saving = false;
         btn.disabled = false;
     }
 
