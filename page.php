@@ -23,7 +23,7 @@ if (!$page) {
 $pageTitle = $page['meta_title'] ?: $page['title'];
 $pageDescription = $page['meta_description'] ?: truncateText($page['content'], 160);
 $pageKeywords = $page['meta_keywords'] ?? '';
-$canonicalUrl = SITE_URL . '/page/' . $page['slug'];
+$canonicalUrl = !empty($page['canonical_url']) ? $page['canonical_url'] : (SITE_URL . '/page/' . $page['slug']);
 
 $isEditing = isAdmin() && isset($_GET['edit']);
 $feData = isAdmin() ? [

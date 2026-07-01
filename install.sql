@@ -155,6 +155,8 @@ CREATE TABLE IF NOT EXISTS pages (
     meta_title VARCHAR(255) DEFAULT NULL,
     meta_description TEXT DEFAULT NULL,
     meta_keywords VARCHAR(255) DEFAULT NULL,
+    display_author VARCHAR(255) DEFAULT NULL,
+    canonical_url VARCHAR(500) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_pages_status (status)
