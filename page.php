@@ -25,10 +25,35 @@ $pageDescription = $page['meta_description'] ?: truncateText($page['content'], 1
 $pageKeywords = $page['meta_keywords'] ?? '';
 $canonicalUrl = SITE_URL . '/page/' . $page['slug'];
 
+$isEditing = isAdmin() && isset($_GET['edit']);
+$feData = isAdmin() ? [
+    'pageId' => $page['id'],
+    'pageType' => 'page',
+    'metaTitle' => $page['meta_title'] ?? '',
+    'metaDesc' => $page['meta_description'] ?? '',
+    'metaKw' => $page['meta_keywords'] ?? '',
+    'displayAuthor' => $page['display_author'] ?? '',
+    'canonicalUrl' => $page['canonical_url'] ?? '',
+] : null;
+
 $showHighlight = (mb_strpos($page['content'], '<pre') !== false || mb_strpos($page['content'], '<code') !== false);
 
 include __DIR__ . '/templates/header.php';
 ?>
+
+<?php if ($feData): ?>
+<script>
+window.frontEditorData = <?php echo json_encode($feData); ?>;
+window.currentPageId = <?php echo (int)$page['id']; ?>;
+</script>
+<link rel="stylesheet" href="<?php echo SITE_URL; ?>/src/front-editor.css">
+<?php endif; ?>
+
+<?php if ($isEditing): ?>
+<div id="fe-content" style="display:none;"><?php echo $page['content']; ?></div>
+<h1 id="fe-title" style="display:none;"><?php echo h($page['title']); ?></h1>
+<?php else: ?>
+
 <article class="page">
     <h1><?php echo h($page['title']); ?></h1>
     <div class="page-content">
@@ -46,6 +71,7 @@ include __DIR__ . '/templates/header.php';
         ?>
     </div>
 </article>
+<?php endif; // end if $isEditing ?>
 
 <script type="application/ld+json">
 {
@@ -56,6 +82,10 @@ include __DIR__ . '/templates/header.php';
   "url": <?php echo json_encode($canonicalUrl); ?>
 }
 </script>
+
+<?php if ($feData): ?>
+<script src="<?php echo SITE_URL; ?>/src/front-editor.js"></script>
+<?php endif; ?>
 
 <?php
 include __DIR__ . '/templates/footer.php';

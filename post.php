@@ -29,6 +29,18 @@ $ogImage = (!empty($seo['og_image']) ? $seo['og_image'] : $post['intro_image']);
 $canonicalUrl = !empty($post['canonical_url']) ? $post['canonical_url'] : (SITE_URL . '/post/' . $post['slug']);
 $articleAuthor = $post['display_author'] ?: $post['author_name'] ?: getSetting('site_name');
 
+// Фронт-редактор для админов
+$isEditing = isAdmin() && isset($_GET['edit']);
+$feData = isAdmin() ? [
+    'pageId' => $post['id'],
+    'pageType' => 'post',
+    'metaTitle' => $post['meta_title'] ?? '',
+    'metaDesc' => $post['meta_description'] ?? '',
+    'metaKw' => $post['meta_keywords'] ?? '',
+    'displayAuthor' => $post['display_author'] ?? '',
+    'canonicalUrl' => $post['canonical_url'] ?? '',
+] : null;
+
 // Условная загрузка Highlight.js (только если в контенте есть код)
 $showHighlight = (mb_strpos($post['content'], '<pre') !== false || mb_strpos($post['content'], '<code') !== false);
 
@@ -37,6 +49,19 @@ $captchaQuestion = generateCaptcha();
 
 include __DIR__ . '/templates/header.php';
 ?>
+
+<?php if ($feData): ?>
+<script>
+window.frontEditorData = <?php echo json_encode($feData); ?>;
+window.currentPostId = <?php echo (int)$post['id']; ?>;
+</script>
+<link rel="stylesheet" href="<?php echo SITE_URL; ?>/src/front-editor.css">
+<?php endif; ?>
+
+<?php if ($isEditing): ?>
+<div id="fe-content" style="display:none;"><?php echo $post['content']; ?></div>
+<h1 id="fe-title" style="display:none;"><?php echo h($post['title']); ?></h1>
+<?php else: ?>
 
 <article>
     <div class="postlisttitle">
@@ -107,6 +132,7 @@ include __DIR__ . '/templates/header.php';
     endforeach; ?>
 </div>
 </article>
+<?php endif; // end if $isEditing ?>
 
 <?php $prevPost = getPrevPost($post['id'], $post['created_at']); $nextPost = getNextPost($post['id'], $post['created_at']); if ($prevPost || $nextPost): ?>
 <div class="post-nav">
@@ -334,6 +360,10 @@ $articleSection = !empty($articleCategories) ? implode(', ', $articleCategories)
   "keywords": <?php echo json_encode(implode(', ', array_column($post['hashtags'], 'name'))); ?><?php endif; ?>
 }
 </script>
+
+<?php if ($feData): ?>
+<script src="<?php echo SITE_URL; ?>/src/front-editor.js"></script>
+<?php endif; ?>
 
 <?php
 include __DIR__ . '/templates/footer.php';
