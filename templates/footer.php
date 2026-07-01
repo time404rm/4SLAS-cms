@@ -113,6 +113,57 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
     })();
 </script>
 <script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=search-suggest.js"></script>
+
+<!-- Theme Switcher JS -->
+<script>
+(function(){
+    var theme = localStorage.getItem('fe-theme');
+    if (!theme) theme = 'system';
+
+    function applyTheme(t) {
+        var isDark;
+        if (t === 'system') {
+            isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        } else {
+            isDark = (t === 'dark');
+        }
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+
+        // Переключить Highlight.js тему
+        var lightLink = document.getElementById('hljs-theme');
+        var darkLink = document.getElementById('hljs-theme-dark');
+        if (lightLink && darkLink) {
+            lightLink.disabled = isDark;
+            darkLink.disabled = !isDark;
+        }
+
+        // Обновить meta[name=theme-color]
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) {
+            meta.content = isDark ? '#0f1422' : document.body.dataset.themeColor || '#1a1a2e';
+        }
+    }
+
+    // Применить начальную тему
+    applyTheme(theme);
+
+    // Слушать изменения системной темы
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', function() {
+        var saved = localStorage.getItem('fe-theme') || 'system';
+        if (saved === 'system') applyTheme('system');
+    });
+
+    // Обработчики на кнопки
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.fe-theme-btn');
+        if (!btn) return;
+        var t = btn.getAttribute('data-theme');
+        localStorage.setItem('fe-theme', t);
+        applyTheme(t);
+    });
+})();
+</script>
 <?php if (function_exists('faqRenderJsonLd')) echo faqRenderJsonLd(); ?><?php if (function_exists('howtoRenderJsonLd')) echo howtoRenderJsonLd(); ?>
 
 <button id="go-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>

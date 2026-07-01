@@ -1,0 +1,553 @@
+/* ===== Theme Switcher ===== */
+/* Светлая тема (:root) — дефолтная, не требует переопределений */
+/* Тёмная тема — все переопределения ниже */
+
+/* === Основной фон и текст === */
+[data-theme="dark"] body {
+    background: #0f1422;
+    color: #e2e8f0;
+}
+
+/* === Шапка, навигация === */
+[data-theme="dark"] .top-nav {
+    background: rgba(15, 20, 34, 0.85);
+}
+[data-theme="dark"] .site-desc {
+    color: #64748b;
+}
+[data-theme="dark"] .menu-icon span {
+    background: #e2e8f0;
+}
+
+/* === Основной контент === */
+[data-theme="dark"] .main-content {
+    border-color: #2a3650;
+}
+[data-theme="dark"] .site-wrapper {
+    background-color: #0f1422;
+}
+[data-theme="dark"] .post {
+    background: #1a2332;
+}
+[data-theme="dark"] .post-meta {
+    color: #94a3b8;
+}
+[data-theme="dark"] .postlist-meta {
+    color: #94a3b8;
+}
+[data-theme="dark"] .post-author {
+    color: #64748b;
+}
+[data-theme="dark"] .post-title {
+    color: #e2e8f0;
+}
+[data-theme="dark"] .post-hashtag {
+    background: #2a3650;
+    color: #60a5fa;
+}
+[data-theme="dark"] .post-hashtag:hover {
+    background: #3b4e6e;
+}
+[data-theme="dark"] .hashtag-link {
+    color: #60a5fa;
+}
+[data-theme="dark"] .post-date {
+    color: #64748b;
+}
+
+/* === Ссылки === */
+[data-theme="dark"] a {
+    color: #60a5fa;
+}
+[data-theme="dark"] a:hover {
+    color: #93c5fd;
+}
+[data-theme="dark"] .postlist-title {
+    color: #93c5fd;
+}
+
+/* === Хлебные крошки === */
+[data-theme="dark"] .breadcrumbs {
+    color: #64748b;
+}
+[data-theme="dark"] .breadcrumbs a {
+    color: #60a5fa;
+}
+
+/* === Комментарии === */
+[data-theme="dark"] .comment {
+    background: #1a2332;
+}
+[data-theme="dark"] #reply-form input,
+[data-theme="dark"] #reply-form textarea,
+[data-theme="dark"] #comment-form input,
+[data-theme="dark"] #comment-form textarea {
+    background: #1a2332;
+    border-color: #2a3650;
+    color: #e2e8f0;
+}
+[data-theme="dark"] #reply-form input:focus,
+[data-theme="dark"] #reply-form textarea:focus,
+[data-theme="dark"] #comment-form input:focus,
+[data-theme="dark"] #comment-form textarea:focus {
+    border-color: #60a5fa;
+}
+[data-theme="dark"] .login-to-comment {
+    background: #1a2332;
+}
+[data-theme="dark"] .comment_button {
+    background: #60a5fa;
+    color: #0f1422;
+}
+[data-theme="dark"] .cancelled {
+    background: #475569;
+}
+[data-theme="dark"] .comments-guest {
+    background: #1a2332;
+}
+[data-theme="dark"] .comment-switch-btn {
+    background: #2a3650;
+    color: #94a3b8;
+}
+[data-theme="dark"] .comment-switch-btn.active {
+    background: #60a5fa;
+    color: #0f1422;
+}
+[data-theme="dark"] .comment-content a.mention {
+    background: #2a3650;
+}
+[data-theme="dark"] .btn-login {
+    background: #2a3650;
+    color: #e2e8f0;
+}
+
+/* === Поиск === */
+[data-theme="dark"] .search-form input[type="text"] {
+    background: #1a2332;
+    border-color: #2a3650;
+    color: #e2e8f0;
+}
+[data-theme="dark"] .search-form input[type="text"]::placeholder {
+    color: #475569;
+}
+[data-theme="dark"] .search-form button {
+    color: #64748b;
+}
+[data-theme="dark"] .search-form button:hover {
+    color: #60a5fa;
+}
+[data-theme="dark"] .search-form:focus-within input[type="text"] {
+    border-color: #60a5fa;
+}
+[data-theme="dark"] .search-suggestions {
+    background: #1a2332;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+[data-theme="dark"] .suggestion-item:hover {
+    background: #2a3650;
+}
+[data-theme="dark"] .search-results-count {
+    background: #2a3650;
+    color: #cbd5e1;
+}
+[data-theme="dark"] .no-results {
+    background: #1a2332;
+    color: #64748b;
+}
+[data-theme="dark"] .search-page h1 {
+    border-color: #2a3650;
+}
+
+/* === Теги и облако тегов === */
+[data-theme="dark"] .tag-cloud {
+    background: #1a2332;
+}
+[data-theme="dark"] .tag-link {
+    background: #2a3650;
+    color: #60a5fa;
+}
+[data-theme="dark"] .tag-link:hover {
+    background: #3b4e6e;
+}
+[data-theme="dark"] .tag-count {
+    color: #64748b;
+}
+[data-theme="dark"] .tag-item {
+    background: #2a3650;
+    color: #60a5fa;
+}
+[data-theme="dark"] .tag-item:hover {
+    background: #60a5fa;
+    color: #0f1422;
+}
+
+/* === Читать далее, like-btn === */
+[data-theme="dark"] .read-more {
+    background: #2a3650;
+    color: #94a3b8;
+}
+[data-theme="dark"] .like-btn {
+    border-color: #2a3650;
+    color: #94a3b8;
+}
+[data-theme="dark"] .like-btn-list {
+    color: #e2e8f0;
+}
+
+/* === Футер === */
+[data-theme="dark"] .footer-down {
+    background: #0a0e18;
+    color: #64748b;
+}
+
+/* === Кастомные блоки === */
+[data-theme="dark"] .custom-block-wrapper {
+    background: #1a2332;
+}
+
+/* === Плавающая панель (float-bar) === */
+[data-theme="dark"] .float-bar {
+    background: rgba(15, 20, 34, 0.85);
+}
+[data-theme="dark"] .float-bar-item {
+    color: #94a3b8;
+}
+[data-theme="dark"] .float-bar-item:hover {
+    background: rgba(255,255,255,0.08);
+    color: #e2e8f0;
+}
+[data-theme="dark"] .float-panel {
+    background: rgba(15, 20, 34, 0.95);
+    border: 1px solid #2a3650;
+}
+[data-theme="dark"] .float-panel-title {
+    color: #64748b;
+    border-color: #2a3650;
+}
+[data-theme="dark"] .float-nav a {
+    color: #cbd5e1;
+}
+[data-theme="dark"] .float-nav a:hover {
+    color: #60a5fa;
+}
+[data-theme="dark"] .float-categories a {
+    color: #cbd5e1;
+}
+[data-theme="dark"] .float-categories a:hover {
+    color: #60a5fa;
+}
+[data-theme="dark"] .float-tags .tag-link {
+    background: #2a3650;
+    color: #94a3b8;
+}
+[data-theme="dark"] .float-tags .tag-link:hover {
+    background: #60a5fa;
+    color: #0f1422;
+}
+[data-theme="dark"] .float-top-posts li {
+    border-color: #2a3650;
+}
+[data-theme="dark"] .float-top-posts a {
+    color: #cbd5e1;
+}
+[data-theme="dark"] .float-top-posts a:hover {
+    color: #60a5fa;
+}
+[data-theme="dark"] .float-top-posts .likes-badge {
+    color: #ef4444;
+}
+[data-theme="dark"] .float-login-form input {
+    background: #1a2332;
+    border-color: #2a3650;
+    color: #e2e8f0;
+}
+[data-theme="dark"] .float-login-form input:focus {
+    border-color: #60a5fa;
+}
+[data-theme="dark"] .float-login-form button {
+    background: #60a5fa;
+    color: #0f1422;
+}
+[data-theme="dark"] .float-login-form button:hover {
+    background: #3b82f6;
+}
+[data-theme="dark"] .float-user-greeting {
+    color: #e2e8f0;
+}
+[data-theme="dark"] .float-btn {
+    background: #60a5fa;
+    color: #0f1422;
+}
+[data-theme="dark"] .float-btn:hover {
+    background: #3b82f6;
+}
+[data-theme="dark"] .float-btn-outline {
+    background: transparent;
+    color: #94a3b8;
+    border-color: #2a3650;
+}
+[data-theme="dark"] .float-btn-outline:hover {
+    background: #2a3650;
+    color: #e2e8f0;
+    border-color: #475569;
+}
+[data-theme="dark"] .float-panel::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.15);
+}
+
+/* === Выдвижная панель (drawer) === */
+[data-theme="dark"] .drawer {
+    background: #0f1422;
+}
+[data-theme="dark"] .drawer-title {
+    color: #e2e8f0;
+}
+[data-theme="dark"] .drawer-section h3 {
+    color: #e2e8f0;
+}
+[data-theme="dark"] .drawer-sp {
+    color: #64748b;
+}
+[data-theme="dark"] .drawer-nav a,
+[data-theme="dark"] .drawer-categories a,
+[data-theme="dark"] .drawer-top-posts a {
+    color: #94a3b8;
+}
+[data-theme="dark"] .drawer-nav a:hover,
+[data-theme="dark"] .drawer-categories a:hover,
+[data-theme="dark"] .drawer-top-posts a:hover {
+    color: #60a5fa;
+}
+[data-theme="dark"] .likes-badge {
+    color: #64748b;
+}
+[data-theme="dark"] .drawer-tags .tag-link {
+    color: #60a5fa;
+}
+[data-theme="dark"] .drawer-close {
+    color: #94a3b8;
+}
+[data-theme="dark"] .left-custom-block {
+    color: #cbd5e1;
+}
+[data-theme="dark"] .drawer {
+    box-shadow: 5px 0px 6px -3px rgba(0,0,0,0.4);
+}
+
+/* === Похожие записи === */
+[data-theme="dark"] .related-post {
+    background: #1a2332;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .related-post h4 a {
+    color: #e2e8f0;
+}
+[data-theme="dark"] .related-post h4 a:hover {
+    color: #60a5fa;
+}
+[data-theme="dark"] .related-post .date {
+    color: #64748b;
+}
+[data-theme="dark"] .related-posts h3 {
+    border-color: #2a3650;
+}
+[data-theme="dark"] .related-post .video-placeholder,
+[data-theme="dark"] .related-post .no-image-placeholder {
+    background: #1a2332;
+}
+
+/* === Страница контактов === */
+[data-theme="dark"] .contact-card {
+    background: #1a2332;
+}
+[data-theme="dark"] .contact-position {
+    color: #60a5fa;
+}
+
+/* === Кнопка поделиться === */
+[data-theme="dark"] .share-dropdown {
+    background: rgba(15, 20, 34, 0.95);
+    border-color: #2a3650;
+}
+[data-theme="dark"] .share-dropdown-header {
+    background: #1a2332;
+    border-color: #2a3650;
+    color: #94a3b8;
+}
+[data-theme="dark"] .share-close {
+    color: #64748b;
+}
+[data-theme="dark"] .share-link {
+    color: #cbd5e1;
+    border-color: #2a3650;
+}
+[data-theme="dark"] .share-link:hover {
+    background: #2a3650;
+}
+[data-theme="dark"] .copy-link {
+    background: rgba(15, 20, 34, 0.95);
+}
+[data-theme="dark"] .share-link.telegram:hover { background: rgba(0, 136, 204, 0.2); color: #0088cc; }
+[data-theme="dark"] .share-link.vk:hover { background: rgba(0, 119, 255, 0.2); color: #4680c2; }
+[data-theme="dark"] .share-link.whatsapp:hover { background: rgba(37, 211, 102, 0.2); color: #25d366; }
+[data-theme="dark"] .share-link.twitter:hover { background: rgba(29, 161, 242, 0.2); color: #1da1f2; }
+[data-theme="dark"] .share-link.ok:hover { background: rgba(245, 130, 32, 0.2); color: #f58220; }
+[data-theme="dark"] .post-share .share-btn {
+    color: #94a3b8;
+}
+[data-theme="dark"] .post-share .share-btn:hover {
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.1);
+}
+
+/* === Auth / Регистрация === */
+[data-theme="dark"] .auth-container {
+    border-color: #2a3650;
+}
+[data-theme="dark"] .auth-container h1 {
+    background: linear-gradient(135deg, #e2e8f0, #60a5fa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+[data-theme="dark"] .auth-form label {
+    color: #94a3b8;
+}
+[data-theme="dark"] .auth-form input {
+    background: #1a2332;
+    border-color: #2a3650;
+    color: #e2e8f0;
+}
+[data-theme="dark"] .auth-form input:focus {
+    border-color: #60a5fa;
+}
+[data-theme="dark"] .auth-form button {
+    background: linear-gradient(90deg, #60a5fa, #3b82f6);
+    color: #0f1422;
+}
+[data-theme="dark"] .auth-container p {
+    color: #64748b;
+}
+[data-theme="dark"] .auth-container a {
+    color: #60a5fa;
+}
+[data-theme="dark"] .auth-container a:hover {
+    color: #93c5fd;
+}
+[data-theme="dark"] .error-message {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    color: #fca5a5;
+}
+[data-theme="dark"] .captcha div {
+    background: #1a2332;
+    border-color: #2a3650;
+    color: #e2e8f0;
+}
+[data-theme="dark"] .toggle-password {
+    color: #64748b;
+}
+[data-theme="dark"] .toggle-password:hover {
+    color: #60a5fa;
+}
+[data-theme="dark"] .auth-separator {
+    color: #64748b;
+}
+[data-theme="dark"] .auth-separator::before,
+[data-theme="dark"] .auth-separator::after {
+    background: #2a3650;
+}
+[data-theme="dark"] .captcha-image-wrap .captcha-img {
+    border-color: #2a3650;
+}
+[data-theme="dark"] .captcha-refresh {
+    color: #64748b;
+}
+[data-theme="dark"] .captcha-refresh:hover {
+    color: #e2e8f0;
+}
+
+/* === Блоки кода === */
+[data-theme="dark"] .code-block {
+    border-color: #2a3650;
+    background: #0d1117;
+}
+[data-theme="dark"] .code-block__bar {
+    background: #161b22;
+    border-color: #2a3650;
+}
+[data-theme="dark"] .code-block__lang {
+    color: #64748b;
+}
+[data-theme="dark"] .code-block__btns button {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.1);
+    color: #94a3b8;
+}
+[data-theme="dark"] .code-block__btns button:hover {
+    background: rgba(255,255,255,0.12);
+}
+[data-theme="dark"] .code-block pre {
+    background: #0d1117;
+}
+[data-theme="dark"] .hljs-ln-numbers {
+    border-color: #2a3650;
+}
+
+/* === Maintenance === */
+[data-theme="dark"] .maintenance-container {
+    background: rgba(15, 20, 34, 0.95);
+}
+[data-theme="dark"] .maintenance-container p {
+    color: #94a3b8;
+}
+
+/* === Cookie === */
+[data-theme="dark"] .cookie-banner {
+    background: #1a2332;
+    color: #e2e8f0;
+}
+[data-theme="dark"] .cookie-accept-btn {
+    background: #60a5fa;
+    color: #0f1422;
+}
+
+/* === Эмодзи-пикер === */
+[data-theme="dark"] .emoji-btn {
+    background: #2a3650;
+}
+[data-theme="dark"] .emoji-btn:hover {
+    background: #3b4e6e;
+}
+[data-theme="dark"] .emoji-picker {
+    background: #1a2332;
+}
+[data-theme="dark"] .emoji-picker span:hover {
+    background: #3b4e6e;
+}
+
+/* === Скроллбар === */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #0f1422;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: #2a3650;
+    border-radius: 4px;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: #3b4e6e;
+}
+
+/* === Theme toggle buttons hover === */
+.fe-theme-btn:hover {
+    background: rgba(0,0,0,0.06);
+}
+[data-theme="dark"] .fe-theme-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* === Go-to-top button === */
+[data-theme="dark"] #go-to-top {
+    background: #60a5fa;
+    color: #0f1422;
+}

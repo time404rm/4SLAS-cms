@@ -117,6 +117,20 @@ $topPosts = getTopPostsByLikes(5);
     <meta name="google-site-verification" content="<?php echo h($googleVerification); ?>">
     <?php endif; ?>
 
+    <!-- FOUC Prevention — theme must be set before paint -->
+    <script>
+    (function(){
+        var theme = localStorage.getItem('fe-theme') || 'system';
+        if (theme === 'system') {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+
+    <!-- Theme CSS (переменные и тёмные переопределения) -->
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/css/theme.css">
+
     <!-- CSS (минифицированный или обычный) -->
     <?php if (function_exists('isCssMinifyEnabled') && isCssMinifyEnabled()): ?>
     <style><?php echo getMinifiedCss(__DIR__ . '/../css/style.css'); ?></style>
@@ -124,8 +138,9 @@ $topPosts = getTopPostsByLikes(5);
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/css/style.css">
     <?php endif; ?>
 
-    <!-- Highlight.js (локально) -->
-    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/highlight/styles/vs.min.css">
+    <!-- Highlight.js (локально) — светлая тема по умолчанию, переключается через JS -->
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/highlight/styles/vs.min.css" id="hljs-theme">
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/highlight/styles/atom-one-dark.min.css" id="hljs-theme-dark" disabled>
     <!-- Lightbox -->
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/lightbox/css/lightbox.min.css">
     <!-- DNS prefetch for external services -->
@@ -289,6 +304,20 @@ $sameAsJson = json_encode(array_values($sameAs));
         </div>
 
         <div class="float-bar-bottom">
+            <!-- Переключатель темы (десктоп) -->
+            <div class="float-bar-item" title="Тема оформления">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                    <path d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M12,20 L12,4 C16.418278,4 20,7.581722 20,12 C20,16.418278 16.418278,20 12,20 Z"></path>
+                </svg>
+                <div class="float-panel" style="width:160px;">
+                    <div class="float-panel-title">Тема</div>
+                    <div class="fe-theme-options" style="display:flex;flex-direction:column;gap:4px;">
+                        <button class="fe-theme-btn" data-theme="light" style="display:flex;align-items:center;gap:8px;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;background:transparent;color:inherit;font-size:13px;text-align:left;width:100%;transition:background .2s;font-family:inherit;">☀️ Светлая</button>
+                        <button class="fe-theme-btn" data-theme="dark" style="display:flex;align-items:center;gap:8px;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;background:transparent;color:inherit;font-size:13px;text-align:left;width:100%;transition:background .2s;font-family:inherit;">🌙 Тёмная</button>
+                        <button class="fe-theme-btn" data-theme="system" style="display:flex;align-items:center;gap:8px;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;background:transparent;color:inherit;font-size:13px;text-align:left;width:100%;transition:background .2s;font-family:inherit;">💻 Системная</button>
+                    </div>
+                </div>
+            </div>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="float-bar-item" title="Настройки">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -406,6 +435,18 @@ echo h(mb_strlen($name, 'UTF-8') > 9 ? mb_substr($name, 0, 9, 'UTF-8') . '…' :
                         </li>
                     <?php endforeach; ?>
                 </ul>
+                <!-- Переключатель темы (мобильные) -->
+                <div class="drawer-section" style="border-top:1px solid #2a3650;padding-top:15px;">
+                    <div class="drw-title">
+                        <span class="drawer-sp" style="font-size:1.2rem;">🎨</span>
+                        <span><h3 class="drawer-title">Тема</h3></span>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="fe-theme-btn" data-theme="light" style="flex:1;padding:8px 12px;border:1px solid #2a3650;border-radius:8px;cursor:pointer;background:transparent;color:inherit;font-size:13px;font-family:inherit;transition:background .2s;">☀️ Светлая</button>
+                        <button class="fe-theme-btn" data-theme="dark" style="flex:1;padding:8px 12px;border:1px solid #2a3650;border-radius:8px;cursor:pointer;background:transparent;color:inherit;font-size:13px;font-family:inherit;transition:background .2s;">🌙 Тёмная</button>
+                        <button class="fe-theme-btn" data-theme="system" style="flex:1;padding:8px 12px;border:1px solid #2a3650;border-radius:8px;cursor:pointer;background:transparent;color:inherit;font-size:13px;font-family:inherit;transition:background .2s;">💻 Системная</button>
+                    </div>
+                </div>
                 <?php
                 $blockStmt = getDb()->prepare("SELECT content FROM custom_blocks WHERE position = ? AND is_active = 1 ORDER BY id ASC LIMIT 1");
                 $blockStmt->execute(['leftmenu']);
