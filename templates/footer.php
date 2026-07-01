@@ -114,5 +114,27 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
 </script>
 <script defer src="<?php echo SITE_URL; ?>/js_loader.php?file=search-suggest.js"></script>
 <?php if (function_exists('faqRenderJsonLd')) echo faqRenderJsonLd(); ?><?php if (function_exists('howtoRenderJsonLd')) echo howtoRenderJsonLd(); ?>
+
+<button id="go-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+<style>
+#go-to-top {
+    position: fixed; bottom: 30px; right: 30px;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--accent,#2563eb); color: #fff;
+    border: none; font-size: 22px; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s;
+    z-index: 999;
+}
+#go-to-top.show { opacity: 1; visibility: visible; }
+</style>
+<script>
+(function(){
+    var btn = document.getElementById('go-to-top');
+    window.addEventListener('scroll', function(){
+        btn.classList.toggle('show', window.scrollY > 400);
+    });
+})();
+</script>
 </body>
 </html>
