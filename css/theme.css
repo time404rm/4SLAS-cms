@@ -549,6 +549,38 @@
     background: rgba(255,255,255,0.1);
 }
 
+/* === YooMoney donate button (замена iframe) === */
+.yoomoney-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #FFCC00, #FF9900);
+    color: #1a1a2e;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-family: inherit;
+    line-height: 1.4;
+}
+.yoomoney-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    color: #1a1a2e;
+    text-decoration: none;
+}
+[data-theme="dark"] .yoomoney-btn {
+    background: linear-gradient(135deg, #FFCC00, #FF9900);
+    color: #0f1422;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .yoomoney-btn:hover {
+    color: #0f1422;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+}
+
 /* === Go-to-top button === */
 [data-theme="dark"] #go-to-top {
     background: #60a5fa;

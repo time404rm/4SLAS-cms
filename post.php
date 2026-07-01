@@ -183,9 +183,9 @@ window.currentPostId = <?php echo (int)$post['id']; ?>;
         <?php $yoomoneyBill = getSetting('yoomoney_bill_number'); ?>
         <?php if ($yoomoneyBill): ?>
         <div class="donut-button">
-        <?php echo __('donut_text'); ?>
+            <?php echo __('donut_text'); ?><br>
+            <a href="https://yoomoney.ru/quickpay/fundraise?billNumber=<?php echo urlencode($yoomoneyBill); ?>" target="_blank" rel="noopener" class="yoomoney-btn">💛 Поддержать</a>
         </div>
-        <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=<?php echo urlencode($yoomoneyBill); ?>&" width="330" height="55" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
         <?php endif; ?>
 
 <?php
