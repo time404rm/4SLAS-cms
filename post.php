@@ -182,10 +182,14 @@ window.currentPostId = <?php echo (int)$post['id']; ?>;
         </div>
         <?php $yoomoneyBill = getSetting('yoomoney_bill_number'); ?>
         <?php if ($yoomoneyBill): ?>
-        <div class="donut-button">
-        <?php echo __('donut_text'); ?>
+        <div class="yoomoney-section">
+            <div class="donut-button">
+            <?php echo __('donut_text'); ?>
+            </div>
+            <div class="yoomoney-iframe-wrap">
+                <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=<?php echo urlencode($yoomoneyBill); ?>&" width="330" height="55" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+            </div>
         </div>
-        <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=<?php echo urlencode($yoomoneyBill); ?>&" width="330" height="55" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
         <?php endif; ?>
 
 <?php

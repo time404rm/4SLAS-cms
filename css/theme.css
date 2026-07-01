@@ -551,9 +551,28 @@
 
 
 
-/* === YooMoney (donut) iframe — инвертируем через filter, т.к. внутри свой белый фон === */
-[data-theme="dark"] .donut-button + iframe[src*="yoomoney"] {
-    filter: invert(0.9) hue-rotate(180deg);
+/* === YooMoney (donut) iframe — тёмный overlay поверх белого iframe === */
+[data-theme="dark"] .yoomoney-section {
+    text-align: center;
+}
+[data-theme="dark"] .yoomoney-iframe-wrap {
+    position: relative;
+    display: inline-block;
+    border-radius: 8px;
+    overflow: hidden;
+}
+[data-theme="dark"] .yoomoney-iframe-wrap iframe {
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+[data-theme="dark"] .yoomoney-iframe-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: rgba(14, 19, 34, 0.88);
+    pointer-events: none;
     border-radius: 8px;
 }
 
