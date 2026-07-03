@@ -564,3 +564,8 @@
     background: #60a5fa;
     color: #0f1422;
 }
+
+/* === SVG иконки (админка, логин, RSS и т.д.) — на тёмной теме чёрные, инвертируем === */
+[data-theme="dark"] .icons_st {
+    filter: invert(1);
+}
