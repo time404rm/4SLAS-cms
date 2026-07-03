@@ -163,10 +163,13 @@ define('DB_USER', getenv('DB_USER') ?: '{$escUser}');
 define('DB_PASS', getenv('DB_PASS') ?: '{$escPass}');
 
 \$protocol = isset(\$_SERVER['HTTPS']) && \$_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://';
-\$allowedHosts = explode(',', getenv('ALLOWED_HOSTS') ?: 'localhost,127.0.0.1');
 \$host = \$_SERVER['HTTP_HOST'];
-if (!in_array(explode(':', \$host)[0], \$allowedHosts)) {
-    \$host = \$allowedHosts[0];
+\$allowedHostsEnv = getenv('ALLOWED_HOSTS');
+if (\$allowedHostsEnv !== false && \$allowedHostsEnv !== '') {
+    \$allowedHosts = explode(',', \$allowedHostsEnv);
+    if (!in_array(explode(':', \$host)[0], \$allowedHosts)) {
+        \$host = \$allowedHosts[0];
+    }
 }
 define('SITE_URL', \$protocol . \$host);
 

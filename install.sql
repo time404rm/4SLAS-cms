@@ -264,6 +264,16 @@ CREATE TABLE IF NOT EXISTS redirects (
     INDEX idx_redirect_post (post_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Таблица лога 404
+CREATE TABLE IF NOT EXISTS log_404 (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    url VARCHAR(500) NOT NULL,
+    referer VARCHAR(500) DEFAULT NULL,
+    ip VARCHAR(45) DEFAULT NULL,
+    user_agent VARCHAR(500) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- =====================================================
 -- НАЧАЛЬНЫЕ ДАННЫЕ
 -- =====================================================
