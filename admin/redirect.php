@@ -23,22 +23,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_redirect'])) {
         $error = 'Заполните оба поля';
     } else {
         if ($id) {
-            $stmt = $db->prepare("UPDATE redirects SET old_url=?, new_url=?, type=? WHERE id=?");
+            $stmt = $db->prepare("UPDATE redirects SET old_url=?, new_url=?, http_code=? WHERE id=?");
             $stmt->execute([$old_url, $new_url, $type, $id]);
             $message = 'Редирект обновлён';
         } else {
             // Проверяем, есть ли уже редирект для этого URL
-            $check = $db->prepare("SELECT id, new_url, type FROM redirects WHERE old_url = ?");
+            $check = $db->prepare("SELECT id, new_url, http_code FROM redirects WHERE old_url = ?");
             $check->execute([$old_url]);
             $existing = $check->fetch();
 
             if ($existing) {
                 // Если есть — обновляем существующий
-                $stmt = $db->prepare("UPDATE redirects SET new_url=?, type=? WHERE id=?");
+                $stmt = $db->prepare("UPDATE redirects SET new_url=?, http_code=? WHERE id=?");
                 $stmt->execute([$new_url, $type, $existing['id']]);
                 $message = 'Редирект обновлён (существующий)';
             } else {
-                $stmt = $db->prepare("INSERT INTO redirects (old_url, new_url, type) VALUES (?, ?, ?)");
+                $stmt = $db->prepare("INSERT INTO redirects (old_url, new_url, http_code) VALUES (?, ?, ?)");
                 $stmt->execute([$old_url, $new_url, $type]);
                 $message = 'Редирект добавлен';
             }
@@ -160,9 +160,9 @@ $posts = $db->query("SELECT id, title, slug FROM posts WHERE status = 'published
                 <tr>
                     <td><?php echo htmlspecialchars($r['old_url']); ?></td>
                     <td><?php echo htmlspecialchars($r['new_url']); ?></td>
-                    <td><?php echo $r['type']; ?></td>
+                    <td><?php echo $r['http_code']; ?></td>
                     <td class="actions">
-                        <button onclick="editRedirect(<?php echo $r['id']; ?>, '<?php echo addslashes($r['old_url']); ?>', '<?php echo addslashes($r['new_url']); ?>', '<?php echo $r['type']; ?>')">✏️ Редактировать</button>
+                        <button onclick="editRedirect(<?php echo $r['id']; ?>, '<?php echo addslashes($r['old_url']); ?>', '<?php echo addslashes($r['new_url']); ?>', '<?php echo $r['http_code']; ?>')">✏️ Редактировать</button>
                         <a href="?delete=<?php echo $r['id']; ?>&csrf_token=<?php echo $csrf_token; ?>" onclick="return confirm('Удалить редирект?')" class="btn-small">🗑️ Удалить</a>
                     </td>
                 </tr>
