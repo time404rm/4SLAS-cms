@@ -95,24 +95,34 @@
             hiddenTA.style.display = 'none';
             editorDiv.parentNode.appendChild(hiddenTA);
 
-            window._simpleEditor = new SimpleEditor('fe-editor', 'fe-hidden');
+            try {
+                window._simpleEditor = new SimpleEditor('fe-editor', 'fe-hidden');
+                const origRestore = window._simpleEditor._restoreRange;
+                window._simpleEditor._restoreRange = function(range) {
+                    origRestore.call(this, range);
+                    this.editor.focus();
+                };
+            } catch (err) {
+                console.error('SimpleEditor init failed:', err);
+                setStatus('❌ Ошибка загрузки редактора', '#e74c3c');
+            }
             setStatus('✅ Редактор загружен', '#4caf50');
 
             restoreDraft();
-            initContextMenu(editorDiv);
         };
         document.head.appendChild(script);
 
         addSeoBlock();
     }
 
-    function initContextMenu(editor) {
+    function initContextMenu() {
         const menu = document.createElement('div');
         menu.id = 'fe-ctx-menu';
         menu.style.cssText = `
             position: fixed; z-index: 10001; display: none;
             background: #1e2a3e; border: 1px solid #2a3650;
             border-radius: 8px; padding: 6px 0; min-width: 210px;
+            max-height: min(60vh, 480px); overflow-y: auto;
             box-shadow: 0 8px 24px rgba(0,0,0,0.5);
             font-size: 13px; color: #e2e8f0;
         `;
@@ -139,16 +149,31 @@
             <div class="fe-ctx-divider"></div>
             <div class="fe-ctx-item" data-cmd="cut">✂️ Вставить cut</div>
         `;
-
         document.body.appendChild(menu);
 
-        editor.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            const x = Math.min(e.clientX, window.innerWidth - 220);
-            const y = Math.min(e.clientY, window.innerHeight - 400);
-            menu.style.left = x + 'px';
-            menu.style.top = y + 'px';
-            menu.style.display = 'block';
+        let savedRange = null;
+
+        document.addEventListener('contextmenu', (e) => {
+            const editor = document.getElementById('fe-editor');
+            if (editor && editor.contains(e.target)) {
+                e.preventDefault();
+
+                const sel = window.getSelection();
+                savedRange = sel.rangeCount ? sel.getRangeAt(0) : null;
+
+                menu.style.display = 'block';
+                const mw = menu.offsetWidth;
+                const mh = menu.offsetHeight;
+
+                let x = e.clientX;
+                if (x + mw > window.innerWidth) x = Math.max(0, window.innerWidth - mw - 10);
+
+                let y = e.clientY;
+                if (y + mh > window.innerHeight) y = Math.max(0, window.innerHeight - mh - 10);
+
+                menu.style.left = x + 'px';
+                menu.style.top = y + 'px';
+            }
         });
 
         document.addEventListener('click', (e) => {
@@ -164,6 +189,17 @@
             const cmd = item.dataset.cmd;
             const val = item.dataset.val;
             menu.style.display = 'none';
+
+            const editor = document.getElementById('fe-editor');
+            if (!editor) return;
+            editor.focus();
+
+            if (savedRange) {
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(savedRange);
+                savedRange = null;
+            }
 
             if (cmd === 'link') {
                 if (window._simpleEditor) window._simpleEditor.insertLink();
@@ -187,7 +223,6 @@
             } else {
                 document.execCommand(cmd, false, val || null);
             }
-            editor.focus();
         });
     }
 
@@ -369,10 +404,12 @@
             document.addEventListener('DOMContentLoaded', () => {
                 createToolbar();
                 enterEditMode();
+                initContextMenu();
             });
         } else {
             createToolbar();
             enterEditMode();
+            initContextMenu();
         }
     } else {
         if (document.readyState === 'loading') {

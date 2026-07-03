@@ -268,9 +268,9 @@ $pageTitle = 'Управление кешем';
         <div class="form-group">
             <label>
                 <input type="checkbox" name="css_minify_enabled" value="1" <?php echo $css_minify_enabled ? 'checked' : ''; ?>>
-                Минимизировать CSS (сжатие style.css)
+                Минимизировать CSS (сжатие style.css + theme.css)
             </label>
-            <small>При включении CSS-файл будет сжиматься (удаление комментариев, лишних пробелов). При выключении будет использоваться оригинальный файл.</small>
+            <small>При включении CSS-файлы (style.css, theme.css) будут сжиматься и встраиваться в<head>. При выключении — загрузка через &#x3C;link&#x3E;.</small>
         </div>
         <div class="form-group">
             <label>

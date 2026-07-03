@@ -119,7 +119,7 @@ $posts = $db->query("SELECT id, title, slug FROM posts WHERE status = 'published
 
         <div class="form-group">
             <label>Старый URL (относительный, начинается с /)</label>
-            <input type="text" name="old_url" id="old_url" placeholder="/likbez/podklyuchenie-k-udalennomu-rabochemu-stolu-v-windows" required>
+            <input type="text" name="old_url" id="old_url" value="<?php echo htmlspecialchars($_GET['old_url'] ?? ''); ?>" placeholder="/likbez/podklyuchenie-k-udalennomu-rabochemu-stolu-v-windows" required>
             <small>Вставляйте путь от корня сайта, например /likbez/... . Домен будет отброшен.</small>
         </div>
 

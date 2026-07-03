@@ -10,6 +10,26 @@ Complete CMS features: frontend inline editor, AI tools in /0_9/, go-to-top butt
 - time404.ru uses main project (GitHub)
 - Credentials stored in macOS Keychain (osxkeychain helper)
 
+## Bugs Fixed (2026-07-02)
+
+### Critical
+1. **`src/front-editor.js` — контекстное меню не работало** — слушатель `contextmenu` был внутри `script.onload` (асинхронная загрузка 4SLASeditor.js) и висел на `editorDiv`. Код стандартного меню браузера не отменялся.  
+   **Fix:** вынесли `initContextMenu()` на уровень IIFE, слушатель на `document` с делегированием (`editor.contains(e.target)`).
+2. **`src/front-editor.js` — команды не выполнялись по клику** — клик по пункту меню уводил фокус с редактора, `editor.focus()` не восстанавливал выделение.  
+   **Fix:** сохраняем `Range` при правом клике, восстанавливаем перед выполнением команды.
+3. **`src/front-editor.js` — модалки (link/image/code) не работали** — внутри `insertLink()/uploadImage()/insertCodeBlock()` вызывается `_restoreRange(savedRange)`, который НЕ фокусит редактор. `document.execCommand()` требует `document.activeElement === editor`.  
+   **Fix:** monkey-patch `SimpleEditor._restoreRange` — после `sel.addRange(range)` вызывает `this.editor.focus()`.
+4. **`admin/redirect.php` — `old_url` из GET не подставлялся** — ссылка вида `redirect.php?old_url=%2Fpract%2F...` открывала форму, но поле "Старый URL" было пустым.  
+   **Fix:** добавлен `value="<?php echo htmlspecialchars($_GET['old_url'] ?? ''); ?>"` в инпут.
+5. **`src/front-editor.css` — не было стилей модалок** — стили `.editor-modal` (позиционирование, фон, поля, кнопки) были только в `admin.css`, который не грузится на фронтенде. Модалки были невидимы (белый квадрат) или не появлялись.  
+   **Fix:** скопированы все стили `.editor-modal`, `.editor-color-*`, `.editor-status` из `admin.css` в `front-editor.css`.
+
+### Minor
+6. **`src/front-editor.js` — меню уходило под экран** — `window.innerHeight - 400` давало отрицательный y на мобильных, и меню не было видно.  
+   **Fix:** `Math.max(0, window.innerHeight - mh - 10)` + `max-height: min(60vh, 480px); overflow-y: auto` + позиционирование с учётом реальной `offsetHeight`.
+7. **`src/front-editor.js` — SimpleEditor мог упасть без try/catch** — если конструктор выбрасывал ошибку, `initContextMenu` не вызывался.  
+   **Fix:** обёрнут в `try/catch` с `setStatus('❌ Ошибка загрузки редактора', ...)`.
+
 ## Bugs Fixed (2026-07-01)
 
 ### Critical
@@ -32,6 +52,7 @@ Complete CMS features: frontend inline editor, AI tools in /0_9/, go-to-top butt
 ## Key Decisions
 - AI features are `/0_9/`-only — main project stays clean
 - Context menu calls `_simpleEditor.execCommand()`, not `document.execCommand()`
+- Context menu uses document-level delegation (`document.addEventListener('contextmenu', ...)` with `editor.contains(e.target)`) — работает без привязки к асинхронной загрузке 4SLASeditor.js
 - Frontend editor saves via `/api/quick-save.php` — no CSRF (JSON API, same-origin)
 - Cut marker is `<div class="fe-cut">` — stored in HTML, no `<!--cut-->` comment
 - GitHub API description updated using token from osxkeychain
@@ -40,6 +61,8 @@ Complete CMS features: frontend inline editor, AI tools in /0_9/, go-to-top butt
 - Theme approach: `style.css` untouched, all dark overrides in separate `css/theme.css` (`[data-theme="dark"]` selectors) — максимальное разделение, минимальный риск
 - FOUC prevention: inline `<script>` in `<head>` before any CSS, sets `data-theme` from `localStorage['fe-theme']`
 - Highlight.js: two `<link>` elements (vs.min.css + atom-one-dark.min.css), toggled via `disabled` attribute
+- Monkey-patch `SimpleEditor._restoreRange` в `front-editor.js` — после восстановления Range всегда вызывает `editor.focus()`, чтобы `document.execCommand()` в модалках работал (иначе `document.activeElement` не редактор)
+- Range сохраняется при правом клике (`sel.getRangeAt(0)`), восстанавливается перед выполнением команды из меню
 
 ## Relevant Files
 | File | Role |
@@ -48,9 +71,10 @@ Complete CMS features: frontend inline editor, AI tools in /0_9/, go-to-top butt
 | `includes/pages.php` | CRUD: createPage/updatePage + ensurePageColumns |
 | `admin/page_edit.php` | Admin editor: fields + POST + emoji buttons |
 | `admin/post_edit.php` | Admin post editor (no AI in main) |
+| `admin/redirect.php` | Redirect form — reads `old_url` from GET |
 | `api/quick-save.php` | New: frontend editor save endpoint |
-| `src/front-editor.js` | New: frontend editor + context menu + cut |
-| `src/front-editor.css` | New: context menu styles |
+| `src/front-editor.js` | Frontend editor + context menu (document delegation) + cut + monkey-patch _restoreRange |
+| `src/front-editor.css` | Context menu styles + modal styles (copied from admin.css) |
 | `post.php`, `page.php` | Main + /0_9/: $isEditing, $feData, includes |
 | `templates/footer.php` | Go-to-top button + Theme Switcher JS |
 | `templates/header.php` | FOUC-prevention script, theme.css, hljs links with ids |

@@ -128,14 +128,13 @@ $topPosts = getTopPostsByLikes(5);
     })();
     </script>
 
-    <!-- Theme CSS (переменные и тёмные переопределения) -->
-    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/css/theme.css">
-
     <!-- CSS (минифицированный или обычный) -->
     <?php if (function_exists('isCssMinifyEnabled') && isCssMinifyEnabled()): ?>
     <style><?php echo getMinifiedCss(__DIR__ . '/../css/style.css'); ?></style>
+    <style><?php echo getMinifiedCss(__DIR__ . '/../css/theme.css'); ?></style>
     <?php else: ?>
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/css/style.css">
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/css/theme.css">
     <?php endif; ?>
 
     <!-- Highlight.js (локально) — светлая тема по умолчанию, переключается через JS -->
