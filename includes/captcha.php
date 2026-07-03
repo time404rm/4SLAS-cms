@@ -8,7 +8,16 @@
  * @return string HTML или текст вопроса
  */
 function generateCaptcha() {
-    $_SESSION['captcha_type'] = 'text';
+    $type = (!function_exists('imagecreatetruecolor') || mt_rand(0, 1) === 0) ? 'text' : 'image';
+    $_SESSION['captcha_type'] = $type;
+    
+    if ($type === 'image') {
+        return '<div class="captcha-image-wrap">
+            <img src="' . SITE_URL . '/api/captcha_image.php?t=' . time() . '" alt="Капча" class="captcha-img">
+            <a href="#" class="captcha-refresh" title="Обновить">&#x21bb;</a>
+        </div>';
+    }
+    
     return generateTextCaptcha();
 }
 
