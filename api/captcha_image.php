@@ -7,11 +7,10 @@ require_once __DIR__ . '/../includes/config.php';
 
 // Проверяем GD
 if (!extension_loaded('gd')) {
-    // Fallback: текстовая капча
     $_SESSION['captcha_type'] = 'text';
     $_SESSION[CAPTCHA_SESSION_KEY] = '8';
-    header('Content-Type: text/plain');
-    echo 'GD not available';
+    header('Content-Type: image/gif');
+    echo base64_decode('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
     exit;
 }
 
@@ -75,6 +74,8 @@ for ($i = 0; $i < $length; $i++) {
     $fontPaths = [
         '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
         '/usr/share/fonts/TTF/DejaVuSans.ttf',
+        '/usr/share/fonts/dejavu-sans/DejaVuSans.ttf',
+        '/usr/share/fonts/dejavu/DejaVuSans.ttf',
         '/System/Library/Fonts/Helvetica.ttc',
         '/System/Library/Fonts/Arial.ttf',
     ];

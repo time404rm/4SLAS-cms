@@ -8,7 +8,7 @@
  * @return string HTML или текст вопроса
  */
 function generateCaptcha() {
-    $type = mt_rand(0, 1) === 0 ? 'text' : 'image';
+    $type = (!function_exists('imagecreatetruecolor') || mt_rand(0, 1) === 0) ? 'text' : 'image';
     $_SESSION['captcha_type'] = $type;
     
     if ($type === 'image') {
