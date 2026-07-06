@@ -1971,13 +1971,13 @@ a.editor-anchor:hover {
 }
 
 /* Параллакс-всплытие для рекламных блоков */
-.custom-block-wrapper {
+.custom-block-wrapper:not(.in-view) {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(40px) scale(0.97);
+    transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .custom-block-wrapper.in-view {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 

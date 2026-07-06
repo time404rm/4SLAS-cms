@@ -191,9 +191,12 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
 (function(){
     var observer = new IntersectionObserver(function(entries){
         entries.forEach(function(e){
-            if(e.isIntersecting) e.target.classList.add('in-view');
+            if(e.isIntersecting) {
+                e.target.classList.add('in-view');
+                observer.unobserve(e.target);
+            }
         });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll('.custom-block-wrapper').forEach(function(el){
         observer.observe(el);
     });
