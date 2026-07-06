@@ -103,12 +103,16 @@ window.currentPostId = <?php echo (int)$post['id']; ?>;
         } catch (\PDOException $e) {}
 
         if ($midBlock) {
-            $pos = strpos($content, '</p>');
-            if ($pos !== false) {
-                $pos += 4;
-                echo substr($content, 0, $pos);
+            $p3 = 0;
+            for ($i = 0; $i < 3; $i++) {
+                $next = strpos($content, '</p>', $p3);
+                if ($next === false) break;
+                $p3 = $next + 4;
+            }
+            if ($p3 > 0) {
+                echo substr($content, 0, $p3);
                 echo '<div class="custom-block-wrapper">' . $midBlock . '</div>';
-                echo substr($content, $pos);
+                echo substr($content, $p3);
             } else {
                 echo $content;
             }
