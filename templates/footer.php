@@ -187,5 +187,17 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
     });
 })();
 </script>
+<script>
+(function(){
+    var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+            if(e.isIntersecting) e.target.classList.add('in-view');
+        });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.custom-block-wrapper').forEach(function(el){
+        observer.observe(el);
+    });
+})();
+</script>
 </body>
 </html>
