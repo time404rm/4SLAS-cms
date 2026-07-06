@@ -13,7 +13,7 @@ if ($id) {
 }
 
 // Жёстко заданные позиции
-$positions = ['leftmenu', 'footer', 'after_first_post'];
+$positions = ['leftmenu', 'footer', 'after_first_post', 'mid_content'];
 $csrf_token = generateCsrfToken();
 $message = '';
 $error = '';

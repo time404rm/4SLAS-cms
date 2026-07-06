@@ -94,7 +94,27 @@ window.currentPostId = <?php echo (int)$post['id']; ?>;
         $content = faqParse($content);
         $content = howtoParse($content);
         $content = tocGenerate($content);
-        echo $content;
+
+        $midBlock = null;
+        try {
+            $stmt = getDb()->prepare("SELECT content FROM custom_blocks WHERE position = 'mid_content' AND is_active = 1 LIMIT 1");
+            $stmt->execute();
+            $midBlock = $stmt->fetchColumn();
+        } catch (\PDOException $e) {}
+
+        if ($midBlock) {
+            $pos = strpos($content, '</p>');
+            if ($pos !== false) {
+                $pos += 4;
+                echo substr($content, 0, $pos);
+                echo '<div class="custom-block-wrapper">' . $midBlock . '</div>';
+                echo substr($content, $pos);
+            } else {
+                echo $content;
+            }
+        } else {
+            echo $content;
+        }
         ?>
     </div>
     <?php
