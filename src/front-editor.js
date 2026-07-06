@@ -102,6 +102,16 @@
                     origRestore.call(this, range);
                     this.editor.focus();
                 };
+
+                const editor = document.getElementById('fe-editor');
+                if (editor) {
+                    editor.addEventListener('paste', function(e) {
+                        e.stopImmediatePropagation();
+                        setTimeout(function() {
+                            if (window._simpleEditor) window._simpleEditor.syncToHidden();
+                        }, 50);
+                    }, { capture: true });
+                }
             } catch (err) {
                 console.error('SimpleEditor init failed:', err);
                 setStatus('❌ Ошибка загрузки редактора', '#e74c3c');
@@ -148,6 +158,8 @@
             <div class="fe-ctx-item" data-cmd="code">💻 Вставить код</div>
             <div class="fe-ctx-divider"></div>
             <div class="fe-ctx-item" data-cmd="cut">✂️ Вставить cut</div>
+            <div class="fe-ctx-divider"></div>
+            <div class="fe-ctx-item" data-cmd="paste">📋 Вставить</div>
         `;
         document.body.appendChild(menu);
 
@@ -215,6 +227,15 @@
             }
             if (cmd === 'cut') {
                 insertCut();
+                return;
+            }
+            if (cmd === 'paste') {
+                navigator.clipboard.readText().then(function(text) {
+                    if (text) {
+                        document.execCommand('insertText', false, text);
+                        if (window._simpleEditor) window._simpleEditor.syncToHidden();
+                    }
+                }).catch(function() {});
                 return;
             }
 
