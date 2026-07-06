@@ -27,11 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_block'])) {
 
     if (empty($name)) {
         $error = 'Название блока обязательно';
-    } else {
+    } elseif ($id) {
         $stmt = $db->prepare("UPDATE custom_blocks SET name=?, content=?, position=?, is_active=? WHERE id=?");
         $stmt->execute([$name, $content, $position, $is_active, $id]);
         clearCache();
         header('Location: blocks.php?msg=updated');
+        exit;
+    } else {
+        $stmt = $db->prepare("INSERT INTO custom_blocks (name, content, position, is_active) VALUES (?,?,?,?)");
+        $stmt->execute([$name, $content, $position, $is_active]);
+        clearCache();
+        header('Location: blocks.php?msg=created');
         exit;
     }
 }
@@ -50,31 +56,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_block'])) {
 </head>
 <body class="admin">
     <?php include __DIR__ . '/includes/admin_menu.php'; ?>
-    <h1>Редактировать блок: <?php echo htmlspecialchars($block['name']); ?></h1>
+    <h1><?php echo $block ? 'Редактировать блок: ' . htmlspecialchars($block['name']) : 'Создать новый блок'; ?></h1>
     <?php if ($error): ?><div class="error"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
     <form method="post">
         <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
         <input type="hidden" name="update_block" value="1">
         <div class="form-group">
             <label>Название</label>
-            <input type="text" name="name" value="<?php echo htmlspecialchars($block['name']); ?>" required>
+            <input type="text" name="name" value="<?php echo htmlspecialchars($block['name'] ?? ''); ?>" required>
         </div>
         <div class="form-group">
             <label>Позиция</label>
             <select name="position">
                 <?php foreach ($positions as $p): ?>
-                <option value="<?php echo htmlspecialchars($p); ?>" <?php echo $block['position'] === $p ? 'selected' : ''; ?>><?php echo htmlspecialchars($p); ?></option>
+                <option value="<?php echo htmlspecialchars($p); ?>" <?php echo ($block['position'] ?? 'after_first_post') === $p ? 'selected' : ''; ?>><?php echo htmlspecialchars($p); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="form-group">
             <label>Код блока (HTML, скрипты)</label>
-            <textarea name="content"><?php echo htmlspecialchars($block['content']); ?></textarea>
+            <textarea name="content"><?php echo htmlspecialchars($block['content'] ?? ''); ?></textarea>
         </div>
         <div class="form-group">
-            <label><input type="checkbox" name="is_active" value="1" <?php echo $block['is_active'] ? 'checked' : ''; ?>> Активен</label>
+            <label><input type="checkbox" name="is_active" value="1" <?php echo ($block['is_active'] ?? 1) ? 'checked' : ''; ?>> Активен</label>
         </div>
-        <button type="submit" style="background:#2563eb; color:white; border:none; padding:8px 20px; border-radius:4px; cursor:pointer;">Сохранить</button>
+        <button type="submit" style="background:#2563eb; color:white; border:none; padding:8px 20px; border-radius:4px; cursor:pointer;"><?php echo $block ? 'Сохранить' : 'Создать'; ?></button>
         <a href="blocks.php" style="color:#60a5fa; margin-left:10px;">Отмена</a>
     </form>
     <?php include __DIR__ . '/includes/admin_footer.php'; ?>
