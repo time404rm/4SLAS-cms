@@ -1970,14 +1970,3 @@ a.editor-anchor:hover {
     scroll-margin-top: 130px;
 }
 
-/* Параллакс-всплытие для рекламных блоков */
-.custom-block-wrapper:not(.in-view) {
-    opacity: 0;
-    transform: translateY(40px) scale(0.97);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.custom-block-wrapper.in-view {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-

@@ -187,22 +187,5 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
     });
 })();
 </script>
-<script>
-(function(){
-    setTimeout(function(){
-        var observer = new IntersectionObserver(function(entries){
-            entries.forEach(function(e){
-                if(e.isIntersecting) {
-                    e.target.classList.add('in-view');
-                    observer.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.custom-block-wrapper').forEach(function(el){
-            observer.observe(el);
-        });
-    }, 200);
-})();
-</script>
 </body>
 </html>
