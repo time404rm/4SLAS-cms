@@ -403,6 +403,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
     document.addEventListener('DOMContentLoaded', function() {
         window.currentPostId = <?php echo $id; ?>;
         new SimpleEditor('post-editor', 'post-content-hidden');
+        setTimeout(function() {
+            var ed = document.getElementById('post-editor');
+            if (!ed) return;
+            ed.addEventListener('paste', function(e) {
+                e.stopImmediatePropagation();
+                setTimeout(function() {
+                    var h = document.getElementById('post-content-hidden');
+                    if (h) h.value = ed.innerHTML;
+                }, 50);
+            }, { capture: true });
+        }, 100);
     });
     </script>
     <?php include __DIR__ . '/includes/admin_footer.php'; ?>
