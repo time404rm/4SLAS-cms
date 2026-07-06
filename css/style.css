@@ -12,7 +12,7 @@ header { position: relative; background: none; display: block; text-align: cente
     background: rgba(255, 255, 255, 0.52);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    min-height: 120px;
+    min-height: 90px;
     border-radius: 35px;
     margin: 0 15px 0 15px;
 }
@@ -33,6 +33,7 @@ header { position: relative; background: none; display: block; text-align: cente
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-right: 10px;
 }
 .site-header {
     position: absolute;
@@ -40,7 +41,7 @@ header { position: relative; background: none; display: block; text-align: cente
     left: 0;
 }
 .site-logo {
-  max-height: 80px;
+  max-height: 60px;
     width: auto;
     display: block;
     padding: 2px 2px 2px 2px;
@@ -58,6 +59,12 @@ header { position: relative; background: none; display: block; text-align: cente
 .postlist-logo {
     max-height: 40px;
     margin-right: 5px;
+}
+
+.artback {
+    padding: 15px;
+    background: #fbfbfb;
+    border-radius: 15px;
 }
 .postlist-title {
     font-size: 1.5rem;
@@ -83,7 +90,6 @@ header { position: relative; background: none; display: block; text-align: cente
     border-bottom: 1px solid #e5e5e5;
 }
 
-
 .post { background: #fff; padding: 0;}
 .postbody { padding: 0 0 10px 0; }
 .post img, .featured-image { max-width: 100%; height: auto; border-radius: 15px; }
@@ -104,6 +110,9 @@ header { position: relative; background: none; display: block; text-align: cente
 }
 .donut-button {
     margin: 5px 10px 10px 0;
+}
+.yooframe {
+    margin: 5px 0 0 10px;
 }
 .comment { background: #f1f1f1; margin: 10px 0; padding: 10px; border-radius: 5px; }
 .textcomment {
@@ -188,6 +197,12 @@ h1 {
 
 .auth-links {
     text-align: right;
+}
+
+@media (min-width: 769px) {
+    .auth-links {
+        display: none;
+    }
 }
 
 .auth-container {
@@ -347,6 +362,7 @@ h1 {
 /* ===== АВТОДОПОЛНЕНИЕ ПОИСКА ===== */
 /* Контейнер формы */
 .search {display: block;
+    margin-left: 10px;
 }
 
 @media (max-width: 550px) {
@@ -1488,8 +1504,8 @@ a.editor-anchor:hover {
 
 .float-bar-item {
     position: relative;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1517,8 +1533,8 @@ a.editor-anchor:hover {
 }
 
 .float-bar-item svg {
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
     display: block;
 }
 
@@ -1741,104 +1757,6 @@ a.editor-anchor:hover {
     border-color: #ccc;
 }
 
-.float-btn-yandex {
-    display: inline-block;
-    padding: 6px 14px;
-    background: #FC3F1D;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 13px;
-    text-align: center;
-    transition: background 0.2s;
-    cursor: pointer;
-    border: none;
-}
-.float-btn-yandex:hover {
-    background: #e0301a;
-    color: #fff;
-}
-
-.float-btn-vk {
-    display: inline-block;
-    padding: 6px 14px;
-    background: #0077FF;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 13px;
-    text-align: center;
-    transition: background 0.2s;
-    cursor: pointer;
-    border: none;
-}
-.float-btn-vk:hover {
-    background: #0060d0;
-    color: #fff;
-}
-
-/* Яндекс-кнопка на страницах входа/регистрации (полноразмерная) */
-.yandex-btn {
-    display: block;
-    width: 100%;
-    padding: 12px 20px;
-    background: #FC3F1D;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 15px;
-    text-align: center;
-    transition: background 0.2s;
-    font-weight: 500;
-}
-.yandex-btn:hover {
-    background: #e0301a;
-    color: #fff;
-}
-
-.oauth-section {
-    margin-bottom: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.vk-btn {
-    display: block;
-    width: 100%;
-    padding: 12px 20px;
-    background: #0077FF;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 15px;
-    text-align: center;
-    transition: background 0.2s;
-    font-weight: 500;
-}
-.vk-btn:hover {
-    background: #0060d0;
-    color: #fff;
-}
-
-.auth-separator {
-    display: flex;
-    align-items: center;
-    margin: 16px 0;
-    color: #999;
-    font-size: 13px;
-}
-.auth-separator::before,
-.auth-separator::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #ddd;
-}
-.auth-separator span {
-    padding: 0 12px;
-}
-
 /* Мобильные — скрываем плавающую панель */
 @media (max-width: 768px) {
     .float-bar {
@@ -1846,16 +1764,13 @@ a.editor-anchor:hover {
     }
 }
 
-/* Десктоп — скрываем гамбургер, drawer и auth-links */
+/* Десктоп — скрываем гамбургер и drawer */
 @media (min-width: 769px) {
     .menu-button {
         display: none;
     }
     .drawer {
         display: none !important;
-    }
-    .auth-links {
-        display: none;
     }
 }
 
@@ -1890,83 +1805,8 @@ a.editor-anchor:hover {
     height: 100%;
     min-height: 0;
 }
-
-/* ===== БЛОК КОДА (code-block) ===== */
-.code-block {
-    position: relative;
-    margin: 1.5em 0;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #3a3a3a;
-    background: #2d2d2d;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-.code-block__bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 14px;
-    background: #3d3d3d;
-    border-bottom: 1px solid #4a4a4a;
-    font-size: 12px;
-}
-.code-block__lang {
-    color: #888;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.code-block__btns {
-    display: flex;
-    gap: 6px;
-}
-.code-block__btns button {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: #ccc;
-    padding: 4px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    line-height: 1.4;
-    font-family: inherit;
-    transition: background 0.2s;
-}
-.code-block__btns button:hover {
-    background: rgba(255,255,255,0.15);
-}
-.code-block pre {
-    margin: 0;
-    padding: 16px;
-    overflow-x: auto;
-    background: #2d2d2d;
-}
-.code-block pre code {
-    background: none;
-    padding: 0;
-    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
-    font-size: 14px;
-    line-height: 1.5;
-}
-.code-block--full {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 99999;
-    margin: 0;
-    border-radius: 0;
-    display: flex;
-    flex-direction: column;
-}
-.code-block--full pre {
-    flex: 1;
-    overflow: auto;
-}
-
 /* Отступ для якорей под sticky top-nav */
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id],
 [id]:target {
     scroll-margin-top: 130px;
 }
-
