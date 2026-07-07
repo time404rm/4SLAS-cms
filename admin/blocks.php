@@ -8,7 +8,7 @@ $message = '';
 $error = '';
 
 // Позиции блоков (жёстко заданы)
-$positions = ['leftmenu', 'footer', 'after_first_post', 'mid_content'];
+$positions = ['leftmenu', 'footer', 'after_first_post', 'mid_content', 'after_page_content'];
 
 // Добавление/редактирование блока
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_block'])) {

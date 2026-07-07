@@ -71,6 +71,16 @@ window.currentPageId = <?php echo (int)$page['id']; ?>;
         ?>
     </div>
 </article>
+<?php
+$pageBlock = null;
+try {
+    $stmt = getDb()->prepare("SELECT content FROM custom_blocks WHERE position = 'after_page_content' AND is_active = 1 LIMIT 1");
+    $stmt->execute();
+    $pageBlock = $stmt->fetchColumn();
+} catch (\PDOException $e) {}
+if ($pageBlock): ?>
+    <div class="custom-block-wrapper"><?php echo $pageBlock; ?></div>
+<?php endif; ?>
 <?php endif; // end if $isEditing ?>
 
 <script type="application/ld+json">
