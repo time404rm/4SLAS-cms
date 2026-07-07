@@ -1071,7 +1071,6 @@ class SimpleEditor {
             for (let i = 0; i < r; i++) { t += '<tr>'; for (let j = 0; j < c; j++) t += '<td>&nbsp;<\/td>'; t += '<\/tr>'; }
             t += '<\/table>';
             modal.remove();
-            this.editor.focus({ preventScroll: true });
             this._restoreRange(savedRange);
             const sel = window.getSelection();
             if (sel.rangeCount) {
@@ -1084,6 +1083,8 @@ class SimpleEditor {
                 }
                 sel.removeAllRanges();
                 sel.addRange(range);
+            } else {
+                this.editor.insertAdjacentHTML('beforeend', t);
             }
             this.syncToHidden();
             this.editor.focus();
