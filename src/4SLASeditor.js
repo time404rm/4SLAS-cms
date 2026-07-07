@@ -375,28 +375,19 @@ class SimpleEditor {
 
     // ==================== ВСТАВКА ====================
     _sanitizePaste(e) {
-        e.preventDefault();
-        let html = '';
-        let text = '';
+        setTimeout(() => {
+            const allowed = ['p','br','b','strong','i','em','u','s','a','img','ul','ol','li','table','tr','td','th','thead','tbody','tfoot','caption','colgroup','col','span','div','h1','h2','h3','h4','h5','h6','blockquote','pre','code','hr','sub','sup','small','mark','dl','dt','dd','figure','figcaption'];
+            const keep = ['color','background-color','font-weight','font-style','text-decoration','text-align'];
 
-        if (e.clipboardData) {
-            html = e.clipboardData.getData('text/html') || '';
-            text = e.clipboardData.getData('text/plain') || '';
-        }
-
-        if (html) {
-            const doc = document.createElement('div');
-            doc.innerHTML = html;
-            // Удалить стили Word/Excel
-            doc.querySelectorAll('style, link, meta, title, [class^="Mso"], [class*="Mso"]').forEach(el => el.remove());
-            // Чистка inline-стилей, кроме базовых
-            doc.querySelectorAll('*').forEach(el => {
-                if (el.style) {
-                    const keep = ['color', 'background-color', 'font-weight', 'font-style', 'text-decoration', 'text-align'];
+            this.editor.querySelectorAll('style, link, meta, title, [class^="Mso"], [class*="Mso"], o\\:p').forEach(el => {
+                if (el.tagName) el.remove();
+            });
+            this.editor.querySelectorAll('*').forEach(el => {
+                if (el.style && el.style.length) {
                     const s = el.style;
-                    [...s].forEach(prop => {
-                        if (!keep.includes(prop)) s.removeProperty(prop);
-                    });
+                    for (let p = s.length - 1; p >= 0; p--) {
+                        if (!keep.includes(s[p])) s.removeProperty(s[p]);
+                    }
                 }
                 if (el.tagName === 'FONT') {
                     const span = document.createElement('span');
@@ -406,23 +397,15 @@ class SimpleEditor {
                     if (el.size) span.style.fontSize = el.size + 'px';
                     el.parentNode.replaceChild(span, el);
                 }
-            });
-            // Разрешённые теги
-            const allowed = ['p','br','b','strong','i','em','u','s','a','img','ul','ol','li','table','tr','td','th','thead','tbody','tfoot','caption','colgroup','col','span','div','h1','h2','h3','h4','h5','h6','blockquote','pre','code','hr','sub','sup','small','mark','dl','dt','dd','figure','figcaption'];
-            doc.querySelectorAll('*').forEach(el => {
                 if (!allowed.includes(el.tagName.toLowerCase())) {
                     const span = document.createElement('span');
                     span.innerHTML = el.innerHTML;
                     el.parentNode.replaceChild(span, el);
                 }
             });
-            html = doc.innerHTML;
-            document.execCommand('insertHTML', false, html);
-        } else if (text) {
-            document.execCommand('insertText', false, text);
-        }
-        this.syncToHidden();
-        this._updateWordCount();
+            this.syncToHidden();
+            this._updateWordCount();
+        }, 10);
     }
 
     // ==================== DRAG & DROP ====================

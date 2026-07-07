@@ -102,17 +102,6 @@
                     origRestore.call(this, range);
                     this.editor.focus();
                 };
-
-                const editor = document.getElementById('fe-editor');
-                if (editor) {
-                    editor.addEventListener('paste', function(e) {
-                        e.stopImmediatePropagation();
-                        setTimeout(function() {
-                            cleanMSWord(editor);
-                            if (window._simpleEditor) window._simpleEditor.syncToHidden();
-                        }, 50);
-                    }, { capture: true });
-                }
             } catch (err) {
                 console.error('SimpleEditor init failed:', err);
                 setStatus('❌ Ошибка загрузки редактора', '#e74c3c');
@@ -124,39 +113,6 @@
         document.head.appendChild(script);
 
         addSeoBlock();
-    }
-
-    function cleanMSWord(ed) {
-        if (!ed) return;
-        ed.querySelectorAll('style, link, meta, title').forEach(function(el) { el.remove(); });
-        ed.querySelectorAll('[class*="Mso"], [class^="Mso"], o\\:p, \\:o\\:p').forEach(function(el) {
-            if (el.tagName) el.remove();
-        });
-        ed.querySelectorAll('*').forEach(function(el) {
-            var keep = ['color', 'background-color', 'font-weight', 'font-style', 'text-decoration', 'text-align'];
-            if (el.style && el.style.length) {
-                var s = el.style;
-                for (var p = s.length - 1; p >= 0; p--) {
-                    if (keep.indexOf(s[p]) === -1) s.removeProperty(s[p]);
-                }
-            }
-            if (el.tagName === 'FONT') {
-                var span = document.createElement('span');
-                span.innerHTML = el.innerHTML;
-                if (el.color) span.style.color = el.color;
-                if (el.face) span.style.fontFamily = el.face;
-                if (el.size) span.style.fontSize = el.size + 'px';
-                el.parentNode.replaceChild(span, el);
-            }
-        });
-        var allowed = ['p','br','b','strong','i','em','u','s','a','img','ul','ol','li','table','tr','td','th','thead','tbody','tfoot','caption','colgroup','col','span','div','h1','h2','h3','h4','h5','h6','blockquote','pre','code','hr','sub','sup','small','mark','dl','dt','dd','figure','figcaption'];
-        ed.querySelectorAll('*').forEach(function(el) {
-            if (allowed.indexOf(el.tagName.toLowerCase()) === -1) {
-                var span = document.createElement('span');
-                span.innerHTML = el.innerHTML;
-                el.parentNode.replaceChild(span, el);
-            }
-        });
     }
 
     function initContextMenu() {
