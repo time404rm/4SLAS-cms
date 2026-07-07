@@ -1474,7 +1474,7 @@ a.editor-anchor:hover {
     left: 0;
     top: 0;
     height: 100vh;
-    z-index: 998;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
     align-items: center;
