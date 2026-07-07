@@ -379,9 +379,21 @@ class SimpleEditor {
             const allowed = ['p','br','b','strong','i','em','u','s','a','img','ul','ol','li','table','tr','td','th','thead','tbody','tfoot','caption','colgroup','col','span','div','h1','h2','h3','h4','h5','h6','blockquote','pre','code','hr','sub','sup','small','mark','dl','dt','dd','figure','figcaption'];
             const keep = ['color','background-color','font-weight','font-style','text-decoration','text-align'];
 
-            this.editor.querySelectorAll('style, link, meta, title, [class^="Mso"], [class*="Mso"], o\\:p').forEach(el => {
-                if (el.tagName) el.remove();
+            this.editor.querySelectorAll('style, link, meta, title').forEach(el => el.remove());
+            this.editor.querySelectorAll('[class*="Mso"], [class^="Mso"]').forEach(el => {
+                const cls = el.getAttribute('class') || '';
+                el.setAttribute('class', cls.split(/\s+/).filter(c => !c.match(/^Mso/i)).join(' ') || null);
+                if (!el.getAttribute('class')) el.removeAttribute('class');
             });
+            this.editor.querySelectorAll('o\\:p, \\:o\\:p').forEach(el => { if (el.parentNode) el.parentNode.removeChild(el); });
+            this.editor.querySelectorAll('span[lang]').forEach(el => {
+                if (el.attributes.length === 1) {
+                    el.parentNode.replaceChild(document.createTextNode(el.textContent), el);
+                } else {
+                    el.removeAttribute('lang');
+                }
+            });
+
             this.editor.querySelectorAll('*').forEach(el => {
                 if (el.style && el.style.length) {
                     const s = el.style;
