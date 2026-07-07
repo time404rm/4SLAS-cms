@@ -1051,7 +1051,8 @@ class SimpleEditor {
     }
 
     // ==================== ТАБЛИЦА ====================
-    insertTable() {
+     insertTable() {
+        const savedRange = this._getSelectedRange();
         const modalId = this._nextId('tbl');
         const modal = document.createElement('div');
         modal.className = 'editor-modal';
@@ -1069,8 +1070,20 @@ class SimpleEditor {
             let t = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%;">';
             for (let i = 0; i < r; i++) { t += '<tr>'; for (let j = 0; j < c; j++) t += '<td>&nbsp;<\/td>'; t += '<\/tr>'; }
             t += '<\/table>';
-            document.execCommand('insertHTML', false, t);
             modal.remove();
+            this._restoreRange(savedRange);
+            const sel = window.getSelection();
+            if (sel.rangeCount) {
+                const range = sel.getRangeAt(0);
+                range.deleteContents();
+                const tmp = document.createElement('div');
+                tmp.innerHTML = t;
+                while (tmp.firstChild) {
+                    range.insertNode(tmp.removeChild(tmp.firstChild));
+                }
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
             this.syncToHidden();
             this.editor.focus();
         });
