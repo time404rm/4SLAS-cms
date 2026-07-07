@@ -400,6 +400,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
 
     <script src="<?php echo SITE_URL; ?>/src/4SLASeditor.js"></script>
     <script>
+    function cleanMSWord(ed) {
+        if (!ed) return;
+        ed.querySelectorAll('style, link, meta, title').forEach(function(el) { el.remove(); });
+        ed.querySelectorAll('[class*="Mso"], [class^="Mso"], o\\:p').forEach(function(el) {
+            if (el.tagName) el.remove();
+        });
+        ed.querySelectorAll('*').forEach(function(el) {
+            var keep = ['color', 'background-color', 'font-weight', 'font-style', 'text-decoration', 'text-align'];
+            if (el.style && el.style.length) {
+                var s = el.style;
+                for (var p = s.length - 1; p >= 0; p--) {
+                    if (keep.indexOf(s[p]) === -1) s.removeProperty(s[p]);
+                }
+            }
+        });
+    }
     document.addEventListener('DOMContentLoaded', function() {
         window.currentPostId = <?php echo $id; ?>;
         new SimpleEditor('post-editor', 'post-content-hidden');
@@ -409,6 +425,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
             ed.addEventListener('paste', function(e) {
                 e.stopImmediatePropagation();
                 setTimeout(function() {
+                    cleanMSWord(ed);
                     var h = document.getElementById('post-content-hidden');
                     if (h) h.value = ed.innerHTML;
                 }, 50);
