@@ -4,9 +4,10 @@
 
 /* === Основной фон и текст === */
 [data-theme="dark"] body {
-    background: #0f1422;
+    background: #0f1422 !important;
     color: #e2e8f0;
 }
+
 
 /* === Шапка, навигация === */
 [data-theme="dark"] .top-nav {
@@ -35,6 +36,13 @@
 [data-theme="dark"] .post-meta {
     color: #94a3b8;
 }
+
+[data-theme="dark"] .artback {
+    padding: 15px;
+    background: #1A2332;
+    border-radius: 15px;
+}
+
 [data-theme="dark"] .postlist-meta {
     color: #94a3b8;
 }
@@ -555,17 +563,15 @@
     color: #000000;
     border: 1px solid #2a3650;
     border-radius: 12px;
-    padding: 20px 15px 0px;
+    padding: 10px 15px 0px;
     display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
+
 
 /* === Go-to-top button === */
 [data-theme="dark"] #go-to-top {
     background: #60a5fa;
     color: #0f1422;
-}
-
-/* === SVG иконки (админка, логин, RSS и т.д.) — на тёмной теме чёрные, инвертируем === */
-[data-theme="dark"] .icons_st {
-    filter: invert(1);
 }
