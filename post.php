@@ -63,7 +63,7 @@ window.currentPostId = <?php echo (int)$post['id']; ?>;
 <h1 id="fe-title" style="display:none;"><?php echo h($post['title']); ?></h1>
 <?php else: ?>
 
-<article>
+<article class="artback">
     <div class="postlisttitle">
             <?php
                 $logo = getSetting('site_logo');
