@@ -13,7 +13,11 @@ function ensurePageColumns() {
 
 function getPageBySlug($slug) {
     $db = getDb();
-    $stmt = $db->prepare("SELECT * FROM pages WHERE slug = ? AND status = 'published'");
+    if (isAdmin()) {
+        $stmt = $db->prepare("SELECT * FROM pages WHERE slug = ?");
+    } else {
+        $stmt = $db->prepare("SELECT * FROM pages WHERE slug = ? AND status = 'published'");
+    }
     $stmt->execute([$slug]);
     return $stmt->fetch();
 }
