@@ -911,7 +911,7 @@ class SimpleEditor {
             <div id="${modalId}-preview" style="margin-top:10px;display:none;"><img id="${modalId}-previewimg" style="max-width:100%;max-height:200px;"></div>
             <div style="margin-top:10px;"><label>Alt-текст:</label><input type="text" id="${modalId}-alt"></div>
             <div><label>Title:</label><input type="text" id="${modalId}-title"></div>
-            <div style="display:flex;gap:10px;"><div><label>Ширина (px):</label><input type="number" id="${modalId}-w" step="1"></div><div><label>Высота (px):</label><input type="number" id="${modalId}-h" step="1"></div></div>
+            <div style="display:flex;gap:10px;"><div><label>Ширина (px или %):</label><input type="text" id="${modalId}-w" placeholder="например 100%"></div><div><label>Высота (px или %):</label><input type="text" id="${modalId}-h" placeholder="например 300"></div></div>
             <div class="editor-status" style="display:none;"></div>
             <div class="button-group"><button id="${modalId}-ok" disabled>Вставить</button><button id="${modalId}-cancel" class="cancel">Отмена</button></div>
         `;
