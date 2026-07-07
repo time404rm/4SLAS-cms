@@ -27,8 +27,8 @@ function tocGenerate($content) {
         }
 
         // Добавить ID к заголовку в контенте
-        $oldTag = '<h' . $level . $attrs . '>' . $title . '</h' . $level . '>';
-        $newTag = '<h' . $level . ' id="' . $id . '"' . $attrs . '>' . $title . '</h' . $level . '>';
+        $oldTag = $m[0];
+        $newTag = '<h' . $level . ' id="' . $id . '"' . $attrs . '>' . $m[3] . '</h' . $level . '>';
         $content = str_replace($oldTag, $newTag, $content);
 
         $tocItems[] = [
