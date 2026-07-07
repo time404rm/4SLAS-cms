@@ -10,13 +10,18 @@
 ?>
 <?php
 $customBlock = null;
+$repeatBlock = null;
 $db = getDb();
 try {
     $stmt = $db->prepare("SELECT content FROM custom_blocks WHERE position = 'after_first_post' AND is_active = 1 LIMIT 1");
     $stmt->execute();
     $customBlock = $stmt->fetchColumn();
+    $stmt2 = $db->prepare("SELECT content FROM custom_blocks WHERE position = 'after_every_5' AND is_active = 1 LIMIT 1");
+    $stmt2->execute();
+    $repeatBlock = $stmt2->fetchColumn();
 } catch (\PDOException $e) {}
 $postCounter = 0;
+$globalOffset = $globalOffset ?? 0;
 ?>
 
 <?php if (empty($posts)): ?>
@@ -110,6 +115,12 @@ $postCounter = 0;
         <?php if ($postCounter === 1 && $customBlock): ?>
             <div class="custom-block-wrapper">
                 <?php echo $customBlock; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($postCounter > 0 && $postCounter % 5 === 0 && $repeatBlock): ?>
+            <div class="custom-block-wrapper">
+                <?php echo $repeatBlock; ?>
             </div>
         <?php endif; ?>
 
