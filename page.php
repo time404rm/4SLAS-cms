@@ -54,7 +54,7 @@ window.currentPageId = <?php echo (int)$page['id']; ?>;
 <h1 id="fe-title" style="display:none;"><?php echo h($page['title']); ?></h1>
 <?php else: ?>
 
-<article class="page">
+<article class="artback">
     <h1><?php echo h($page['title']); ?></h1>
     <div class="page-content">
         <?php
