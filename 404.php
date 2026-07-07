@@ -5,7 +5,8 @@ $pageTitle = '404 — Страница не найдена';
 $pageDescription = 'Запрашиваемая страница не найдена';
 $is_404 = true;
 
-// Логирование 404
+require_once __DIR__ . '/includes/captcha.php';
+
 $db = getDb();
 $db->exec("CREATE TABLE IF NOT EXISTS log_404 (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -25,8 +26,47 @@ $stmt->execute([
     mb_substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255)
 ]);
 
+$commentError = '';
+$commentOk = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment_404'])) {
+    $ip = getClientIP();
+    cleanOldAttempts('comment_attempts', 15);
+
+    if (isHoneypotFilled()) {
+        header('Location: ' . $_SERVER['REQUEST_URI']);
+        exit;
+    }
+    if (!checkRateLimit('comment_attempts', 3, 15, $ip)) {
+        $commentError = 'Слишком много комментариев. Попробуйте через 15 минут.';
+    } else {
+        $captchaAnswer = $_POST['captcha'] ?? '';
+        if (!verifyCaptcha($captchaAnswer)) {
+            $commentError = __('captcha_failed');
+            recordAttempt('comment_attempts', $ip);
+        } else {
+            $author_name = trim($_POST['author_name'] ?? '');
+            $author_email = trim($_POST['author_email'] ?? '');
+            $content = trim($_POST['content'] ?? '');
+
+            if (empty($author_name) || empty($content)) {
+                $commentError = 'Имя и комментарий обязательны';
+            } elseif ($author_email && !filter_var($author_email, FILTER_VALIDATE_EMAIL)) {
+                $commentError = 'Некорректный email';
+            } else {
+                $stmt = $db->prepare("INSERT INTO comments (post_id, parent_id, author_name, author_email, content, status) VALUES (0, 0, ?, ?, ?, 'pending')");
+                $stmt->execute([$author_name, $author_email ?: null, $content]);
+                clearCaptcha();
+                $commentOk = true;
+            }
+        }
+    }
+}
+
 $recentPosts = getPosts(10, 0);
 $allTags = getAllTags();
+$comments404 = $db->query("SELECT * FROM comments WHERE post_id = 0 AND status = 'approved' ORDER BY created_at DESC LIMIT 30")->fetchAll();
+$captchaQuestion = generateCaptcha();
 
 include __DIR__ . '/templates/header.php';
 ?>
@@ -109,34 +149,6 @@ include __DIR__ . '/templates/header.php';
     margin: 0 0 30px;
 }
 .error-text strong { display: block; margin-bottom: 5px; }
-.error-social {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-.error-social a {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
-    transition: opacity .2s;
-}
-.error-social a:hover { opacity: .8; }
-.error-social .vk { background: #4a76a8; }
-.error-social .tg { background: #0088cc; }
-.error-social .ok { background: #ee8208; }
-.error-social .tw { background: #1a1a1a; }
-.error-social .wa { background: #25d366; }
-.error-social .fb { background: #4267b2; }
-.error-social .li { background: #0077b5; }
-.error-social .em { background: #ea4335; }
 
 .error-sidebar {
     background: #fff;
@@ -186,6 +198,106 @@ include __DIR__ . '/templates/header.php';
     text-decoration: none;
 }
 
+.error-comments {
+    max-width: 900px;
+    margin: 40px auto 0;
+    text-align: left;
+}
+.error-comments h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 10px;
+}
+.error-comment-item {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+.error-comment-item .comment-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #4a76a8;
+}
+.error-comment-item .comment-date {
+    font-size: 11px;
+    color: #999;
+    margin-left: 10px;
+}
+.error-comment-item .comment-text {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+}
+.error-comment-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 900px;
+    margin: 20px auto 0;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.error-comment-form input,
+.error-comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+}
+.error-comment-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+.error-comment-form .captcha-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.error-comment-form .captcha-row .captcha-display {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    background: #f0f4f8;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+.error-comment-form button {
+    background: #4a76a8;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background .2s;
+}
+.error-comment-form button:hover { background: #3a6390; }
+.error-comment-ok {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.error-comment-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
 @media (max-width: 900px) {
     .error-layout { grid-template-columns: 1fr; }
     .error-image-wrap { height: 250px; }
@@ -213,17 +325,6 @@ include __DIR__ . '/templates/header.php';
                 Или я сам накосячил с ссылкой)))<br>
                 Напишите об этом в комментариях, проверю, поправлю))
             </div>
-
-            <div class="error-social">
-                <a href="#" class="vk" title="ВКонтакте">VK</a>
-                <a href="#" class="tg" title="Telegram">TG</a>
-                <a href="#" class="ok" title="Одноклассники">OK</a>
-                <a href="#" class="tw" title="Twitter">X</a>
-                <a href="#" class="wa" title="WhatsApp">WA</a>
-                <a href="#" class="fb" title="Facebook">FB</a>
-                <a href="#" class="li" title="LinkedIn">in</a>
-                <a href="#" class="em" title="Email">@</a>
-            </div>
         </div>
 
         <aside class="error-sidebar">
@@ -241,6 +342,42 @@ include __DIR__ . '/templates/header.php';
                 <?php endforeach; ?>
             </div>
         </aside>
+    </div>
+
+    <!-- Комментарии к 404 -->
+    <?php if (!empty($comments404)): ?>
+    <div class="error-comments">
+        <h3>💬 Сообщения о битых ссылках</h3>
+        <?php foreach ($comments404 as $c): ?>
+        <div class="error-comment-item">
+            <span class="comment-name"><?php echo h($c['author_name']); ?></span>
+            <span class="comment-date"><?php echo date('d.m.Y H:i', strtotime($c['created_at'])); ?></span>
+            <div class="comment-text"><?php echo nl2br(h($c['content'])); ?></div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+
+    <div class="error-comment-form">
+        <?php if ($commentOk): ?>
+            <div class="error-comment-ok">✅ Спасибо! Комментарий отправлен на модерацию.</div>
+        <?php else: ?>
+            <?php if ($commentError): ?>
+                <div class="error-comment-error"><?php echo h($commentError); ?></div>
+            <?php endif; ?>
+            <form method="post">
+                <input type="hidden" name="comment_404" value="1">
+                <?php echo generateHoneypot(); ?>
+                <input type="text" name="author_name" placeholder="Ваше имя" required value="<?php echo h($_POST['author_name'] ?? ''); ?>">
+                <input type="email" name="author_email" placeholder="Email (необязательно)" value="<?php echo h($_POST['author_email'] ?? ''); ?>">
+                <textarea name="content" placeholder="Опишите, что искали..." required><?php echo h($_POST['content'] ?? ''); ?></textarea>
+                <div class="captcha-row">
+                    <span class="captcha-display"><?php echo $captchaQuestion; ?></span>
+                    <input type="text" name="captcha" placeholder="Ответ" required autocomplete="off" style="width:auto;flex:1;">
+                </div>
+                <button type="submit">Отправить</button>
+            </form>
+        <?php endif; ?>
     </div>
 </div>
 
