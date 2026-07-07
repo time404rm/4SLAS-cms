@@ -508,8 +508,8 @@ class SimpleEditor {
             <h3>Редактировать изображение</h3>
             <label>URL:</label><input type="text" id="${modalId}-src" value="${this.escapeHtml(currentSrc)}">
             <label>Alt-текст:</label><input type="text" id="${modalId}-alt" value="${this.escapeHtml(currentAlt)}">
-            <label>Ширина (px):</label><input type="number" id="${modalId}-w" value="${img.width || ''}" step="1">
-            <label>Высота (px):</label><input type="number" id="${modalId}-h" value="${img.height || ''}" step="1">
+            <label>Ширина (px или %):</label><input type="text" id="${modalId}-w" value="${img.width || ''}" placeholder="например 100%">
+            <label>Высота (px или %):</label><input type="text" id="${modalId}-h" value="${img.height || ''}" placeholder="например 300">
             <div class="button-group">
                 <button id="${modalId}-ok">Обновить</button>
                 <button id="${modalId}-cancel" class="cancel">Отмена</button>
