@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS posts (
     user_id INT DEFAULT NULL,
     title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL UNIQUE,
-    content TEXT NOT NULL,
+    content MEDIUMTEXT NOT NULL,
     display_author VARCHAR(255) DEFAULT NULL,
     canonical_url VARCHAR(500) DEFAULT NULL,
     intro_image VARCHAR(255) DEFAULT NULL,
