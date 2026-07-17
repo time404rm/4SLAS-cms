@@ -59,3 +59,6 @@ src/grapesjs-init.js
 # Old versions (not on GitHub)
 0_9/
 0_95/
+
+# AI documentation (local only)
+docs/ai-integration.md
