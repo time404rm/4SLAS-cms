@@ -81,7 +81,9 @@ $topPosts = getTopPostsByLikes(5);
     <link rel="alternate" hreflang="x-default" href="<?php echo h($canonical); ?>">
     <?php if ((isset($page) && is_numeric($page) && $page > 1) || !empty($noindex)): ?>
     <meta name="robots" content="noindex, follow">
+    <?php if (isset($page) && is_numeric($page)): ?>
     <link rel="prev" href="<?php echo SITE_URL . ($page > 2 ? '/?page=' . ($page - 1) : '/'); ?>">
+    <?php endif; ?>
     <?php endif; ?>
     <?php if (isset($totalPages) && isset($page) && is_numeric($page) && $page < $totalPages): ?>
     <link rel="next" href="<?php echo SITE_URL . '/?page=' . ($page + 1); ?>">
