@@ -85,8 +85,9 @@ return [
     'cancel' => 'Cancel',
     
     // ===== COOKIES =====
-    'cookie_message' => 'We use cookies to improve your experience. By continuing to use the site, you agree to this.',
+    'cookie_message' => 'We use cookies and process personal data in accordance with Russian Federal Law 152-FZ. By continuing, you agree to this.',
     'cookie_accept' => 'Accept',
+    'cookie_privacy' => 'Privacy Policy',
     
     // ===== ADMIN DASHBOARD =====
     'dashboard' => 'Dashboard',

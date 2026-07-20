@@ -522,6 +522,7 @@
     background: #60a5fa;
     color: #0f1422;
 }
+[data-theme="dark"] .cookie-privacy-link { color: #60a5fa; }
 
 /* === Эмодзи-пикер === */
 [data-theme="dark"] .emoji-btn {

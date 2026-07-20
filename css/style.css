@@ -1323,6 +1323,12 @@ a.editor-anchor:hover {
     margin: 0;
     display: inline-block;
 }
+.cookie-privacy-link {
+    color: #60a5fa;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+.cookie-privacy-link:hover { text-decoration: underline; }
 .cookie-accept-btn {
     margin-left: 15px;
     background: #2563eb;

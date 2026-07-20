@@ -94,7 +94,8 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
 
 <!-- Cookie consent banner -->
 <div id="cookie-consent" class="cookie-banner">
-    <p class="cookie-text"><?php echo __('cookie_message'); ?></p>
+    <p class="cookie-text"><?php echo __('cookie_message'); ?>
+    <a href="<?php echo SITE_URL; ?>/page/privacy" class="cookie-privacy-link"><?php echo __('cookie_privacy'); ?></a></p>
     <button id="accept-cookies" class="cookie-accept-btn"><?php echo __('cookie_accept'); ?></button>
 </div>
 <script>
