@@ -303,6 +303,32 @@ include __DIR__ . '/templates/header.php';
     .error-image-wrap { height: 250px; }
     .error-robot { font-size: 80px; }
 }
+
+/* Тёмная тема */
+[data-theme="dark"] .error-404-page { background: #0f1422; }
+[data-theme="dark"] .error-breadcrumb,
+[data-theme="dark"] .error-breadcrumb a { color: #64748b; }
+[data-theme="dark"] .error-breadcrumb a:hover { color: #e2e8f0; }
+[data-theme="dark"] .error-title { color: #e2e8f0; }
+[data-theme="dark"] .error-subtitle { color: #94a3b8; }
+[data-theme="dark"] .error-text { color: #94a3b8; }
+[data-theme="dark"] .error-sidebar { background: #1a2332; box-shadow: 0 2px 10px rgba(0,0,0,.2); }
+[data-theme="dark"] .error-sidebar h3 { color: #e2e8f0; border-color: #2a3650; }
+[data-theme="dark"] .error-sidebar a { color: #60a5fa; }
+[data-theme="dark"] .error-sidebar a:hover { color: #93c5fd; }
+[data-theme="dark"] .error-tags a { background: #2a3650; color: #60a5fa; }
+[data-theme="dark"] .error-tags a:hover { background: #60a5fa; color: #0f1422; }
+[data-theme="dark"] .error-comments h3 { color: #e2e8f0; border-color: #2a3650; }
+[data-theme="dark"] .error-comment-item { background: #1a2332; box-shadow: none; }
+[data-theme="dark"] .error-comment-item .comment-name { color: #60a5fa; }
+[data-theme="dark"] .error-comment-item .comment-date { color: #64748b; }
+[data-theme="dark"] .error-comment-item .comment-text { color: #cbd5e1; }
+[data-theme="dark"] .error-comment-form { background: #1a2332; box-shadow: none; }
+[data-theme="dark"] .error-comment-form input,
+[data-theme="dark"] .error-comment-form textarea { background: #0f1422; border-color: #2a3650; color: #e2e8f0; }
+[data-theme="dark"] .error-comment-form .captcha-row .captcha-display { color: #e2e8f0; background: #2a3650; }
+[data-theme="dark"] .error-comment-ok { background: #166534; color: #86efac; }
+[data-theme="dark"] .error-comment-error { background: #7f1a1a; color: #fca5a5; }
 </style>
 
 <div class="error-404-page">
