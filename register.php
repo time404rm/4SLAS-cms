@@ -106,6 +106,13 @@ include __DIR__ . '/templates/header.php';
                 <input type="text" name="captcha" required autocomplete="off">
             </div>
 
+            <div class="form-group" style="font-size:13px;color:#8a9bd5;">
+                <label>
+                    <input type="checkbox" name="privacy_agree" required>
+                    <?php echo __('register_agree_privacy'); ?> <a href="<?php echo SITE_URL; ?>/page/privacy" target="_blank" style="color:#60a5fa;"><?php echo __('cookie_privacy'); ?></a>
+                </label>
+            </div>
+
             <button type="submit"><?php echo __('register'); ?></button>
         </form>
         <?php if (yandexOAuthEnabled() || vkOAuthEnabled()): ?>

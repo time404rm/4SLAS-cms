@@ -25,6 +25,9 @@ $pageDescription = $page['meta_description'] ?: truncateText($page['content'], 1
 $pageKeywords = $page['meta_keywords'] ?? '';
 $canonicalUrl = !empty($page['canonical_url']) ? $page['canonical_url'] : (SITE_URL . '/page/' . $page['slug']);
 
+// Не индексировать служебные страницы
+if ($page['slug'] === 'privacy') $noindex = true;
+
 $isEditing = isAdmin() && isset($_GET['edit']);
 $feData = isAdmin() ? [
     'pageId' => $page['id'],

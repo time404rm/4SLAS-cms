@@ -88,6 +88,7 @@ return [
     'cookie_message' => 'We use cookies and process personal data in accordance with Russian Federal Law 152-FZ. By continuing, you agree to this.',
     'cookie_accept' => 'Accept',
     'cookie_privacy' => 'Privacy Policy',
+    'register_agree_privacy' => 'I agree to the processing of personal data and accept the',
     
     // ===== ADMIN DASHBOARD =====
     'dashboard' => 'Dashboard',
