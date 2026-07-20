@@ -24,6 +24,7 @@
 </div>
 <div class="footer-down">
     <p>&copy; <?php echo date('Y'); ?> <?php echo h(getSetting('site_name')); ?>. <?php echo __('all_rights_reserved'); ?></p>
+    <p style="text-align:center;"><a href="<?php echo SITE_URL; ?>/page/privacy"><?php echo __('cookie_privacy'); ?></a></p>
 </div>
 </footer>
 
