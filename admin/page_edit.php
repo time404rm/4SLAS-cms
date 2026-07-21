@@ -130,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="<?php echo SITE_URL; ?>/page/<?php echo h($page['slug']); ?>" target="_blank" class="button button-preview">👁️ Предпросмотр</a>
             <?php endif; ?>
             <a href="pages.php" class="button">❌ Отмена</a>
+            <span id="fe-af-status" style="font-size:12px;margin-left:8px;"></span>
         </div>
     </form>
 
@@ -138,6 +139,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     document.addEventListener('DOMContentLoaded', function() {
         window.currentPageId = <?php echo $id; ?>;
         new SimpleEditor('post-editor', 'post-content-hidden');
+    });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var asId = <?php echo $id; ?>;
+        if (!asId) return;
+        var asDirty = false, asSaving = false;
+        var asEl = document.getElementById('fe-af-status');
+
+        document.addEventListener('input', function() { asDirty = true; });
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('button')?.type === 'submit') asSaving = true;
+        });
+
+        setInterval(function() {
+            if (!asDirty || asSaving) return;
+            asDirty = false;
+            if (asEl) asEl.textContent = '⏳ авто...';
+            if (window._simpleEditor) window._simpleEditor.syncToHidden();
+
+            fetch('/api/quick-save.php', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    type: 'page', id: asId,
+                    title: document.querySelector('[name="title"]')?.value || '',
+                    content: document.querySelector('[name="content"]')?.value || '',
+                    meta_title: document.querySelector('[name="meta_title"]')?.value || '',
+                    meta_description: document.querySelector('[name="meta_description"]')?.value || '',
+                    meta_keywords: document.querySelector('[name="meta_keywords"]')?.value || '',
+                    display_author: document.querySelector('[name="display_author"]')?.value || '',
+                    canonical_url: document.querySelector('[name="canonical_url"]')?.value || ''
+                })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+                if (d.success) { if (asEl) asEl.textContent = '✅'; }
+                else { asDirty = true; if (asEl) asEl.textContent = '❌'; }
+            })
+            .catch(function() { asDirty = true; if (asEl) asEl.textContent = '❌'; });
+        }, 10000);
     });
     </script>
     <?php include __DIR__ . '/includes/admin_footer.php'; ?>

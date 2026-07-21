@@ -153,6 +153,7 @@ class SimpleEditor {
             <button type="button" data-cmd="undo" title="Отменить (Ctrl+Z)">${icon('<path d="M4 8h8a4 4 0 010 8H8"/><path d="M7 5L4 8l3 3"/>')}</button>
             <button type="button" data-cmd="redo" title="Повторить (Ctrl+Y)">${icon('<path d="M16 8H8a4 4 0 000 8h4"/><path d="M13 5l3 3-3 3"/>')}</button>
             <button type="button" data-cmd="fullscreen" title="На весь экран">${icon('<path d="M3 7V3h4"/><path d="M17 7V3h-4"/><path d="M3 13v4h4"/><path d="M17 13v4h-4"/>')}</button>
+            <button type="button" data-cmd="save" title="Сохранить (Ctrl+S)">💾</button>
             <span style="margin-left:auto;font-size:.8rem;color:#b9c7e6;align-self:center;">4SLASeditor v0.3</span>
         `;
         this.editor.parentNode.insertBefore(toolbar, this.editor);
@@ -210,6 +211,11 @@ class SimpleEditor {
             case 'undo': document.execCommand('undo', false, null); break;
             case 'redo': document.execCommand('redo', false, null); break;
             case 'fullscreen': this.toggleFullscreen(); break;
+            case 'save':
+                this.syncToHidden();
+                const frm = this.editor.closest('form');
+                if (frm) frm.querySelector('[type="submit"]')?.click();
+                break;
             case 'horizontalRule': document.execCommand('insertHorizontalRule', false, null); break;
             case 'foreColor':
             case 'backColor': this._showColorPicker(command); break;
@@ -359,7 +365,7 @@ class SimpleEditor {
         switch (e.key.toLowerCase()) {
             case 's':
                 e.preventDefault();
-                this.syncToHidden();
+                this.execCommand('save');
                 break;
             case 'k':
                 e.preventDefault();
