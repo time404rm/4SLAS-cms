@@ -20,6 +20,16 @@ if (!$page) {
     exit;
 }
 
+// ---------- PAGE CACHE ----------
+$doCache = isCacheEnabled() && !isAdmin() && $_SERVER['REQUEST_METHOD'] === 'GET';
+if ($doCache) {
+    $cacheKey = getCacheKey($_SERVER['REQUEST_URI']);
+    $cached = getCache($cacheKey);
+    if ($cached !== false) { echo $cached; exit; }
+    ob_start();
+}
+// --------------------------------
+
 $pageTitle = $page['meta_title'] ?: $page['title'];
 $pageDescription = $page['meta_description'] ?: truncateText($page['content'], 160);
 $pageKeywords = $page['meta_keywords'] ?? '';
@@ -101,5 +111,11 @@ if ($pageBlock): ?>
 <?php endif; ?>
 
 <?php
+// ---------- SAVE CACHE ----------
+if ($doCache && ob_get_level() > 0) {
+    setCache($cacheKey, ob_get_contents());
+    ob_end_flush();
+}
+// --------------------------------
 include __DIR__ . '/templates/footer.php';
 ?>

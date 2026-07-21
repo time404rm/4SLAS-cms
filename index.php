@@ -21,6 +21,16 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], ['ru', 'en'])) {
     exit;
 }
 
+// ---------- PAGE CACHE ----------
+$doCache = isCacheEnabled() && !isAdmin() && $_SERVER['REQUEST_METHOD'] === 'GET';
+if ($doCache) {
+    $cacheKey = getCacheKey($_SERVER['REQUEST_URI']);
+    $cached = getCache($cacheKey);
+    if ($cached !== false) { echo $cached; exit; }
+    ob_start();
+}
+// --------------------------------
+
 $seo = getSeoData('home', null);
 $pageTitle = $seo['meta_title'] ?: __('home_title');
 $pageDescription = $seo['meta_description'] ?: getSetting('site_description');
@@ -64,5 +74,11 @@ include __DIR__ . '/templates/header.php';
 </script>
 
 <?php
+// ---------- SAVE CACHE ----------
+if ($doCache && ob_get_level() > 0) {
+    setCache($cacheKey, ob_get_contents());
+    ob_end_flush();
+}
+// --------------------------------
 include __DIR__ . '/templates/footer.php';
 ?>

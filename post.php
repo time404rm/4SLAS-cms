@@ -20,6 +20,16 @@ if (!$post) {
     exit;
 }
 
+// ---------- PAGE CACHE ----------
+$doCache = isCacheEnabled() && !isAdmin() && $_SERVER['REQUEST_METHOD'] === 'GET';
+if ($doCache) {
+    $cacheKey = getCacheKey($_SERVER['REQUEST_URI']);
+    $cached = getCache($cacheKey);
+    if ($cached !== false) { echo $cached; exit; }
+    ob_start();
+}
+// --------------------------------
+
 // SEO
 $seo = getSeoData('post', $post['id']);
 $pageTitle = !empty($post['meta_title']) ? $post['meta_title'] : $post['title'];
@@ -392,5 +402,11 @@ $articleSection = !empty($articleCategories) ? implode(', ', $articleCategories)
 <?php endif; ?>
 
 <?php
+// ---------- SAVE CACHE ----------
+if ($doCache && ob_get_level() > 0) {
+    setCache($cacheKey, ob_get_contents());
+    ob_end_flush();
+}
+// --------------------------------
 include __DIR__ . '/templates/footer.php';
 ?>
