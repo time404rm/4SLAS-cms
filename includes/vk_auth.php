@@ -31,7 +31,7 @@ function getVkAuthUrl()
         'v' => '5.199',
         'state' => $state,
     ]);
-    return 'https://oauth.vk.com/authorize?' . $params;
+    return 'https://oauth.vk.ru/authorize?' . $params;
 }
 
 function exchangeVkCode($code)
@@ -40,7 +40,7 @@ function exchangeVkCode($code)
     $clientSecret = getSetting('vk_client_secret');
     $redirectUri = SITE_URL . '/oauth/vk_callback.php';
 
-    $response = oauthHttpGet('https://oauth.vk.com/access_token?' . http_build_query([
+    $response = oauthHttpGet('https://oauth.vk.ru/access_token?' . http_build_query([
         'client_id' => $clientId,
         'client_secret' => $clientSecret,
         'redirect_uri' => $redirectUri,
@@ -64,7 +64,7 @@ function getVkUserInfo($tokenData)
     $accessToken = $tokenData['access_token'];
     $userId = $tokenData['user_id'];
 
-    $response = oauthHttpGet('https://api.vk.com/method/users.get?' . http_build_query([
+    $response = oauthHttpGet('https://api.vk.ru/method/users.get?' . http_build_query([
         'user_ids' => $userId,
         'fields' => 'first_name,last_name',
         'access_token' => $accessToken,

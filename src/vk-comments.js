@@ -1,7 +1,7 @@
 (function() {
     function loadVKScript(containerId, pageId, appId) {
         var vk = document.createElement('script');
-        vk.src = 'https://vk.com/js/api/openapi.js?169';
+        vk.src = 'https://vk.ru/js/api/openapi.js?169';
         vk.onload = function() {
             if (appId) VK.init({ apiId: appId });
             var options = { limit: 10, attach: "*" };

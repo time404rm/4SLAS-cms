@@ -394,7 +394,7 @@ $pageTitle = __('settings');
             <div class="form-group">
                 <label for="vk_client_id">ID приложения</label>
                 <input type="text" id="vk_client_id" name="vk_client_id" value="<?php echo h($vkClientId); ?>" style="width:100%; max-width:500px;">
-                <small>Получить на <a href="https://vk.com/editapp?act=create" target="_blank">vk.com/editapp</a> (тип «Веб-сайт»). Redirect URI: <code><?php echo SITE_URL; ?>/oauth/vk_callback.php</code></small>
+                <small>Получить на <a href="https://vk.ru/editapp?act=create" target="_blank">vk.ru/editapp</a> (тип «Веб-сайт»). Redirect URI: <code><?php echo SITE_URL; ?>/oauth/vk_callback.php</code></small>
             </div>
             <div class="form-group">
                 <label for="vk_client_secret">Защищённый ключ</label>

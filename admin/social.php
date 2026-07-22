@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_social'])) {
 
         <div class="form-group">
             <label>Ссылка VK</label>
-            <input type="url" name="vk" value="<?php echo h($vk); ?>" placeholder="https://vk.com/...">
+            <input type="url" name="vk" value="<?php echo h($vk); ?>" placeholder="https://vk.ru/...">
         </div>
         <div class="form-group">
             <label>Ссылка Telegram</label>

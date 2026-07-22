@@ -68,7 +68,7 @@ $vk_app_id = getSetting('vk_app_id') ?: '';
                 <div class="form-group">
                     <label for="vk_app_id">ID приложения ВКонтакте</label>
                     <input type="text" id="vk_app_id" name="vk_app_id" value="<?php echo htmlspecialchars($vk_app_id); ?>" placeholder="например, 12345678">
-                    <small>Необязательно, но рекомендуется для полноценной работы виджета. <a href="https://vk.com/editapp?act=create" target="_blank">Создать приложение</a> → получить числовой ID.</small>
+                    <small>Необязательно, но рекомендуется для полноценной работы виджета. <a href="https://vk.ru/editapp?act=create" target="_blank">Создать приложение</a> → получить числовой ID.</small>
                 </div>
                 
                 <button type="submit" class="btn-save">Сохранить настройки</button>

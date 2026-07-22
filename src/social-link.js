@@ -16,7 +16,7 @@ document.addEventListener('click', function(e) {
             var shareLinks = dropdown.querySelectorAll('.share-link[data-share]');
             var shareUrls = {
                 telegram: 'https://t.me/share/url?url=' + url + '&text=' + title,
-                vk: 'https://vk.com/share.php?url=' + url + '&title=' + title,
+                vk: 'https://vk.ru/share.php?url=' + url + '&title=' + title,
                 whatsapp: 'https://api.whatsapp.com/send?text=' + title + '%20' + url,
                 twitter: 'https://twitter.com/intent/tweet?text=' + title + '&url=' + url,
                 ok: 'https://connect.ok.ru/offer?url=' + url + '&title=' + title
