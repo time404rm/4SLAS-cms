@@ -369,7 +369,7 @@ $articleSection = !empty($articleCategories) ? implode(', ', $articleCategories)
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "TechArticle",
   "headline": <?php echo json_encode($post['title']); ?>,
   "description": <?php echo json_encode(truncateText($post['content'], 160)); ?>,
   "image": <?php echo json_encode($articleImage); ?>,
