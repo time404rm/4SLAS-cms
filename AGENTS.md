@@ -1,12 +1,10 @@
 # 4SLAS CMS — AGENTS.md
 
 ## Goal
-Complete CMS features: frontend inline editor, AI tools in /0_9/, go-to-top button, repo description.
+Complete CMS features: frontend inline editor, go-to-top button, repo description.
 
 ## Constraints & Preferences
-- AI features only in `/0_9/` — main project must not have them
 - `4SLASeditor.js` is never modified; new features extend via `front-editor.js`
-- `/0_9/`, `/0_95/`, `/4SLASEditor_AI/` are gitignored (not on GitHub)
 - time404.ru uses main project (GitHub)
 - Credentials stored in macOS Keychain (osxkeychain helper)
 
@@ -50,7 +48,6 @@ Complete CMS features: frontend inline editor, AI tools in /0_9/, go-to-top butt
 - **Drawer** (мобильные) — секция "Тема" с 3 кнопками
 
 ## Key Decisions
-- AI features are `/0_9/`-only — main project stays clean
 - Context menu calls `_simpleEditor.execCommand()`, not `document.execCommand()`
 - Context menu uses document-level delegation (`document.addEventListener('contextmenu', ...)` with `editor.contains(e.target)`) — работает без привязки к асинхронной загрузке 4SLASeditor.js
 - Frontend editor saves via `/api/quick-save.php` — no CSRF (JSON API, same-origin)
@@ -70,19 +67,16 @@ Complete CMS features: frontend inline editor, AI tools in /0_9/, go-to-top butt
 | `install.sql` | Schema: pages table has display_author, canonical_url |
 | `includes/pages.php` | CRUD: createPage/updatePage + ensurePageColumns |
 | `admin/page_edit.php` | Admin editor: fields + POST + emoji buttons |
-| `admin/post_edit.php` | Admin post editor (no AI in main) |
+| `admin/post_edit.php` | Admin post editor |
 | `admin/redirect.php` | Redirect form — reads `old_url` from GET |
 | `api/quick-save.php` | New: frontend editor save endpoint |
 | `src/front-editor.js` | Frontend editor + context menu (document delegation) + cut + monkey-patch _restoreRange |
 | `src/front-editor.css` | Context menu styles + modal styles (copied from admin.css) |
-| `post.php`, `page.php` | Main + /0_9/: $isEditing, $feData, includes |
+| `post.php`, `page.php` | $isEditing, $feData, includes |
 | `templates/footer.php` | Go-to-top button + Theme Switcher JS |
 | `templates/header.php` | FOUC-prevention script, theme.css, hljs links with ids |
 | `css/theme.css` | **New:** all `[data-theme="dark"]` overrides |
 | `assets/highlight/styles/atom-one-dark.min.css` | **New:** dark highlight.js theme |
-| `/0_9/admin/post_edit.php` | Has display_author, canonical_url, emoji buttons |
-| `/0_9/admin/page_edit.php` | Has all above + AI SEO + AI перелинковка |
-| `/0_9/includes/pages.php` | Same fix as main + auto-migration |
 | `README.md` | Updated feature list |
 
 ## Next Steps
