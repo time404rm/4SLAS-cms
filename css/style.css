@@ -50,6 +50,7 @@ header { position: relative; background: none; display: block; text-align: cente
     line-height: 0.9;
     font-size: 1.4em;
     text-align: right;
+    font-weight: bold;
 }
 .site-desc {
     text-align: right;
@@ -1323,12 +1324,6 @@ a.editor-anchor:hover {
     margin: 0;
     display: inline-block;
 }
-.cookie-privacy-link {
-    color: #60a5fa;
-    margin-left: 8px;
-    white-space: nowrap;
-}
-.cookie-privacy-link:hover { text-decoration: underline; }
 .cookie-accept-btn {
     margin-left: 15px;
     background: #2563eb;
@@ -1499,6 +1494,7 @@ a.editor-anchor:hover {
     align-items: center;
     gap: 10px;
 }
+
 .float-bar-bottom {
     margin-top: auto;
     display: flex;
@@ -1528,10 +1524,12 @@ a.editor-anchor:hover {
 .float-bar-item::after {
     content: '';
     position: absolute;
-    top: -175px;
+    top: 50%;
+    transform: translateY(-50%);
     left: 100%;
     width: 14px;
-    height: 400px;
+    height: 100%;
+    min-height: 44px;
     pointer-events: auto;
 }
 
@@ -1789,9 +1787,9 @@ a.editor-anchor:hover {
     transform: translateY(0) translateX(0);
 }
 .float-bar-bottom .float-bar-item::after {
-    top: -175px;
+    top: 0;
     transform: none;
-    height: 400px;
+    height: 100%;
     min-height: 0;
 }
 
@@ -1806,9 +1804,9 @@ a.editor-anchor:hover {
     transform: translateY(0) translateX(0);
 }
 .float-bar-body .float-bar-item::after {
-    top: -175px;
+    top: 0;
     transform: none;
-    height: 400px;
+    height: 100%;
     min-height: 0;
 }
 /* Отступ для якорей под sticky top-nav */
@@ -1816,3 +1814,46 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id],
 [id]:target {
     scroll-margin-top: 130px;
 }
+
+/* Горизонтальное меню — полоса между шапкой и контентом */
+.top-horizontal-menu { display: none; align-items: center; }
+@media (min-width: 769px) {
+    .top-horizontal-menu {
+        display: flex; max-width: 900px; margin: 0 auto 0; padding: 8px 16px;
+    }
+}
+.top-horizontal-menu .nav-menu {
+    display: flex; list-style: none; margin: 20px 0 0 0; padding: 0; gap: 2px;
+    flex-wrap: wrap; justify-content: space-evenly; width: 100%;
+}
+.top-horizontal-menu .nav-menu > li > a {
+    display: block; padding: 8px 14px; color: inherit;
+    text-decoration: none; border-radius: 8px; font-size: 14px;
+    transition: background 0.2s;
+}
+.top-horizontal-menu .nav-menu > li > a:hover {
+    background: rgba(0,0,0,.06);
+}
+.top-horizontal-menu .nav-menu li { position: relative; }
+.top-horizontal-menu .nav-menu ul {
+    display: none; position: absolute; top: 100%; left: 0;
+    background: rgba(255,255,255,.95); border-radius: 8px;
+    padding: 4px 0; min-width: 200px; z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+.top-horizontal-menu .nav-menu li:hover > ul { display: block; }
+.top-horizontal-menu .nav-menu ul a {
+    display: block; padding: 8px 16px; color: inherit;
+    text-decoration: none; font-size: 13px; white-space: nowrap;
+}
+
+
+/* Подзаголовок на главной */
+.site-subtitle { display: block; font-size: 14px; color: #716f6f; margin-top: 6px; font-weight: normal; }
+
+.cookie-privacy-link {
+    color: #60a5fa;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+.cookie-privacy-link:hover { text-decoration: underline; }

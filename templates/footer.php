@@ -23,8 +23,9 @@
     ?>
 </div>
 <div class="footer-down">
-    <p>&copy; <?php echo date('Y'); ?> <?php echo h(getSetting('site_name')); ?>. <?php echo __('all_rights_reserved'); ?> | <a href="<?php echo SITE_URL; ?>/page/privacy"><?php echo __('cookie_privacy'); ?></a></p>
+    <p>&copy; 2011 - <?php echo date('Y'); ?> <?php echo h(getSetting('site_name')); ?>. <?php echo __('all_rights_reserved'); ?> | <a href="<?php echo SITE_URL; ?>/page/privacy"><?php echo __('cookie_privacy'); ?></a></p>
 </div>
+<?php if ($isHomePage): ?><p class="site-subtitle">Статьи про Linux, сети, Python и веб-разработку</p><?php endif; ?>
 </footer>
 
 </div> <!-- .site-wrapper -->
@@ -188,6 +189,7 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
     });
 })();
 </script>
+
 <script>
 // float-bar hover timeout - не закрывает панель при переходе мыши к пунктам
 (function(){
@@ -207,6 +209,7 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
         });
         item.addEventListener('mouseleave', function() {
             var p = item.querySelector('.float-panel');
+            // если ушли на панель - не закрываем
             if (p && p.matches(':hover')) return;
             clearTimeout(timer);
             timer = setTimeout(function() {

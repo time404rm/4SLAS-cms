@@ -522,7 +522,6 @@
     background: #60a5fa;
     color: #0f1422;
 }
-[data-theme="dark"] .cookie-privacy-link { color: #60a5fa; }
 
 /* === Эмодзи-пикер === */
 [data-theme="dark"] .emoji-btn {
@@ -576,3 +575,15 @@
     background: #60a5fa;
     color: #0f1422;
 }
+
+
+
+/* === Горизонтальное меню === */
+[data-theme=dark] .top-horizontal-menu .nav-menu > li > a:hover {
+    background: rgba(255,255,255,.08);
+}
+[data-theme=dark] .top-horizontal-menu .nav-menu ul {
+    background: rgba(15,20,34,.95); border: 1px solid #2a3650;
+}
+
+[data-theme="dark"] .site-subtitle { color: #64748b; }

@@ -60,6 +60,9 @@ $ymCounterId = getSetting('yandex_metrica_id');
 
 // Данные для выдвижной панели
 $menuItems = getMenuItems(0);
+$horizontalMenuItems = array_filter($menuItems, function($item) {
+    return mb_strtolower(trim($item['title'])) !== 'главная';
+});
 $allCategories = getAllCategories();
 $allTags = getAllTags();
 $topPosts = getTopPostsByLikes(5);
@@ -259,7 +262,7 @@ $sameAsJson = json_encode(array_values($sameAs));
             <?php endif; ?>
         </div>
     </div>
-
+<nav class="top-horizontal-menu"><?php echo renderMenu($menuItems); ?></nav>
 <div class="site-wrapper">
     <!-- Плавающая панель иконок (десктоп) -->
     <div class="float-bar">
@@ -293,6 +296,7 @@ $sameAsJson = json_encode(array_values($sameAs));
                     </div>
                 </div>
             </div>
+            <!--
             <div class="float-bar-item" title="Лучшие статьи">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19h20"/><path d="M4 19l2-14 4 6 2-8 2 8 4-6 2 14"/></svg>
                 <div class="float-panel">
@@ -304,6 +308,7 @@ $sameAsJson = json_encode(array_values($sameAs));
                     </ul>
                 </div>
             </div>
+                        -->
         </div>
 
         <div class="float-bar-bottom">
