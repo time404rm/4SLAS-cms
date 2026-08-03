@@ -1567,7 +1567,8 @@ a.editor-anchor:hover {
     pointer-events: none;
 }
 
-.float-bar-item:hover .float-panel {
+.float-bar-item:hover .float-panel,
+.float-bar-item.cp-open .float-panel {
     opacity: 1;
     visibility: visible;
     transform: translateY(-50%) translateX(0);
@@ -1783,7 +1784,8 @@ a.editor-anchor:hover {
     bottom: 0;
     transform: translateY(0) translateX(-6px);
 }
-.float-bar-bottom .float-bar-item:hover .float-panel {
+.float-bar-bottom .float-bar-item:hover .float-panel,
+.float-bar-bottom .float-bar-item.cp-open .float-panel {
     transform: translateY(0) translateX(0);
 }
 .float-bar-bottom .float-bar-item::after {
@@ -1799,7 +1801,8 @@ a.editor-anchor:hover {
     bottom: auto;
     transform: translateY(0) translateX(-6px);
 }
-.float-bar-body .float-bar-item:hover .float-panel {
+.float-bar-body .float-bar-item:hover .float-panel,
+.float-bar-body .float-bar-item.cp-open .float-panel {
     transform: translateY(0) translateX(0);
 }
 .float-bar-body .float-bar-item::after {

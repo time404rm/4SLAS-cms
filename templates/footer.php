@@ -188,5 +188,45 @@ if (!defined('PAGE_VIEWS_RECORDED')) {
     });
 })();
 </script>
+<script>
+// float-bar hover timeout - не закрывает панель при переходе мыши к пунктам
+(function(){
+    var items = document.querySelectorAll('.float-bar-item');
+    if (!items.length) return;
+    var timer = null;
+    var openItem = null;
+    function closeAll() {
+        if (openItem) { openItem.classList.remove('cp-open'); openItem = null; }
+    }
+    items.forEach(function(item) {
+        item.addEventListener('mouseenter', function() {
+            clearTimeout(timer);
+            closeAll();
+            item.classList.add('cp-open');
+            openItem = item;
+        });
+        item.addEventListener('mouseleave', function() {
+            var p = item.querySelector('.float-panel');
+            if (p && p.matches(':hover')) return;
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                item.classList.remove('cp-open');
+                if (openItem === item) openItem = null;
+            }, 350);
+        });
+        var panel = item.querySelector('.float-panel');
+        if (panel) {
+            panel.addEventListener('mouseenter', function() { clearTimeout(timer); });
+            panel.addEventListener('mouseleave', function() {
+                clearTimeout(timer);
+                timer = setTimeout(function() {
+                    item.classList.remove('cp-open');
+                    if (openItem === item) openItem = null;
+                }, 350);
+            });
+        }
+    });
+})();
+</script>
 </body>
 </html>
