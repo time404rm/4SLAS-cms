@@ -1528,12 +1528,10 @@ a.editor-anchor:hover {
 .float-bar-item::after {
     content: '';
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: -175px;
     left: 100%;
     width: 14px;
-    height: 100%;
-    min-height: 44px;
+    height: 400px;
     pointer-events: auto;
 }
 
@@ -1789,9 +1787,9 @@ a.editor-anchor:hover {
     transform: translateY(0) translateX(0);
 }
 .float-bar-bottom .float-bar-item::after {
-    top: 0;
+    top: -175px;
     transform: none;
-    height: 100%;
+    height: 400px;
     min-height: 0;
 }
 
@@ -1805,9 +1803,9 @@ a.editor-anchor:hover {
     transform: translateY(0) translateX(0);
 }
 .float-bar-body .float-bar-item::after {
-    top: 0;
+    top: -175px;
     transform: none;
-    height: 100%;
+    height: 400px;
     min-height: 0;
 }
 /* Отступ для якорей под sticky top-nav */
