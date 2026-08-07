@@ -402,11 +402,12 @@ $articleSection = !empty($articleCategories) ? implode(', ', $articleCategories)
 <?php endif; ?>
 
 <?php
+include __DIR__ . '/templates/footer.php';
+
 // ---------- SAVE CACHE ----------
 if ($doCache && ob_get_level() > 0) {
     setCache($cacheKey, ob_get_contents());
     ob_end_flush();
 }
 // --------------------------------
-include __DIR__ . '/templates/footer.php';
 ?>
