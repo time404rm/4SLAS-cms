@@ -37,6 +37,7 @@
                 <li><a href="blocks.php">Свободные блоки</a></li>
                 <li><a href="social.php">Соцсети</a></li>
                 <?php if (isAdmin()): ?><li><a href="contact.php">Контакты</a></li><?php endif; ?>
+                <?php if (isAdmin()): ?><li><a href="news-daily.php">📰 Новости</a></li><?php endif; ?>
             </ul>
         </li>
         <?php endif; ?>
@@ -57,6 +58,8 @@
                 <?php if (isAdmin()): ?><li><a href="sitemap.php">Sitemap</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="widgets.php">Виджеты</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="redirect.php">Редиректы</a></li><?php endif; ?>
+                <?php if (isAdmin()): ?><li><a href="crosspost.php">📤 Репост</a></li><?php endif; ?>
+                <?php if (isAdmin()): ?><li><a href="seo-ai.php">🤖 SEO-AI</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="seo-score.php">📊 SEO Score</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="404-report.php">🔍 404 мониторинг</a></li><?php endif; ?>
                 <?php if (isAdmin()): ?><li><a href="backup.php">Backup</a></li><?php endif; ?>
