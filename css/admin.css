@@ -694,6 +694,32 @@ body.admin {
     margin-left: 5px;
 }
 
+/* ===== АВТОДОПОЛНЕНИЕ ХЕШТЕГОВ ===== */
+.search-suggestions {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: #121826;
+    border: 1px solid rgba(255,255,255,.15);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    min-width: 280px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.5);
+}
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    text-align: left;
+    font-size: 13px;
+    color: #e0e0e0;
+    font-family: inherit;
+}
+.suggestion-item:hover {
+    background: rgba(255,255,255,.08);
+}
+
 /* ===== СЕРВЕРНОЕ ВРЕМЯ ===== */
 .server-time {
     background: rgba(255,255,255,.03);
