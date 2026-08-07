@@ -483,6 +483,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
                             });
                             cont.appendChild(div);
                         });
+                        var ir = inp.getBoundingClientRect();
+                        var pr = cont.parentNode.getBoundingClientRect();
+                        cont.style.left = (ir.left - pr.left) + 'px';
+                        cont.style.top = (ir.bottom - pr.top) + 'px';
+                        cont.style.width = ir.width + 'px';
                         cont.style.display = 'block';
                     })
                     .catch(function() { cont.style.display = 'none'; });

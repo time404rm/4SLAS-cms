@@ -696,9 +696,8 @@ body.admin {
 
 /* ===== АВТОДОПОЛНЕНИЕ ХЕШТЕГОВ ===== */
 .search-suggestions {
+    display: none;
     position: absolute;
-    left: 0;
-    top: 100%;
     background: #121826;
     border: 1px solid rgba(255,255,255,.15);
     max-height: 250px;
