@@ -278,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
 
         <div class="form-row">
             <label>Хештеги (через запятую):</label>
-            <input type="text" name="hashtags" value="<?php echo $post ? htmlspecialchars(implode(',', $postHashtags)) : ''; ?>" placeholder="php, laravel, javascript">
+            <input type="text" name="hashtags" id="fe-hashtags" value="<?php echo $post ? htmlspecialchars(implode(',', $postHashtags)) : ''; ?>" placeholder="php, laravel, javascript">
         </div>
 
         <div class="form-row">
@@ -445,6 +445,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['upload_gallery'])) {
             })
             .catch(function() { asDirty = true; if (asEl) asEl.textContent = '❌'; });
         }, 10000);
+    });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var inp = document.getElementById('fe-hashtags');
+        if (!inp) return;
+        var cont = document.createElement('div');
+        cont.className = 'search-suggestions';
+        cont.style.cssText = 'display:none;position:absolute;z-index:999;';
+        inp.parentNode.style.position = 'relative';
+        inp.parentNode.appendChild(cont);
+        var timer;
+        inp.addEventListener('input', function() {
+            clearTimeout(timer);
+            var val = this.value;
+            var last = val.lastIndexOf(',');
+            var partial = val.substring(last + 1).trim();
+            if (partial.length < 2) { cont.style.display = 'none'; return; }
+            timer = setTimeout(function() {
+                fetch('/api/search_suggest.php?type=tags&q=' + encodeURIComponent(partial))
+                    .then(function(r) { return r.json(); })
+                    .then(function(items) {
+                        cont.innerHTML = '';
+                        if (!items.length) { cont.style.display = 'none'; return; }
+                        items.forEach(function(item) {
+                            var div = document.createElement('div');
+                            div.className = 'suggestion-item';
+                            div.textContent = '#' + item.text;
+                            div.addEventListener('click', function() {
+                                var v = inp.value;
+                                var l = v.lastIndexOf(',');
+                                var prefix = l >= 0 ? v.substring(0, l + 1) + ' ' : '';
+                                inp.value = prefix + item.text + ', ';
+                                cont.style.display = 'none';
+                                inp.focus();
+                            });
+                            cont.appendChild(div);
+                        });
+                        cont.style.display = 'block';
+                    })
+                    .catch(function() { cont.style.display = 'none'; });
+            }, 300);
+        });
+        document.addEventListener('click', function(e) {
+            if (e.target !== inp && !cont.contains(e.target)) cont.style.display = 'none';
+        });
     });
     </script>
     <?php include __DIR__ . '/includes/admin_footer.php'; ?>

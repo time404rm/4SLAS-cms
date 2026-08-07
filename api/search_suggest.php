@@ -13,12 +13,29 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 $query = trim($_GET['q'] ?? '');
+$type = $_GET['type'] ?? 'all';
+
 if (strlen($query) < 2) {
     echo json_encode([]);
     exit;
 }
 
 $db = getDb();
+
+// Режим: только хештеги (для автодополнения в редакторе постов)
+if ($type === 'tags') {
+    $stmt = $db->prepare("SELECT name FROM hashtags WHERE name LIKE ? ORDER BY name LIMIT 10");
+    $stmt->execute(['%' . $query . '%']);
+    $tags = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $suggestions = [];
+    foreach ($tags as $tag) {
+        $suggestions[] = ['type' => 'tag', 'text' => $tag, 'url' => null];
+    }
+    header('Content-Type: application/json');
+    echo json_encode($suggestions);
+    exit;
+}
+
 // Ищем похожие заголовки постов (LIMIT 10)
 $stmt = $db->prepare("SELECT title, slug FROM posts WHERE title LIKE ? AND status = 'published' ORDER BY title LIMIT 10");
 $stmt->execute(['%' . $query . '%']);
