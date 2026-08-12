@@ -7,7 +7,7 @@ function tocGenerate($content) {
     // Собираем заголовки
     preg_match_all('/<h([23])([^>]*)>(.*?)<\/h[23]>/si', $content, $matches, PREG_SET_ORDER);
 
-    if (count($matches) < 3) return $content; // TOC только если 3+ заголовка
+    if (count($matches) < 2) return $content; // TOC если 2+ заголовка
 
     $tocItems = [];
     foreach ($matches as $m) {
