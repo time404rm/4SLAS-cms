@@ -525,8 +525,8 @@ class SimpleEditor {
         modal.querySelector(`#${modalId}-ok`).addEventListener('click', () => {
             img.setAttribute('src', modal.querySelector(`#${modalId}-src`).value);
             img.setAttribute('alt', modal.querySelector(`#${modalId}-alt`).value);
-            const w = parseInt(modal.querySelector(`#${modalId}-w`).value);
-            const h = parseInt(modal.querySelector(`#${modalId}-h`).value);
+            const w = modal.querySelector(`#${modalId}-w`).value.trim();
+            const h = modal.querySelector(`#${modalId}-h`).value.trim();
             if (w) img.setAttribute('width', w); else img.removeAttribute('width');
             if (h) img.setAttribute('height', h); else img.removeAttribute('height');
             this.syncToHidden();
