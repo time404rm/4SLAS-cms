@@ -1034,6 +1034,7 @@ class SimpleEditor {
 
     // ==================== ЭМОДЗИ ====================
     insertEmoji() {
+        const savedRange = this._getSelectedRange();
         const emojis = ['😀','😃','😄','😁','😆','😅','😂','🤣','😊','😇','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋','😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🤐','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','🤯','🤠','🥳','😎','🤓','🧐','😕','😟','🙁','☹️','😮','😯','😲','😳','🥺','😦','😧','😨','😰','😥','😢','😭','😱','😖','😣','😞','😓','😩','😫','🥱','😤','😡','😠','🤬','😈','👿','💀','☠️','💩','🤡','👹','👺','👻','👽','👾','🤖','😺','😸','😹','😻','😼','😽','🙀','😿','😾','🙈','🙉','🙊'];
         const modalId = this._nextId('emoji');
         const modal = document.createElement('div');
@@ -1048,8 +1049,9 @@ class SimpleEditor {
         const close = () => { modal.remove(); this.editor.focus(); };
         modal.querySelectorAll('[data-e]').forEach(el => {
             el.addEventListener('click', () => {
-                document.execCommand('insertHTML', false, el.dataset.e);
                 close();
+                this._restoreRange(savedRange);
+                document.execCommand('insertHTML', false, el.dataset.e);
                 this.syncToHidden();
             });
         });
