@@ -504,8 +504,11 @@ class SimpleEditor {
     }
 
     _editImage(img) {
+        const savedRange = this._getSelectedRange();
         const currentSrc = img.getAttribute('src') || '';
         const currentAlt = img.getAttribute('alt') || '';
+        const currentW = img.getAttribute('width') || '';
+        const currentH = img.getAttribute('height') || '';
         const modalId = this._nextId('img-edit');
         const modal = document.createElement('div');
         modal.className = 'editor-modal';
@@ -514,8 +517,8 @@ class SimpleEditor {
             <h3>Редактировать изображение</h3>
             <label>URL:</label><input type="text" id="${modalId}-src" value="${this.escapeHtml(currentSrc)}">
             <label>Alt-текст:</label><input type="text" id="${modalId}-alt" value="${this.escapeHtml(currentAlt)}">
-            <label>Ширина (px или %):</label><input type="text" id="${modalId}-w" value="${img.width || ''}" placeholder="например 100%">
-            <label>Высота (px или %):</label><input type="text" id="${modalId}-h" value="${img.height || ''}" placeholder="например 300">
+            <label>Ширина (px или %):</label><input type="text" id="${modalId}-w" value="${this.escapeHtml(currentW)}" placeholder="например 100%">
+            <label>Высота (px или %):</label><input type="text" id="${modalId}-h" value="${this.escapeHtml(currentH)}" placeholder="например 300">
             <div class="button-group">
                 <button id="${modalId}-ok">Обновить</button>
                 <button id="${modalId}-cancel" class="cancel">Отмена</button>
@@ -531,9 +534,10 @@ class SimpleEditor {
             if (h) img.setAttribute('height', h); else img.removeAttribute('height');
             this.syncToHidden();
             modal.remove();
+            this._restoreRange(savedRange);
             this.editor.focus();
         });
-        modal.querySelector(`#${modalId}-cancel`).addEventListener('click', () => { modal.remove(); this.editor.focus(); });
+        modal.querySelector(`#${modalId}-cancel`).addEventListener('click', () => { modal.remove(); this._restoreRange(savedRange); this.editor.focus(); });
     }
 
     // ==================== ДВОЙНОЙ КЛИК ПО ССЫЛКЕ ====================
