@@ -163,6 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             'vk_oauth_enabled' => isset($_POST['vk_oauth_enabled']) ? 1 : 0,
             'vk_client_id' => trim($_POST['vk_client_id'] ?? ''),
             'vk_client_secret' => trim($_POST['vk_client_secret'] ?? ''),
+            'vk_service_token' => trim($_POST['vk_service_token'] ?? ''),
             'yandex_metrica_id' => trim($_POST['yandex_metrica_id'] ?? ''),
             'yoomoney_bill_number' => trim($_POST['yoomoney_bill_number'] ?? ''),
         ];
@@ -214,6 +215,7 @@ $yandexClientSecret = getSetting('yandex_client_secret') ?: '';
 $vkOauthEnabled = (int)getSetting('vk_oauth_enabled');
 $vkClientId = getSetting('vk_client_id') ?: '';
 $vkClientSecret = getSetting('vk_client_secret') ?: '';
+$vkServiceToken = getSetting('vk_service_token') ?: '';
 $yandexMetricaId = getSetting('yandex_metrica_id') ?: '';
 $yoomoneyBill = getSetting('yoomoney_bill_number') ?: '';
 
@@ -399,6 +401,12 @@ $pageTitle = __('settings');
             <div class="form-group">
                 <label for="vk_client_secret">Защищённый ключ</label>
                 <input type="password" id="vk_client_secret" name="vk_client_secret" value="<?php echo h($vkClientSecret); ?>" style="width:100%; max-width:500px;">
+                <small>Оставлен для обратной совместимости (не используется в VK ID).</small>
+            </div>
+            <div class="form-group">
+                <label for="vk_service_token">Сервисный ключ (service_token)</label>
+                <input type="password" id="vk_service_token" name="vk_service_token" value="<?php echo h($vkServiceToken); ?>" style="width:100%; max-width:500px;">
+                <small>Сервисный ключ приложения VK ID (для конфиденциальных приложений). Обмен кода на токен идёт через него.</small>
             </div>
         </fieldset>
 

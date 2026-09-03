@@ -35,7 +35,9 @@ if (empty($code)) {
     exit;
 }
 
-$tokenData = exchangeVkCode($code);
+$deviceId = $_GET['device_id'] ?? '';
+
+$tokenData = exchangeVkCode($code, $deviceId);
 if (!$tokenData) {
     $_SESSION['oauth_error'] = __('vk_auth_error');
     header('Location: ' . SITE_URL . '/login.php');

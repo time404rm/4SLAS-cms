@@ -70,4 +70,5 @@ admin/crosspost.php
 api/ai-announce.php
 api/vk-crosspost.php
 api/news-daily-run.php
+api/news-daily-status.php
 NEWS_DAILY.md
