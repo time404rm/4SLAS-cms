@@ -8,6 +8,10 @@ document.addEventListener('click', function(e) {
         window.location.href = '/login.php';
         return;
     }
+    // Защита от повторного клика, пока идёт запрос
+    if (btn.dataset.busy) return;
+    btn.dataset.busy = '1';
+
     const formData = new FormData();
     formData.append('post_id', postId);
 
@@ -18,13 +22,17 @@ document.addEventListener('click', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            // Первый лайк — без модалки, просто обновляем счётчик
             btn.innerHTML = '&#128077; ' + data.likes;
-            btn.disabled = true;
         } else {
+            // Повторная попытка — показываем «Вы уже поставили лайк»
             alert(data.error);
         }
     })
     .catch(err => {
         alert('Ошибка: ' + err.message);
+    })
+    .finally(function() {
+        delete btn.dataset.busy;
     });
 });
