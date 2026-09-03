@@ -187,7 +187,7 @@ window.currentPostId = <?php echo (int)$post['id']; ?>;
         <?php if (isset($_SESSION['user_id'])): ?>
             <button class="like-btn" data-post-id="<?php echo $post['id']; ?>">&#9825; <?php echo __('like'); ?></button>
         <?php else: ?>
-            <button class="like-btn" disabled><?php echo __('like_login'); ?></button>
+            <button class="like-btn" title="<?php echo __('like_login'); ?>">&#9825; <?php echo __('like_login'); ?></button>
         <?php endif; ?>
     </div>
     <!-- Кнопка "Поделиться" -->

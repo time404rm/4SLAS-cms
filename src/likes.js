@@ -3,6 +3,11 @@ document.addEventListener('click', function(e) {
     if (!btn || btn.disabled) return;
 
     const postId = btn.dataset.postId;
+    // Гость (кнопка без data-post-id) → на форму входа
+    if (!postId) {
+        window.location.href = '/login.php';
+        return;
+    }
     const formData = new FormData();
     formData.append('post_id', postId);
 
