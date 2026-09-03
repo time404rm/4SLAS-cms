@@ -364,6 +364,7 @@ $sameAsJson = json_encode(array_values($sameAs));
                                 <?php endif; ?>
                             </div>
                             <?php endif; ?>
+                            <a href="<?php echo SITE_URL; ?>/page/privacy" style="display:block;margin-top:12px;text-align:center;font-size:.72rem;color:#8a9bd5;"><?php echo __('cookie_privacy'); ?></a>
                         </div>
                     </div>
                 </div>
