@@ -116,18 +116,16 @@ include __DIR__ . '/templates/header.php';
             <button type="submit"><?php echo __('register'); ?></button>
         </form>
         <?php if (yandexOAuthEnabled() || vkOAuthEnabled()): ?>
-            <div class="auth-separator"><span>или</span></div>
-            <div class="oauth-section">
+            <div class="auth-oauth-divider"><span>или войдите через:</span></div>
+            <div class="oauth-icons">
                 <?php if (yandexOAuthEnabled()): ?>
-                <a href="<?php echo SITE_URL; ?>/oauth/yandex.php" class="yandex-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;margin-right:6px;"><rect width="24" height="24" rx="4" fill="#FC3F1D"/><text x="12" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="14" fill="#fff">Я</text></svg>
-                    <?php echo __('login_via_yandex'); ?>
+                <a href="<?php echo SITE_URL; ?>/oauth/yandex.php" class="oauth-icon oauth-yandex" title="Яндекс ID" aria-label="Войти через Яндекс">
+                    <svg viewBox="0 0 24 24" width="22" height="22"><text x="12" y="17" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="13" fill="#fff">Я</text></svg>
                 </a>
                 <?php endif; ?>
                 <?php if (vkOAuthEnabled()): ?>
-                <a href="<?php echo SITE_URL; ?>/oauth/vk.php" class="vk-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;margin-right:6px;"><rect width="24" height="24" rx="4" fill="#0077FF"/><text x="12" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="#fff">VK</text></svg>
-                    <?php echo __('login_via_vk'); ?>
+                <a href="<?php echo SITE_URL; ?>/oauth/vk.php" class="oauth-icon oauth-vk" title="VK ID" aria-label="Войти через VK">
+                    <svg viewBox="0 0 24 24" width="22" height="22"><text x="12" y="17" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#fff">VK</text></svg>
                 </a>
                 <?php endif; ?>
             </div>
@@ -135,6 +133,18 @@ include __DIR__ . '/templates/header.php';
         <p><?php echo __('already_have_account'); ?> <a href="login.php"><?php echo __('login'); ?></a></p>
     <?php endif; ?>
 </div>
+
+<style>
+.auth-oauth-divider{display:flex;align-items:center;gap:12px;margin:26px 0 16px;color:#64748b;font-size:.85rem;white-space:nowrap;}
+.auth-oauth-divider::before,.auth-oauth-divider::after{content:"";flex:1;height:1px;background:#2a3650;opacity:.7;}
+.oauth-icons{display:flex;justify-content:center;gap:16px;}
+.oauth-icon{width:46px;height:46px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,.25);transition:transform .15s ease,box-shadow .2s ease;}
+.oauth-icon:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.35);text-decoration:none;}
+.oauth-yandex{background:#FC3F1D;}
+.oauth-vk{background:#0077FF;}
+.auth-privacy{margin:18px 0 0;text-align:center;font-size:.8rem;}
+.auth-privacy a{color:#60a5fa;}
+</style>
 
 <script>
 function togglePasswordVisibility(fieldId) {
