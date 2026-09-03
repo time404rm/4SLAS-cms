@@ -63,6 +63,9 @@ src/grapesjs-init.js
 # AI documentation (local only)
 docs/ai-integration.md
 
+# Local bug report (main-repo only)
+bugreport.md
+
 # Server-only features (SATI News Daily, crosspost, AI)
 cron/
 admin/news-daily.php
