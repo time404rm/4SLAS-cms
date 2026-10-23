@@ -101,6 +101,7 @@ $pageTitle = __('admin_dashboard');
         <h3>🕒 Серверное время</h3>
         <p><?php echo date('d.m.Y H:i:s'); ?></p>
         <small>Часовой пояс: <?php echo date_default_timezone_get(); ?></small>
+        <br><small>PHP <?php echo PHP_VERSION; ?></small>
     </div>
 
     <div class="dashboard-stats">

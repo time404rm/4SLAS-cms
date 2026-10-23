@@ -75,3 +75,9 @@ api/vk-crosspost.php
 api/news-daily-run.php
 api/news-daily-status.php
 NEWS_DAILY.md
+
+# levsvetlov extension working copies (server-only)
+extensions_levsvetlov/
+
+# levsvetlov server snapshot (safety backup, server-only)
+snapshot_levsvetlov_*/
